@@ -255,13 +255,13 @@ while ($fieldh = mysqli_fetch_field($resulth)){
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">CONSOLIDAR EVENTO</h5>
+        <h5 class="modal-title" id="exampleModalLabel">DES-CONSOLIDAR EVENTO</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
           </div>
           <div class="modal-body">       
-            Esta seguro de Consolidar el Evento?
+            Esta seguro de Desconsolidar el Evento?
             posteriormenete no se podran realizar cambios.
           </div>
           <div class="modal-footer">
