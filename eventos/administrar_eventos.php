@@ -89,11 +89,6 @@ $rowus = mysqli_fetch_array($resultus);?>
        <p>EN ESTA SECCIÓN SE REALIZA LA ADMINISTRACIÓN DE EVENTOS DE CAPACITACIÓN.</p>
     </div>
     </div>
-    <div class="row">
-        <form name="FORMU" action="nuevo_evento.php" method="post">
-        <button type="submit" class="btn btn-primary">NUEVO EVENTO</button>
-        </form>
-    </div>
 
 <div class="container">
 <div class="row">
