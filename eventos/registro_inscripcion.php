@@ -10,8 +10,9 @@ $idusuario_ss  = $_SESSION['idusuario_ss'];
 $idnombre_ss   = $_SESSION['idnombre_ss'];
 $perfil_ss     = $_SESSION['perfil_ss'];
 
-$idtematica_ss    =  $_SESSION['idtematica_ss'];
-$codigo_evento_ss =  $_SESSION['codigo_evento_ss'];
+$idtematica_ss    = $_SESSION['idtematica_ss'];
+$idevento_ss      = $_SESSION['idevento_ss'];
+$codigo_evento_ss = $_SESSION['codigo_evento_ss'];
 
 $sql0 =" SELECT idtematica, tematica FROM tematica WHERE idtematica='$idtematica_ss' ";
 $result0 = mysqli_query($link,$sql0);
@@ -45,7 +46,7 @@ $row0 = mysqli_fetch_array($result0);
             <p class="pull-left hidden-xs">MINISTERIO DE SALUD Y DEPORTES</p>
             <p class="pull-right"><i class="fa fa-user"></i>
                 <?php
-                    $sqlus =" SELECT nombre, paterno, materno FROM nombre WHERE idnombre='$idnombre_ss'";
+                    $sqlus = "SELECT nombre, paterno, materno FROM nombre WHERE idnombre='$idnombre_ss'";
                     $resultus = mysqli_query($link,$sqlus);
                     $rowus = mysqli_fetch_array($resultus);
                 ?>
@@ -98,11 +99,10 @@ $row0 = mysqli_fetch_array($result0);
 
 <div class="box-area">
 
-
     <div class="form-group row">
     <div class="col-sm-4 mb-3 mb-sm-0">
     <h4>NOMBRES:</h4>
-    <input type="text" class="form-control" name="nombres" placeholder="Nombres" 
+    <input type="text" class="form-control" name="nombre" placeholder="Nombres" 
     required pattern="^([A-ZÁÉÍÓÚ]{1}[a-zñáéíóú]+[\s]*)+$" 
     title="El nombre con Mayúscula al inicio y minúsculas despues."/>
     </div>
@@ -121,14 +121,19 @@ $row0 = mysqli_fetch_array($result0);
     </div>
 
     <div class="form-group row">
-    <div class="col-sm-4 mb-3 mb-sm-0">
-    <h4>CÉDULA DE IDENTIDAD:</h4>
+
+    <div class="col-sm-2 mb-3 mb-sm-0">
+    <h4>CÉDULA DE ID:</h4>
     <input type="text" class="form-control" name="ci" placeholder="N° de CI"
     required pattern="[A-Z0-9_-]{5,12}$" 
     title="El numero de CI solo puede contener DIGITOS numéricos." >
     </div>
+    <div class="col-sm-2 mb-3 mb-sm-0">
+    <h4>COMPLEMENTO:</h4>
+    <input type="text" class="form-control" name="complemento" placeholder="COMPLEMENTO">
+    </div>
     <div class="col-sm-2">
-    <h4>EXPEDIDO EN:</h4>
+    <h4>EXPEDICIÓN:</h4>
     <select name="exp"  id="exp" class="form-control" required>
         <option value="">-SELECCIONE-</option>
         <?php
@@ -167,7 +172,7 @@ $row0 = mysqli_fetch_array($result0);
     </div>
     <div class="col-sm-3">
     <h4>GÉNERO:</h4>
-    <select name="idgenero"  id="idgenero" class="form-control" required>
+    <select name="idgenero" id="idgenero" class="form-control" required>
         <option value="">-SELECCIONE-</option>
         <?php
         $sql1 = "SELECT idgenero, genero FROM genero ";

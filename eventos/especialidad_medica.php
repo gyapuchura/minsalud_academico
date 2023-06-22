@@ -19,11 +19,6 @@ if ($idprofesion != '1') {
        <select name="idespecialidad_medica"  id="idespecialidad_medica" class="form-control">
           <option value="">ELEGIR</option>
           <?php
-          /*
-          Realizamos una consulta ala tabla autor
-          para mostrar los datos en un combo
-          */
-
           $sql1 = "select idespecialidad_medica, especialidad_medica from especialidad_medica";
           $result1 = mysqli_query($link,$sql1);
           if ($row1 = mysqli_fetch_array($result1)){

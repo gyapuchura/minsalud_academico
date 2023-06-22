@@ -4,85 +4,157 @@
 date_default_timezone_set('America/La_Paz');
 
 $fecha 		  = date("Y-m-d");
+$gestion      = date("Y");
+
 $idusuario_ss = $_SESSION['idusuario_ss'];
 $idnombre_ss  = $_SESSION['idnombre_ss'];
 $perfil_ss    = $_SESSION['perfil_ss'];
 
-$paterno    = $link->real_escape_string(htmlentities($_POST['paterno']));
-$materno    = $link->real_escape_string(htmlentities($_POST['materno']));
-$nombres    = $link->real_escape_string(htmlentities($_POST['nombres']));
-$ci         = $link->real_escape_string(htmlentities($_POST['ci']));
-$exp        = $link->real_escape_string(htmlentities($_POST['exp']));
-$usuario_in = $link->real_escape_string(htmlentities($_POST['usuario']));
-$pass       = $link->real_escape_string(htmlentities($_POST['password']));
+$idtematica_ss    =  $_SESSION['idtematica_ss'];
+$idevento_ss      =  $_SESSION['idevento_ss'];
+$codigo_evento_ss =  $_SESSION['codigo_evento_ss'];
 
-$password   = sha1($pass);
+//-----DATOS ENVIADOS EN EL FORMULARIO DE PREINSCRIPCION ----- //
+$nombre      = $link->real_escape_string(htmlentities($_POST['nombre']));
+$paterno     = $link->real_escape_string(htmlentities($_POST['paterno']));
+$materno     = $link->real_escape_string(htmlentities($_POST['materno']));
+$ci          = $link->real_escape_string(htmlentities($_POST['ci']));
+$complemento = $link->real_escape_string(htmlentities($_POST['complemento']));
+$exp         = $link->real_escape_string(htmlentities($_POST['exp']));
 
-$perfil     = $_POST['perfil'];
+$idnacionalidad        = $_POST['idnacionalidad'];
+$idgenero              = $_POST['idgenero'];
+$idformacion_academica = $_POST['idformacion_academica'];
+$idprofesion           = $_POST['idprofesion'];
 
-$idarea     = $_POST['idarea'];
-$idcargo    = $_POST['idcargo'];
-$idempresa  = $_POST['idempresa'];
-
-$cargo_e    = $link->real_escape_string(htmlentities($_POST['cargo_e']));
-
-//validamosd variables con valores nulos.
-
-if ($paterno == '' || $materno == '' || $nombres == '' || $ci == '' || $exp  == '' || $usuario_in  == '' || $pass == '' )
-{
-header("Location:registro_inscripcion.php");
-}
-else {
-
-    //verificamos existencia del numero de cedula de identidad.
-$sql8 = " SELECT idnombre, paterno, materno, nombres, ci FROM nombres WHERE ci='$ci' ";
-$result8 = mysqli_query($link,$sql8);
-
-    if ($row8 = mysqli_fetch_array($result8)) {
-    header("Location:usuario_existe.php");
+    if ($idprofesion == '1') {
+    $idespecialidad_medica = $_POST['idespecialidad_medica'];    
+    } else {
+    $idespecialidad_medica = '0';
     }
 
-    else {
-           //verificamos existencia del nombre de usuario (nick).    
-    $sql9 = " SELECT idusuario, usuario FROM usuarios WHERE usuario='$usuario_in' ";
-    $result9 = mysqli_query($link,$sql9);
+$correo  = $link->real_escape_string(htmlentities($_POST['correo']));
+$celular = $link->real_escape_string(htmlentities($_POST['celular']));
 
-    if ($row9 = mysqli_fetch_array($result9)) {
-        header("Location:usuario_nombre_existe.php");
-    } else {
+$iddependencia = $_POST['iddependencia'];
 
-/* Primero Insertamos los datos en la tabla de nombres */
-$sql0 = " INSERT INTO nombres ( paterno, materno, nombres, ci, exp ) ";
-$sql0.= " VALUES ('$paterno', '$materno', '$nombres', '$ci', '$exp') ";
-$result0 = mysqli_query($link,$sql0);
+//para el caso de participante de otra entidad.
+$entidad       = $link->real_escape_string(htmlentities($_POST['entidad']));
+$cargo_entidad = $link->real_escape_string(htmlentities($_POST['cargo_entidad']));
 
-$idnombre_in=mysqli_insert_id($link);
+//para el caso de participante del Ministerio de Salud y Deportes.
+$idministerio = $_POST['idministerio'];
+$iddireccion  = $_POST['iddireccion'];
+$idarea       = $_POST['idarea'];
+$cargo_mds    = $link->real_escape_string(htmlentities($_POST['cargo_mds']));
 
- /* De acuerdo al perfil de usuario se guarda de 2 maneras diferentes */
+//para el caso de participante de una Red de salud.
+$iddepartamento = $_POST['iddepartamento'];
+$idred_salud    = $_POST['idred_salud'];
+$idestablecimiento_salud = $_POST['idestablecimiento_salud'];
+$cargo_red_salud = $link->real_escape_string(htmlentities($_POST['cargo_red_salud']));
 
-if ($perfil == "DAF-EMPRESA" || $perfil == "UAI-EMPRESA") {
-    
-    /* si el usuario es externo a la CGE */
-    /* Primero Insertamos los datos en la tabla de usuarios */
+//----- Guardamos datos de usuario nuevo ------//
 
-    $sql7 = " INSERT INTO usuarios (idnombre, usuario, password, fecha, condicion, perfil, idarea, idcargo, idempresa, cargo_e ) ";
-    $sql7.= " VALUES ('$idnombre_in','$usuario_in','$password','$fecha','ACTIVO','$perfil','34','61','$idempresa','$cargo_e')";
-    $result7 = mysqli_query($link,$sql7);  
+//verificamos existencia del número de cedula de identidad.
+    $sql8 = " SELECT idnombre, paterno, materno, nombre, ci FROM nombre WHERE ci='$ci' ";
+    $result8 = mysqli_query($link,$sql8);
+      if ($row8 = mysqli_fetch_array($result8)) {
+      header("Location:usuario_existe.php");
+      }  
+      else {
 
-    /* Redireccionamos a la pagina de usuarios registrados */
-    header("Location:usuarios.php");
-    
+  /* Primero Insertamos los datos en la tabla de nombres */
+  $sql0 = " INSERT INTO nombre ( paterno, materno, nombre, ci, exp ) ";
+  $sql0.= " VALUES ('$paterno', '$materno', '$nombre', '$ci', '$exp') ";
+  $result0 = mysqli_query($link,$sql0);
+  
+  $idnombre = mysqli_insert_id($link);
+
+ /* Primero Insertamos los datos en la tabla de usuarios */
+  $sql7 = " INSERT INTO usuarios (idnombre, usuario, password, fecha, condicion, perfil) ";
+  $sql7.= " VALUES ('$idnombre','$ci','$ci','$fecha','ACTIVO','PARTICIPANTE')";
+  $result7 = mysqli_query($link,$sql7);  
+
+  $idusuario_in = mysqli_insert_id($link);
+//----- Obtenemos el codigo y correlativo de inscripcion ------//
+
+$sqlm="SELECT MAX(correlativo) FROM inscripcion WHERE gestion='$gestion' ";
+$resultm=mysqli_query($link,$sqlm);
+$rowm=mysqli_fetch_array($resultm);
+
+$correlativo=$rowm[0]+1;
+
+$codigo="INS/MDSYD-".$correlativo."/".$gestion;
+
+//----- Realizamos la seleccion de tipo de dependencias ------//
+
+if ($iddependencia == '1') {
+    echo "DEPENDE DE OTRA ENTIDAD";
+    echo "</br>";
+    echo $entidad;
+    echo "</br>";
+    echo $cargo_entidad;
+
+    $sql8 = " INSERT INTO inscripcion (idevento, idusuario, idnacionalidad , idgenero, idformacion_academica, idprofesion,";
+    $sql8.= " idespecialidad_medica, correo, celular, iddependencia, entidad, cargo_entidad, ";
+    $sql8.= " idministerio, iddireccion, idarea, cargo_mds, iddepartamento, idred_salud, idestablecimiento_salud, ";
+    $sql8.= " cargo_red_salud, idestado_inscripcion, correlativo, codigo, fecha_preins, fecha_ins, gestion )";
+    $sql8.= " VALUES ('$idevento_ss','$idusuario_in','$idnacionalidad','$idgenero','$idformacion_academica','$idprofesion', ";
+    $sql8.= " '$idespecialidad_medica','$correo','$celular','$iddependencia','$entidad','$cargo_entidad', ";
+    $sql8.= " '0','0','0','','0','0','0', ";
+    $sql8.= " '','1','$correlativo','$codigo','$fecha','$fecha','$gestion')";
+    $result8 = mysqli_query($link,$sql8);  
+
 } else {
+    if ($iddependencia == '2') {
+        echo "DEPENDE DEL MINISTERIO DE SALUD Y DEPORTES";
+        echo "</br>";
+        echo $idministerio;
+        echo "</br>";
+        echo $iddireccion;
+        echo "</br>";
+        echo $idarea;
+        echo "</br>";
+        echo $cargo_mds;
 
-     /* Si el usuario pertenece a la SCEP (imnterno) */
-    $sql7 = " INSERT INTO usuarios (idnombre, usuario, password, fecha, condicion, perfil, idarea, idcargo, idempresa, cargo_e ) ";
-    $sql7.= "  VALUES ('$idnombre_in','$usuario_in','$password','$fecha','ACTIVO','$perfil','$idarea','$idcargo','70','')";
-    $result7 = mysqli_query($link,$sql7); 
+        $sql8 = " INSERT INTO inscripcion (idevento, idusuario, idnacionalidad , idgenero, idformacion_academica, idprofesion,";
+        $sql8.= " idespecialidad_medica, correo, celular, iddependencia, entidad, cargo_entidad, ";
+        $sql8.= " idministerio, iddireccion, idarea, cargo_mds, iddepartamento, idred_salud, idestablecimiento_salud, ";
+        $sql8.= " cargo_red_salud, idestado_inscripcion, correlativo, codigo, fecha_preins, fecha_ins, gestion)";
+        $sql8.= " VALUES ('$idevento_ss','$idusuario_in','$idnacionalidad','$idgenero','$idformacion_academica','$idprofesion', ";
+        $sql8.= " '$idespecialidad_medica','$correo','$celular','$iddependencia','','', ";
+        $sql8.= " '$idministerio','$iddireccion','$idarea','$cargo_mds','0','0','0', ";
+        $sql8.= " '','1','$correlativo','$codigo','$fecha','$fecha','$gestion')";
+        $result8 = mysqli_query($link,$sql8); 
 
-    /* redireccionamos a la pagina de usuarios registrados */
-    header("Location:usuarios.php");
+    } else {
+        if ($iddependencia == '3') {
+            echo "DEPENDE DE UNA RED DE SALUD";
+            echo "</br>";
+            echo $iddepartamento;
+            echo "</br>";
+            echo $idred_salud;
+            echo "</br>";
+            echo $idestablecimiento_salud;
+            echo "</br>";
+            echo $cargo_red_salud;
+
+            $sql8 = " INSERT INTO inscripcion (idevento, idusuario, idnacionalidad , idgenero, idformacion_academica, idprofesion,";
+            $sql8.= " idespecialidad_medica, correo, celular, iddependencia, entidad, cargo_entidad, ";
+            $sql8.= " idministerio, iddireccion, idarea, cargo_mds, iddepartamento, idred_salud, idestablecimiento_salud, ";
+            $sql8.= " cargo_red_salud, idestado_inscripcion, correlativo, codigo, fecha_preins, fecha_ins, gestion)";
+            $sql8.= " VALUES ('$idevento_ss','$idusuario_in','$idnacionalidad','$idgenero','$idformacion_academica','$idprofesion', ";
+            $sql8.= " '$idespecialidad_medica','$correo','$celular','$iddependencia','','', ";
+            $sql8.= " '0','0','0','','$iddepartamento','$idred_salud','$idestablecimiento_salud', ";
+            $sql8.= " '$cargo_red_salud','1','$correlativo','$codigo','$fecha','$fecha','$gestion')";
+            $result8 = mysqli_query($link,$sql8);  
+
+        } else {
+//------ en caso de existir otro tipo de dependencia laboral del interesado ------//           
+            }
+        }
+    }
 }
-}
-}
-}
+
 ?>

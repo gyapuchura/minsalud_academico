@@ -160,8 +160,6 @@ $rowus = mysqli_fetch_array($resultus);?>
                     } else {
                     }
                     ?>
-
-
                 </td>
                 <td>                  
                     <form name="VALIDA" action="valida_evento_oferta.php" method="post">

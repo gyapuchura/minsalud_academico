@@ -93,13 +93,6 @@ $iddependencia  = $_POST['dependencia'];
     </div>
 
     <div class="row">
-    <div class="col-md-3"><h4>MUNICIPIO:</h4></div>
-    <div class="col-md-9">
-    <select name="idmunicipio" id="idmunicipio" class="form-control" required></select>
-    </div>
-    </div>
-
-    <div class="row">
     <div class="col-md-3"><h4>ESTABLECIMIENTO DE SALUD:</h4></div>
     <div class="col-md-9">
     <select name="idestablecimiento_salud" id="idestablecimiento_salud" class="form-control" required></select>
@@ -162,20 +155,7 @@ $(document).ready(function(){
    $("#idred_salud").change(function () {
             $("#idred_salud option:selected").each(function () {
                 red_salud=$(this).val();
-            $.post("municipio_salud.php", { red_salud:red_salud }, function(data){
-            $("#idmunicipio").html(data);
-            });
-        });
-   })
-});
-</script>
-
-<script language="javascript">
-$(document).ready(function(){
-   $("#idmunicipio").change(function () {
-            $("#idmunicipio option:selected").each(function () {
-                municipio=$(this).val();
-            $.post("establecimiento_salud.php", { municipio:municipio }, function(data){
+            $.post("establecimiento_salud.php", { red_salud:red_salud }, function(data){
             $("#idestablecimiento_salud").html(data);
             });
         });
