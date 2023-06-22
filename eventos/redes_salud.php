@@ -5,15 +5,18 @@ date_default_timezone_set('America/La_Paz');
 $fecha_ram			= date("Ymd");
 $fecha 			    = date("Y-m-d");
 
-$idusuario_ss  =  $_SESSION['idusuario_ss'];
-$idnombre_ss   =  $_SESSION['idnombre_ss'];
-$perfil_ss     =  $_SESSION['perfil_ss'];
+$idusuario_ss    =  $_SESSION['idusuario_ss'];
+$idnombre_ss     =  $_SESSION['idnombre_ss'];
+$perfil_ss       =  $_SESSION['perfil_ss'];
+$idplan_anual_ss =  $_SESSION['idplan_anual_ss'];
 
-$idtematica_ss =  $_SESSION['idtematica_ss'];
-
-$sql0 =" SELECT idtematica, tematica FROM tematica WHERE idtematica='$idtematica_ss' ";
+$sql0 =" SELECT idplan_anual, codigo, denominacion, gestion FROM plan_anual WHERE idplan_anual='$idplan_anual_ss' ";
 $result0 = mysqli_query($link,$sql0);
 $row0 = mysqli_fetch_array($result0);
+
+if($_SESSION['perfil_ss'] != "ADMINISTRADOR"){ 		
+	header("Location:../index.php");	
+}
 
 ?>
 <!DOCTYPE html>
@@ -74,24 +77,28 @@ $rowus = mysqli_fetch_array($resultus);?>
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-12">
-				<h2 class="pageTitle">OFERTA POR TEMÁTICA</h2>
+				<h2 class="pageTitle">REDES DE SALUD</h2>
 			</div>
 		</div>
 	</div>
 	</section>
 	<section id="content">
-
+        
 	<div class="container">
 		<div class="row">
 		<div class="tg-main-section tg-banner tg-haslayout parallax-window" data-parallax="scroll" data-bleed="100" data-speed="0.2" data-image-src="images/slider/img-03.jpg">
-        <h4 align="center"><a href="oferta_eventos.php">VOLVER</a></h4>
-        </br>
-        <h2 class="text-info" align="center"><?php echo $row0[1];?></h2>
+        <h4 align="center"><a href="planes_anuales.php">VOLVER</a></h4>
 		</div>
    	<div class="about-logo">    
-       <p>EN ESTA SECCIÓN PUEDE PRE-INSCRIRSE A LOS EVENTOS DE CAPACITACIÓN CON CUPO DISPONIBLE.</p>
+       <p>EN ESTA SECCIÓN SE REALIZA EL REGISTRO DE REDES DE SALUD DEPENDIENTES DEL MINISTERIO DE SALUD Y DEPORTES.</p>
     </div>
     </div>
+    <div class="row">
+        <form name="FORMU" action="nuevo_objetivo.php" method="post">
+        <button type="submit" class="btn btn-primary">NUEVA RED DE SALUD</button>
+        </form>
+    </div>
+
 <div class="container">
 <div class="row">
 <div class="col-lg-12">
@@ -105,20 +112,17 @@ $rowus = mysqli_fetch_array($resultus);?>
             <thead>
                 <tr>
                     <th>Nª</th>
-                    <th>CÓDIGO</th>
-                    <th>EVENTO</th>
-                    <th>FECHA INICIO</th>
-                    <th>FECHA FINALIZACIÓN</th>
-                    <th>HORARIOS</th>
-                    <th>VER EVENTO</th>
+                    <th>DEPARTAMENTO</th>
+                    <th>RED DE SALUD</th>
+                    <th>VER MUNICIPIOS</th>
                 </tr>
             </thead>
 			<tbody>
+                
             <?php
             $numero=1;
-            $sql =" SELECT evento.idevento, evento.codigo, tematica.tematica, evento.fecha_inicio, evento.fecha_fin, evento.iddocente, evento.idestado_registro ";
-            $sql.=" FROM evento, microcurricula, tematica WHERE evento.idmicrocurricula=microcurricula.idmicrocurricula AND ";
-            $sql.=" microcurricula.idtematica=tematica.idtematica AND evento.idestado_registro='2' AND microcurricula.idtematica='$idtematica_ss' ";
+            $sql =" SELECT red_salud.idred_salud, departamento.departamento, red_salud.red_salud FROM red_salud, departamento ";
+            $sql.=" WHERE red_salud.iddepartamento=departamento.iddepartamento  ";
             $result = mysqli_query($link,$sql);
             if ($row = mysqli_fetch_array($result)){
             mysqli_field_seek($result,0);
@@ -126,46 +130,13 @@ $rowus = mysqli_fetch_array($resultus);?>
             } do {
             ?>
 				<tr>
-				<td><?php echo $numero;?></td>
-                <td><?php echo $row[1];?></td>
+                <td><?php echo $numero;?></td>
 				<td><?php echo $row[2];?></td>
-                <td>
-                    <?php 
-                    $fecha_i = explode('-',$row[3]);
-                    $f_inicio    = $fecha_i[2].'/'.$fecha_i[1].'/'.$fecha_i[0];
-                    echo $f_inicio;
-                    ?>            
-                </td>
-                <td>
-                    <?php 
-                    $fecha_f = explode('-',$row[4]);
-                    $f_final = $fecha_f[2].'/'.$fecha_f[1].'/'.$fecha_f[0];
-                    echo $f_final;
-                    ?>   
-                </td>
-                <td> 
-                    <?php
-                    $sqlh ="SELECT horario.hora_i, horario.hora_f, aula.aula, horario.inicio, horario.fin, horario.idhorario FROM horario, aula";
-                    $sqlh.=" WHERE horario.idaula=aula.idaula AND horario.idevento='$row[0]' ";
-                    $resulth = mysqli_query($link,$sqlh);
-                    if ($rowh = mysqli_fetch_array($resulth)){
-                    mysqli_field_seek($resulth,0);
-                    while ($fieldh = mysqli_fetch_field($resulth)){
-                    } do {
-                    ?>
-                        <?php echo $rowh[0]?> a: <?php echo $rowh[1]?> </br>
-                    <?php
-                    }
-                    while ($rowh = mysqli_fetch_array($resulth));
-                    } else {
-                    }
-                    ?>
-                </td>
-                <td>                  
-                    <form name="VALIDA" action="valida_evento_oferta.php" method="post">
-                    <input name="codigo" type="hidden" value="<?php echo $row[1];?>">
-                    <input name="idevento" type="hidden" value="<?php echo $row[0];?>">
-                    <button type="submit" class="btn-link">PRE-INSCRIBIRSE</button></form>
+                <td><?php echo $row[6];?></td>
+                <td>                                                
+                <form name="VALIDA" action="valida_objetivo_mod.php" method="post">
+                <input name="idobjetivo_anual" type="hidden" value="<?php echo $row[0];?>">
+                <button type="submit" class="btn btn-primary">VER OBJETIVO</button></form>
                 </td>
                 </tr>  
             <?php
