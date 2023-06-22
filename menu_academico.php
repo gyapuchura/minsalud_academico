@@ -37,16 +37,16 @@ $result = mysqli_query($link,$sql);
 $row = mysqli_fetch_array($result);
 
 /****** Seleccionamos el perfil del suaurio que accedera a las opciones de sistema ******/	
-if ($row[0] == 'DAF-EMPRESA' ){
+if ($row[0] == 'ADMINISTRADOR' || $row[0] =='USUARIO'){
 
 mysqli_field_seek($result,0);
 while ($field = mysqli_fetch_field($result)){
 } do {	
 	?> 
 	<li class="dropdown">
-	<a href="#" data-toggle="dropdown" class="dropdown-toggle">CONTRATACIONES DAF<b class="caret"></b></a>
+	<a href="#" data-toggle="dropdown" class="dropdown-toggle">REGISTROS SALUD<b class="caret"></b></a>
 		<ul class="dropdown-menu">
-		<li><a href="../contrataciones/declaraciones_juradas_ep.php">DECLARACIONES REALIZADAS</a></li>
+		<li><a href="../eventos/redes_salud.php">REDES DE SALUD</a></li>
 	<!--	<li><a href="#">SEGUIMIENTO DE F-3009</a></li>  -->
 		</ul>
 	</li>
@@ -84,6 +84,6 @@ while ($field = mysqli_fetch_field($result)){
 } else {
 }
 ?>
-	<li class="active"><a href="../intranet.php">INICIO</a></li>
+	<li class="active"><a href="../inicio.php">INICIO</a></li>
 	</ul>
 </div>

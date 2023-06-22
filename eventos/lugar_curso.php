@@ -40,10 +40,10 @@ if ($idmodalidad == '2') {
   </div>
 </div>
 
-<div class="row">
-   <div class="col-md-3"><h4>PROVINCIA:</h4></div>
-   <div class="col-md-9"><select name="idprovincia" id="idprovincia" class="form-control"></select></div>
-</div>   
+  <div class="row">
+    <div class="col-md-3"><h4>PROVINCIA:</h4></div>
+    <div class="col-md-9"><select name="idprovincia" id="idprovincia" class="form-control"></select></div>
+  </div>   
 
   <div class="row">
     <div class="col-md-3"><h4>MUNICIPIO:</h4></div>
@@ -59,7 +59,7 @@ $(document).ready(function(){
    $("#iddepartamento").change(function () {
            $("#iddepartamento option:selected").each(function () {
             departamentos=$(this).val();
-            $.post("provincias.php", { departamentos: departamentos }, function(data){
+            $.post("provincias.php", { departamentos:departamentos }, function(data){
             $("#idprovincia").html(data);
             });
         });

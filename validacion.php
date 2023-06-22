@@ -1,17 +1,4 @@
 <?php 
-/**
-* REALIZA LA VALIDACION DE USUARIO AL INGRESAR A SISTEMA 
-*
-* @idusuario_ss int // número de usuario que se va poner en sesion 
-* @usuario_ss varchar // nombre del usuario (nick) que se va poner en sesion
-* @password_ss varchar // contraseña del usuario que se va poner en sesion (codificada en SHA1)
-* @fecha_ss date // fecha de ingreso a sistema  que se va poner en sesion
-* @condicion_ss varchar // condicion de actividad del usuario que se va poner en sesion
-* @perfil_ss varchar // perfil del usuario que se va poner en sesion
-* @plog_login  // tabla de registro de ingresos a sistema exitosos
-* @log_login_failure // tabla de registros de intento de ingresos no exitosos
-*/
-
 include("inc.config.php");?>
 <?php
 //	SE INICIA LA SESION Y SE CREAN VARIABLES DE SESION PARA EL USUARIO QUE INGRESA AL SISTEMA
@@ -33,9 +20,9 @@ header("Location:index.php");
 
 }else{
 	
-  	$sql = "  SELECT idusuario, idnombre, usuario, password, fecha, condicion, perfil, idarea, idcargo ";
-	$sql.= "  FROM usuarios WHERE usuario = '$usuario' ";
-	$sql.= "  AND password = '$password' AND condicion = 'ACTIVO' ";
+  	$sql = " SELECT idusuario, idnombre, usuario, password, fecha, condicion, perfil ";
+	$sql.= " FROM usuarios WHERE usuario = '$usuario' ";
+	$sql.= " AND password = '$password' AND condicion = 'ACTIVO' ";
 	$result = mysqli_query($link,$sql);
 	if ($row = mysqli_fetch_array($result)){
 	mysqli_field_seek($result,0);
@@ -49,8 +36,6 @@ header("Location:index.php");
 		$_SESSION['fecha_ss'] 	    	= $row[4];
 		$_SESSION['condicion_ss'] 	    = $row[5];
 		$_SESSION['perfil_ss'] 	        = $row[6];
-		$_SESSION['idarea_ss'] 	        = $row[7];
-		$_SESSION['idcargo_ss'] 	    = $row[8];
 
 		$idusuario	= $row[0];
 		$user       = $row[2];
@@ -81,6 +66,5 @@ header("Location:index.php");
 		header("Location:index.php");
 		
 	}
-
 }
 ?>
