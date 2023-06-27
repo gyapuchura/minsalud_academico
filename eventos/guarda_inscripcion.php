@@ -22,6 +22,10 @@ $ci          = $link->real_escape_string(htmlentities($_POST['ci']));
 $complemento = $link->real_escape_string(htmlentities($_POST['complemento']));
 $exp         = $link->real_escape_string(htmlentities($_POST['exp']));
 
+$nacimiento  = $_POST['fecha_nac'];
+$fecha_n     = explode('/',$nacimiento);
+$fecha_nac   = $fecha_n[2].'-'.$fecha_n[1].'-'.$fecha_n[0];
+
 $idnacionalidad        = $_POST['idnacionalidad'];
 $idgenero              = $_POST['idgenero'];
 $idformacion_academica = $_POST['idformacion_academica'];
@@ -60,13 +64,20 @@ $cargo_red_salud = $link->real_escape_string(htmlentities($_POST['cargo_red_salu
     $sql8 = " SELECT idnombre, paterno, materno, nombre, ci FROM nombre WHERE ci='$ci' ";
     $result8 = mysqli_query($link,$sql8);
       if ($row8 = mysqli_fetch_array($result8)) {
+         
+            $_SESSION['idnombre_inscrito_ss'] = $row8[0]; 
+            $_SESSION['nombre_inscrito_ss'] = $row8[3]; 
+            $_SESSION['paterno_inscrito_ss'] = $row8[1]; 
+            $_SESSION['materno_inscrito_ss'] = $row8[2]; 
+            $_SESSION['ci_inscrito_ss'] = $row8[4];  
+
       header("Location:usuario_existe.php");
       }  
       else {
 
   /* Primero Insertamos los datos en la tabla de nombres */
-  $sql0 = " INSERT INTO nombre ( paterno, materno, nombre, ci, exp ) ";
-  $sql0.= " VALUES ('$paterno', '$materno', '$nombre', '$ci', '$exp') ";
+  $sql0 = " INSERT INTO nombre ( paterno, materno, nombre, ci, exp, fecha_nac, complemento ) ";
+  $sql0.= " VALUES ('$paterno', '$materno', '$nombre', '$ci', '$exp', '$fecha_nac','$complemento') ";
   $result0 = mysqli_query($link,$sql0);
   
   $idnombre = mysqli_insert_id($link);
@@ -77,6 +88,7 @@ $cargo_red_salud = $link->real_escape_string(htmlentities($_POST['cargo_red_salu
   $result7 = mysqli_query($link,$sql7);  
 
   $idusuario_in = mysqli_insert_id($link);
+
 //----- Obtenemos el codigo y correlativo de inscripcion ------//
 
 $sqlm="SELECT MAX(correlativo) FROM inscripcion WHERE gestion='$gestion' ";
@@ -90,11 +102,7 @@ $codigo="INS/MDSYD-".$correlativo."/".$gestion;
 //----- Realizamos la seleccion de tipo de dependencias ------//
 
 if ($iddependencia == '1') {
-    echo "DEPENDE DE OTRA ENTIDAD";
-    echo "</br>";
-    echo $entidad;
-    echo "</br>";
-    echo $cargo_entidad;
+//------ DEPENDE DE OTRA ENTIDAD -------------//
 
     $sql8 = " INSERT INTO inscripcion (idevento, idusuario, idnacionalidad , idgenero, idformacion_academica, idprofesion,";
     $sql8.= " idespecialidad_medica, correo, celular, iddependencia, entidad, cargo_entidad, ";
@@ -106,17 +114,14 @@ if ($iddependencia == '1') {
     $sql8.= " '','1','$correlativo','$codigo','$fecha','$fecha','$gestion')";
     $result8 = mysqli_query($link,$sql8);  
 
+    $idinscripcion = mysqli_insert_id($link);
+    $_SESSION['idinscripcion_ss'] = $idinscripcion; 
+
+    header("Location:mostrar_inscripcion.php");
+
 } else {
     if ($iddependencia == '2') {
-        echo "DEPENDE DEL MINISTERIO DE SALUD Y DEPORTES";
-        echo "</br>";
-        echo $idministerio;
-        echo "</br>";
-        echo $iddireccion;
-        echo "</br>";
-        echo $idarea;
-        echo "</br>";
-        echo $cargo_mds;
+//------- DEPENDE DEL MINISTERIO DE SALUD Y DEPORTES -------//
 
         $sql8 = " INSERT INTO inscripcion (idevento, idusuario, idnacionalidad , idgenero, idformacion_academica, idprofesion,";
         $sql8.= " idespecialidad_medica, correo, celular, iddependencia, entidad, cargo_entidad, ";
@@ -128,17 +133,15 @@ if ($iddependencia == '1') {
         $sql8.= " '','1','$correlativo','$codigo','$fecha','$fecha','$gestion')";
         $result8 = mysqli_query($link,$sql8); 
 
+        $idinscripcion = mysqli_insert_id($link);
+        $_SESSION['idinscripcion_ss'] = $idinscripcion; 
+
+        header("Location:mostrar_inscripcion.php");
+
     } else {
         if ($iddependencia == '3') {
-            echo "DEPENDE DE UNA RED DE SALUD";
-            echo "</br>";
-            echo $iddepartamento;
-            echo "</br>";
-            echo $idred_salud;
-            echo "</br>";
-            echo $idestablecimiento_salud;
-            echo "</br>";
-            echo $cargo_red_salud;
+
+// --------- DEPENDE DE UNA RED DE SALUD ------------ //
 
             $sql8 = " INSERT INTO inscripcion (idevento, idusuario, idnacionalidad , idgenero, idformacion_academica, idprofesion,";
             $sql8.= " idespecialidad_medica, correo, celular, iddependencia, entidad, cargo_entidad, ";
@@ -149,6 +152,11 @@ if ($iddependencia == '1') {
             $sql8.= " '0','0','0','','$iddepartamento','$idred_salud','$idestablecimiento_salud', ";
             $sql8.= " '$cargo_red_salud','1','$correlativo','$codigo','$fecha','$fecha','$gestion')";
             $result8 = mysqli_query($link,$sql8);  
+
+            $idinscripcion = mysqli_insert_id($link);
+            $_SESSION['idinscripcion_ss'] = $idinscripcion; 
+
+            header("Location:mostrar_inscripcion.php");
 
         } else {
 //------ en caso de existir otro tipo de dependencia laboral del interesado ------//           

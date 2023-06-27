@@ -18,5 +18,4 @@ $idtematica       = $_POST['idtematica'];
 $_SESSION['idtematica_ss'] = $idtematica;
 
 header("Location:eventos_tema.php");
-
 ?>

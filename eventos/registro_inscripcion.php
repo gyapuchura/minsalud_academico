@@ -84,7 +84,7 @@ $row0 = mysqli_fetch_array($result0);
 	<div class="container">
 	  <div class="row">
 		<div class="tg-main-section tg-banner tg-haslayout parallax-window" data-parallax="scroll" data-bleed="100" data-speed="0.2" data-image-src="images/slider/img-03.jpg">
-          <h4 align="center"><a href="eventos_tema.php">VOLVER</a></h4>
+          <h4 align="center"><a href="inicio_inscripcion.php">VOLVER</a></h4>
           <h2 class="text-info" align="center"><?php echo $codigo_evento_ss;?></h2>
           <h2 class="text-info" align="center"><?php echo $row0[1];?></h2>
         </div>
@@ -100,28 +100,32 @@ $row0 = mysqli_fetch_array($result0);
 <div class="box-area">
 
     <div class="form-group row">
-    <div class="col-sm-4 mb-3 mb-sm-0">
+    <div class="col-sm-3 mb-3 mb-sm-0">
     <h4>NOMBRES:</h4>
     <input type="text" class="form-control" name="nombre" placeholder="Nombres" 
     required pattern="^([A-ZÁÉÍÓÚ]{1}[a-zñáéíóú]+[\s]*)+$" 
     title="El nombre con Mayúscula al inicio y minúsculas despues."/>
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-3">
     <h4>PRIMER APELLIDO:</h4>
     <input type="text" class="form-control" name="paterno" placeholder="Paterno" 
     required pattern="^([A-ZÁÉÍÓÚ]{1}[a-zñáéíóú]+[\s]*)+$" 
     title="El apellido paterno con Mayúscula al inicio y minúsculas despues."/>
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-3">
     <h4>SEGUNDO APELLIDO:</h4>
     <input type="text" class="form-control" name="materno" placeholder="Materno"
     required pattern="^([A-ZÁÉÍÓÚ]{1}[a-zñáéíóú]+[\s]*)+$" 
     title="El apellido materno con Mayúscula al inicio y minúsculas despues."/>
     </div>
+
+    <div class="col-sm-3">
+    <h4>FECHA DE NACIMIENTO:</h4>
+    <input type="text" id="fecha1" class="form-control" name="fecha_nac" required>    
+    </div>
     </div>
 
     <div class="form-group row">
-
     <div class="col-sm-2 mb-3 mb-sm-0">
     <h4>CÉDULA DE ID:</h4>
     <input type="text" class="form-control" name="ci" placeholder="N° de CI"
@@ -324,8 +328,6 @@ $row0 = mysqli_fetch_array($result0);
 </div>
 <!-- Modal -->
 
-
-
 </div>
 </br>
   </section>
@@ -356,7 +358,6 @@ $row0 = mysqli_fetch_array($result0);
 <script src="../js/datepicker-es.js"></script>
 <script>
     $("#fecha1").datepicker($.datepicker.regional[ "es" ]);
-    $("#fecha2").datepicker($.datepicker.regional[ "es" ]);
 </script>
 
 <script language="javascript">

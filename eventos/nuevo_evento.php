@@ -137,7 +137,7 @@ $row_p = mysqli_fetch_array($result_p);
 <div class="row">
   <div class="col-md-3"><h4>FECHA DE INICIO:</h4></div>
   <div class="col-md-3">
-  <input type="text" id="fecha1" class="form-control" name="fecha_inicio" required>
+  <input type="text" id="fecha1" class="form-control" name="fecha_nac" required>
   </div>
   <div class="col-md-3"><h4>FECHA DE FINALIZACIÓN:</h4></div>
   <div class="col-md-3">
