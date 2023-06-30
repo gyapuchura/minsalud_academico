@@ -15,15 +15,18 @@ $idevento_ss      = $_SESSION['idevento_ss'];
 $codigo_evento_ss = $_SESSION['codigo_evento_ss'];
 $idinscripcion_ss = $_SESSION['idinscripcion_ss'];
 
-$sql_i = " SELECT idinscripcion, idevento, idusuario, idnacionalidad, idgenero, idformacion_academica, idprofesion, ";
-$sql_i.= " idespecialidad_medica, correo, celular, iddependencia, entidad, cargo_entidad, idministerio, iddireccion, ";
+$sql_i = " SELECT idinscripcion, idevento, idusuario, idnombre, idnombre_datos, ";
+$sql_i.= " iddependencia, entidad, cargo_entidad, idministerio, iddireccion, ";
 $sql_i.= " idarea, cargo_mds, iddepartamento, idred_salud, idestablecimiento_salud, cargo_red_salud, idestado_inscripcion, ";
 $sql_i.= " correlativo, codigo, fecha_preins, fecha_ins, gestion FROM inscripcion WHERE idinscripcion='$idinscripcion_ss' ";
 $result_i = mysqli_query($link,$sql_i);
 $row_i = mysqli_fetch_array($result_i);
 
-$sql_n =" SELECT nombre.nombre, nombre.paterno, nombre.materno, nombre.ci, nombre.complemento, nombre.exp, nombre.fecha_nac ";
-$sql_n.=" FROM nombre, usuarios WHERE usuarios.idnombre=nombre.idnombre AND usuarios.idusuario='$row_i[2]' ";
+$sql_n =" SELECT nombre.nombre, nombre.paterno, nombre.materno, nombre.ci, nombre.complemento, nombre.exp, nombre.fecha_nac, nombre.idnacionalidad, ";
+$sql_n.=" nombre.idgenero, nombre_datos.idformacion_academica, nombre_datos.idprofesion, nombre_datos.idespecialidad_medica, nombre_datos.correo, ";
+$sql_n.=" nombre_datos.celular FROM nombre, nombre_datos, usuarios WHERE nombre_datos.idnombre=nombre.idnombre AND  ";
+$sql_n.=" usuarios.idnombre=nombre.idnombre AND usuarios.idusuario='$row_i[2]' ";
+
 $result_n = mysqli_query($link,$sql_n);
 $row_n = mysqli_fetch_array($result_n);
 
@@ -94,7 +97,7 @@ $rowus = mysqli_fetch_array($resultus);
 
 <div class="row">
   <div class="col-md-4"></div>
-  <div class="col-md-8"><h2><?php echo $row_i[23];?> </h2></div>
+  <div class="col-md-8"><h2><?php echo $row_i[18];?> </h2></div>
 </div>
 <!-- MUESTRA LA PREINSCRIPCION REALIZADA --->
 <div class="box-area">
@@ -173,7 +176,7 @@ $rowus = mysqli_fetch_array($resultus);
           while ($fieldv = mysqli_fetch_field($resultv)){
           } do {
           ?>
-          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_i[3]) echo "selected";?> ><?php echo $rowv[1];?></option>
+          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_n[7]) echo "selected";?> ><?php echo $rowv[1];?></option>
           <?php
           } while ($rowv = mysqli_fetch_array($resultv));
           } else {
@@ -193,7 +196,7 @@ $rowus = mysqli_fetch_array($resultus);
           while ($fieldv = mysqli_fetch_field($resultv)){
           } do {
           ?>
-          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_i[4]) echo "selected";?> ><?php echo $rowv[1];?></option>
+          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_n[8]) echo "selected";?> ><?php echo $rowv[1];?></option>
           <?php
           } while ($rowv = mysqli_fetch_array($resultv));
           } else {
@@ -224,7 +227,7 @@ $rowus = mysqli_fetch_array($resultus);
           while ($fieldv = mysqli_fetch_field($resultv)){
           } do {
           ?>
-          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_i[5]) echo "selected";?> ><?php echo $rowv[1];?></option>
+          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_n[9]) echo "selected";?> ><?php echo $rowv[1];?></option>
           <?php
           } while ($rowv = mysqli_fetch_array($resultv));
           } else {
@@ -244,7 +247,7 @@ $rowus = mysqli_fetch_array($resultus);
           while ($fieldv = mysqli_fetch_field($resultv)){
           } do {
           ?>
-          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_i[6]) echo "selected";?> ><?php echo $rowv[1];?></option>
+          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_n[10]) echo "selected";?> ><?php echo $rowv[1];?></option>
           <?php
           } while ($rowv = mysqli_fetch_array($resultv));
           } else {
@@ -254,7 +257,7 @@ $rowus = mysqli_fetch_array($resultus);
 </div>
 </div>
 
-<?php if ($row_i[6] == '1') { ?>
+<?php if ($row_n[10] == '1') { ?>
 <!----- mostramos la especialidad si es medico ------->
   <div class="row">
   <div class="col-md-3"><h4>ESPECIALIDAD MÉDICA:</h4></div>
@@ -270,7 +273,7 @@ $rowus = mysqli_fetch_array($resultus);
           while ($fieldv = mysqli_fetch_field($resultv)){
           } do {
           ?>
-          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_i[7]) echo "selected";?> ><?php echo $rowv[1];?></option>
+          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_n[11]) echo "selected";?> ><?php echo $rowv[1];?></option>
           <?php
           } while ($rowv = mysqli_fetch_array($resultv));
           } else {
@@ -286,9 +289,9 @@ $rowus = mysqli_fetch_array($resultus);
 
 <div class="row">
 <div class="col-md-3"><h4>CORREO ELECTRÓNICO:</h4></div>
-<div class="col-md-3"><input type="mail" class="form-control" name="correo" value="<?php echo $row_i[8];?>" disabled required></div>
+<div class="col-md-3"><input type="mail" class="form-control" name="correo" value="<?php echo $row_n[12];?>" disabled required></div>
 <div class="col-md-3"><h4>TELÉFONO CELULAR/WHATSAPP:</h4></div>
-<div class="col-md-3"><input type="text" class="form-control" name="celular" value="<?php echo $row_i[9];?>" disabled required></div>
+<div class="col-md-3"><input type="text" class="form-control" name="celular" value="<?php echo $row_n[13];?>" disabled required></div>
 </div>
 </div>
 
@@ -314,7 +317,7 @@ $rowus = mysqli_fetch_array($resultus);
           while ($fieldv = mysqli_fetch_field($resultv)){
           } do {
           ?>
-          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_i[10]) echo "selected";?> ><?php echo $rowv[1];?></option>
+          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_i[5]) echo "selected";?> ><?php echo $rowv[1];?></option>
           <?php
           } while ($rowv = mysqli_fetch_array($resultv));
           } else {
@@ -325,19 +328,19 @@ $rowus = mysqli_fetch_array($resultus);
 </div>
 </div>
 
-<?php if ($row_i[10] == '1') { ?>
+<?php if ($row_i[5] == '1') { ?>
 <!------ DEPENDIENTE DE OTRA ENTIDAD ----->
 
 <div class="row">
     <div class="col-md-3"><h4>ENTIDAD A LA QUE PERTENECE:</h4></div>
-    <div class="col-md-9"><textarea class="form-control" rows="3" name="entidad" value="<?php echo $row_n[11];?>" disabled required></textarea></div>
+    <div class="col-md-9"><textarea class="form-control" rows="3" name="entidad" disabled ><?php echo $row_i[6];?></textarea></div>
 </div>
 <div class="row">
     <div class="col-md-3"><h4>CARGO EN LA ENTIDAD:</h4></div>
-    <div class="col-md-9"><textarea class="form-control" rows="2" name="cargo_entidad"  value="<?php echo $row_n[12];?>" disabled required></textarea></div>
+    <div class="col-md-9"><textarea class="form-control" rows="2" name="cargo_entidad" disabled ><?php echo $row_i[7];?></textarea></div>
 </div>
 
-<?php } else { if ($row_i[10] == '2') { ?>
+<?php } else { if ($row_i[5] == '2') { ?>
 <!------ DEPENDIENTE DEL MINISTERIO DE SALUD ----->
     
 <div class="row">
@@ -354,7 +357,7 @@ $rowus = mysqli_fetch_array($resultus);
           while ($fieldv = mysqli_fetch_field($resultv)){
           } do {
           ?>
-          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_i[13]) echo "selected";?> ><?php echo $rowv[1];?></option>
+          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_i[8]) echo "selected";?> ><?php echo $rowv[1];?></option>
           <?php
           } while ($rowv = mysqli_fetch_array($resultv));
           } else {
@@ -378,7 +381,7 @@ $rowus = mysqli_fetch_array($resultus);
           while ($fieldv = mysqli_fetch_field($resultv)){
           } do {
           ?>
-          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_i[14]) echo "selected";?> ><?php echo $rowv[1];?></option>
+          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_i[9]) echo "selected";?> ><?php echo $rowv[1];?></option>
           <?php
           } while ($rowv = mysqli_fetch_array($resultv));
           } else {
@@ -403,7 +406,7 @@ $rowus = mysqli_fetch_array($resultus);
           while ($fieldv = mysqli_fetch_field($resultv)){
           } do {
           ?>
-          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_i[15]) echo "selected";?> ><?php echo $rowv[1];?></option>
+          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_i[10]) echo "selected";?> ><?php echo $rowv[1];?></option>
           <?php
           } while ($rowv = mysqli_fetch_array($resultv));
           } else {
@@ -416,7 +419,7 @@ $rowus = mysqli_fetch_array($resultus);
 
     <div class="row">
     <div class="col-md-3"><h4>CARGO QUE EJERCE:</h4></div>
-    <div class="col-md-9"><textarea class="form-control" rows="2" name="cargo_mds" required disabled><?php echo $row_i[16];?></textarea></div>
+    <div class="col-md-9"><textarea class="form-control" rows="2" name="cargo_mds" required disabled><?php echo $row_i[11];?></textarea></div>
     </div>
 
 <?php } else { ?>
@@ -436,7 +439,7 @@ $rowus = mysqli_fetch_array($resultus);
           while ($fieldv = mysqli_fetch_field($resultv)){
           } do {
           ?>
-          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_i[17]) echo "selected";?> ><?php echo $rowv[1];?></option>
+          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_i[12]) echo "selected";?> ><?php echo $rowv[1];?></option>
           <?php
           } while ($rowv = mysqli_fetch_array($resultv));
           } else {
@@ -461,7 +464,7 @@ $rowus = mysqli_fetch_array($resultus);
           while ($fieldv = mysqli_fetch_field($resultv)){
           } do {
           ?>
-          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_i[18]) echo "selected";?> ><?php echo $rowv[1];?></option>
+          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_i[13]) echo "selected";?> ><?php echo $rowv[1];?></option>
           <?php
           } while ($rowv = mysqli_fetch_array($resultv));
           } else {
@@ -486,7 +489,7 @@ $rowus = mysqli_fetch_array($resultus);
           while ($fieldv = mysqli_fetch_field($resultv)){
           } do {
           ?>
-          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_i[19]) echo "selected";?> ><?php echo $rowv[1];?></option>
+          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_i[14]) echo "selected";?> ><?php echo $rowv[1];?></option>
           <?php
           } while ($rowv = mysqli_fetch_array($resultv));
           } else {
@@ -498,7 +501,7 @@ $rowus = mysqli_fetch_array($resultus);
 
     <div class="row">
     <div class="col-md-3"><h4>CARGO:</h4></div>
-    <div class="col-md-9"><textarea class="form-control" rows="2" name="cargo_red_salud" required disabled><?php echo $row_i[20];?></textarea></div>
+    <div class="col-md-9"><textarea class="form-control" rows="2" name="cargo_red_salud" required disabled><?php echo $row_i[15];?></textarea></div>
     </div>
 
 <?php } } ?>
@@ -509,17 +512,43 @@ $rowus = mysqli_fetch_array($resultus);
 <div class="row">
   <div class="col-md-4"></div>
   <div class="col-md-4">
-  <a href="imprime_formulario_ins.php?idinscripcion=<?php echo $idinscripcion_ss;?>" target="_blank" class="Estilo12" onClick="window.open(this.href, this.target, 'width=750,height=850,scrollbars=YES,top=50,left=200'); return false;">
-  <h4 class="text-info">IMPRIMIR FORMULARIO</h4></a>
+
 
 </div>
-  <div class="col-md-4"><a href="finaliza_preinscripcion.php"><h4 class="text-success">FINALIZAR PREINSCRIPCIÓN</h4></div> 
+<div class="col-md-4"><a href="">
+<form name="FINZLIZA" action="finaliza_preinscripcion.php" method="post">	
+<button type="button" class="btn-link" data-toggle="modal" data-target="#exampleModal">
+<h4 class="text-success">FINALIZAR PREINSCRIPCIÓN</h4>
+</button>
+</div> 
+<!------- modal ------->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">FINALIZAR PREINSCRIPCIÓN</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+          </div>
+          <div class="modal-body">       
+            Esta seguro de Finalizar su Preinscripción?
+            posteriormenete no se podran realizar cambios.
+          </div>
+          <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">CANCELAR</button>
+        <button type="submit" class="btn btn-primary pull-center">CONFIRMAR</button>    
+      </div>
+    </div>
+  </div>
 </div>
+</div>
+<!------- modal ------->
+</form>
 
+</div>
 
 </br>
-
-
 <!-- PIE DE PAGINA --->
 </div>
 </br>

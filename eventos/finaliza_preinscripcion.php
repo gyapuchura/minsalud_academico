@@ -10,15 +10,14 @@ $idusuario_ss = $_SESSION['idusuario_ss'];
 $idnombre_ss  = $_SESSION['idnombre_ss'];
 $perfil_ss    = $_SESSION['perfil_ss'];
 
-$idtematica_ss    =  $_SESSION['idtematica_ss'];
-$idevento_ss      =  $_SESSION['idevento_ss'];
-$codigo_evento_ss =  $_SESSION['codigo_evento_ss'];
+$idusuario_ss = $_SESSION['idusuario_ss'];
+$idnombre_ss  = $_SESSION['idnombre_ss'];
+$perfil_ss    = $_SESSION['perfil_ss'];
 
-$idnombre_inscrito_ss =  $_SESSION['idnombre_inscrito_ss'];
-$nombre_inscrito_ss   =  $_SESSION['nombre_inscrito_ss'];
-$paterno_inscrito_ss  =  $_SESSION['paterno_inscrito_ss'];
-$materno_inscrito_ss  =  $_SESSION['materno_inscrito_ss'];
-$ci_inscrito_ss       =  $_SESSION['ci_inscrito_ss'];
+$idtematica_ss    = $_SESSION['idtematica_ss'];
+$idevento_ss      = $_SESSION['idevento_ss'];
+$codigo_evento_ss = $_SESSION['codigo_evento_ss'];
+$idinscripcion_ss = $_SESSION['idinscripcion_ss'];
 
 ?>
 <!DOCTYPE html>
@@ -76,7 +75,7 @@ $rowus = mysqli_fetch_array($resultus);?>
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-12">
-				<h2 class="pageTitle">USUARIO EXISTENTE</h2>
+				<h2 class="pageTitle">FINALIZAR LA PREINSCRIPCIÓN</h2>
 			</div>
 		</div>
 	</div>
@@ -98,18 +97,33 @@ $rowus = mysqli_fetch_array($resultus);?>
 
 <div class="row">
   <div class="col-md-3"></div>
-  <div class="col-md-9"><h4 class="text-info">EL USUARIO <?php echo $nombre_inscrito_ss;?> <?php echo $paterno_inscrito_ss;?> <?php echo $materno_inscrito_ss;?> con CI: <?php echo $ci_inscrito_ss;?></h4>
-  <h4 class="text-info"> YA SE ENCUENTRA REGISTRADO EN SISTEMA</h4></div> 
+  <div class="col-md-9"><h4 class="text-success">HA FINALIZADO EL PROCESO DE PREINSCRIPCIÓN AL EVENTO DE CAPACITACIÓN:</h4></div> 
 </div>
 <div class="row">
-<div class="col-md-4"></div>
-  <div class="col-md-8"><h4 class="text-success">OPCIONES DE PREINSCRIPCIÓN</h4></div> 
+  <div class="col-md-3"></div>
+  <div class="col-md-9">
+    <h2><?php echo $codigo_evento_ss;?></h2>
+    <?php
+        $sql_t =" SELECT idtematica, tematica FROM tematica WHERE idtematica='$idtematica_ss'";
+        $result_t = mysqli_query($link,$sql_t);
+        $row_t = mysqli_fetch_array($result_t);?>  
+    <h2><?php echo $row_t[1];?></h2>
+</div> 
+</div> 
+
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-9"><h4 class="text-success">AHORA DEBE IMPRIMIR EL FORMULARIO DE PREINSCRIPCIÓN</h4></div> 
 </div>
 <div class="row">
   <div class="col-md-2"></div>
-  <div class="col-md-2"><a href="oferta_eventos.php"><h4 class="text-danger">SALIR</h4></a></div>
-  <div class="col-md-4"></div>
-  <div class="col-md-4"><a href="registro_inscripcion_h.php"><h4 class="text-info">CONTINUAR PREINSCRIPCIÓN</h4></div> 
+  <div class="col-md-4">
+  <a href="imprime_formulario_ins.php?idinscripcion=<?php echo $idinscripcion_ss;?>" target="_blank" class="Estilo12" onClick="window.open(this.href, this.target, 'width=750,height=850,scrollbars=YES,top=50,left=200'); return false;">
+  <h4 class="text-info">IMPRIMIR FORMULARIO</h4></a>
+  </div>
+  <div class="col-md-2"></div>
+  <div class="col-md-4"><a href="oferta_eventos.php"><h4 class="text-info">SALIR</h4></div> 
 </div>
 
 </div>

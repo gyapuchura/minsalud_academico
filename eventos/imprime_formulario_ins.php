@@ -8,22 +8,29 @@ $idinscripcion   =  $_GET['idinscripcion'];
 
 $gestion       = date("Y");
 
-$sql_i = " SELECT inscripcion.idinscripcion, inscripcion.idevento, inscripcion.idusuario, nacionalidad.nacionalidad, genero.genero, ";
-$sql_i.= " formacion_academica.formacion_academica, profesion.profesion, inscripcion.idespecialidad_medica, inscripcion.correo, inscripcion.celular, ";
-$sql_i.= " dependencia.dependencia, inscripcion.entidad, inscripcion.cargo_entidad, inscripcion.idministerio, inscripcion.iddireccion, inscripcion.idarea, inscripcion.cargo_mds,  ";
-$sql_i.= " inscripcion.iddepartamento, inscripcion.idred_salud, inscripcion.idestablecimiento_salud, inscripcion.cargo_red_salud, inscripcion.idestado_inscripcion, ";
-$sql_i.= " inscripcion.correlativo, inscripcion.codigo, inscripcion.fecha_preins, inscripcion.fecha_ins, inscripcion.idprofesion, inscripcion.iddependencia FROM inscripcion, nacionalidad, genero, formacion_academica, profesion, dependencia ";
-$sql_i.= " WHERE inscripcion.idnacionalidad=nacionalidad.idnacionalidad AND inscripcion.idgenero=genero.idgenero ";
-$sql_i.= " AND inscripcion.idformacion_academica=formacion_academica.idformacion_academica AND inscripcion.idprofesion=profesion.idprofesion ";
-$sql_i.= " AND inscripcion.iddependencia=dependencia.iddependencia AND inscripcion.idinscripcion='$idinscripcion'  ";
+$sql_i = " SELECT idinscripcion, idevento, idusuario, idnombre, idnombre_datos, ";
+$sql_i.= " iddependencia, entidad, cargo_entidad, idministerio, iddireccion, ";
+$sql_i.= " idarea, cargo_mds, iddepartamento, idred_salud, idestablecimiento_salud, cargo_red_salud, idestado_inscripcion, ";
+$sql_i.= " correlativo, codigo, fecha_preins, fecha_ins, gestion FROM inscripcion WHERE idinscripcion='$idinscripcion' ";
 $result_i = mysqli_query($link,$sql_i);
 $row_i = mysqli_fetch_array($result_i);
 
-$sql_n =" SELECT nombre.nombre, nombre.paterno, nombre.materno, nombre.ci, nombre.complemento, nombre.exp, nombre.fecha_nac ";
-$sql_n.=" FROM nombre, usuarios WHERE usuarios.idnombre=nombre.idnombre AND usuarios.idusuario='$row_i[2]' ";
+$sql_n =" SELECT nombre.nombre, nombre.paterno, nombre.materno, nombre.ci, nombre.complemento, nombre.exp, nombre.fecha_nac, nacionalidad.nacionalidad, ";
+$sql_n.=" genero.genero, formacion_academica.formacion_academica, profesion.profesion, especialidad_medica.especialidad_medica, nombre_datos.correo, ";
+$sql_n.=" nombre_datos.celular, nombre_datos.idprofesion, nombre_datos.idespecialidad_medica FROM nombre, nombre_datos, usuarios, nacionalidad, genero, formacion_academica, profesion, especialidad_medica ";
+$sql_n.=" WHERE nombre_datos.idnombre=nombre.idnombre AND nombre.idnacionalidad=nacionalidad.idnacionalidad AND nombre.idgenero=genero.idgenero AND ";
+$sql_n.=" usuarios.idnombre=nombre.idnombre AND nombre_datos.idformacion_academica=formacion_academica.idformacion_academica AND ";
+$sql_n.=" nombre_datos.idprofesion=profesion.idprofesion AND nombre_datos.idespecialidad_medica=especialidad_medica.idespecialidad_medica ";
+$sql_n.=" AND usuarios.idusuario ='$row_i[2]' ";
 $result_n = mysqli_query($link,$sql_n);
 $row_n = mysqli_fetch_array($result_n);
 
+$sql_ev =" SELECT nivel_curricular.nivel_curricular, evento.codigo, tematica.tematica, departamento.departamento, tipo_evento.tipo_evento, modalidad.modalidad, evento.fecha_inicio, evento.fecha_fin, microcurricula.idtipo_costo, microcurricula.costo ";
+$sql_ev.=" FROM evento, microcurricula, nivel_curricular, tematica, departamento, tipo_evento, modalidad WHERE evento.idmicrocurricula=microcurricula.idmicrocurricula ";
+$sql_ev.=" AND evento.iddepartamento=departamento.iddepartamento AND microcurricula.idtipo_evento=tipo_evento.idtipo_evento AND evento.idmodalidad=modalidad.idmodalidad ";
+$sql_ev.=" AND microcurricula.idnivel_curricular=nivel_curricular.idnivel_curricular AND microcurricula.idtematica=tematica.idtematica AND evento.idevento='$row_i[1]' ";
+$result_ev = mysqli_query($link,$sql_ev);
+$row_ev = mysqli_fetch_array($result_ev);
 ?>
 
 <!DOCTYPE html>
@@ -96,11 +103,13 @@ $row_n = mysqli_fetch_array($result_n);
         <td colspan="3"><table width="470" border="0" align="center" cellspacing="0">
           <tbody>
             <tr>
-              <td width="478" align="center"><p style="font-size: 16px">FORMULARIO DE PREINSCIPCIÓN</p>
-<p style="font-size: 16px"><strong><?php echo $row_i[23];?></strong></p></td>
+              <td width="478" align="center"><p><strong>FORMULARIO  DE PREINSCRIPCIÓN</strong></p></td>
             </tr>
           </tbody>
         </table></td>
+      </tr>
+      <tr>
+        <td colspan="3" align="center"><strong><?php echo $row_i[18];?></strong></td>
       </tr>
       <tr>
         <td colspan="3"><strong style="font-size: 12px">I. DATOS PERSONALES</strong></td>
@@ -111,53 +120,57 @@ $row_n = mysqli_fetch_array($result_n);
             <tr>
               <td width="274" style="text-align: left; font-size: 12px;"><strong>IDENTIFICACIÓN DEL SOLICITANTE:</strong></td>
               <td width="280" style="font-style: normal; font-size: 12px;"><strong>NÚMERO DE DOCUMENTO DE IDENTIDAD C.I.</strong></td>
-              <td width="132">&nbsp;<?php echo $row_n[3];?> <?php echo $row_n[4];?></td>
+              <td width="132" style="font-size: 12px">&nbsp;<?php echo $row_n[3];?> <?php echo $row_n[4];?></td>
             </tr>
             <tr>
               <td style="text-align: left; font-size: 12px;"><strong>NOMBRE COMPLETO DEL SOLICITANTE:</strong></td>
-              <td colspan="2"><?php echo $row_n[0];?> <?php echo $row_n[1];?><?php echo $row_n[2];?></td>
+              <td colspan="2" style="font-size: 12px"><?php echo $row_n[0];?> <?php echo $row_n[1];?> <?php echo $row_n[2];?></td>
             </tr>
             <tr>
               <td style="text-align: left; font-size: 12px;"><strong>FECHA DE NACIMIENTO:</strong></td>
-              <td colspan="2"><?php echo $row_n[6];?></td>
+              <td colspan="2" style="font-size: 12px">
+              <?php 
+                $fecha_nac    = explode('-',$row_n[6]);
+                $f_nacimiento = $fecha_nac[2].'/'.$fecha_nac[1].'/'.$fecha_nac[0];
+                echo $f_nacimiento; 
+                ?>
+              </td>
             </tr>
             <tr>
               <td style="text-align: left; font-size: 12px;"><strong>TIPO DE NACIONALIDAD:</strong></td>
-              <td colspan="2"><?php echo $row_i[3];?></td>
+              <td colspan="2" style="font-size: 12px"><?php echo $row_n[7];?></td>
             </tr>
             <tr>
               <td style="text-align: left; font-size: 12px;"><strong>GÉNERO:</strong></td>
-              <td colspan="2"><?php echo $row_i[4];?></td>
+              <td colspan="2" style="font-size: 12px"><?php echo $row_n[8];?></td>
             </tr>
             <tr>
               <td style="text-align: left; font-size: 12px;"><strong>FORMACIÓN ACADÉMICA:</strong></td>
-              <td colspan="2"><?php echo $row_i[5];?></td>
+              <td colspan="2" style="font-size: 12px"><?php echo $row_n[9];?></td>
             </tr>
             <tr>
               <td style="text-align: left; font-size: 12px;"><strong>PROFESIÓN / OCUPACIÓN:</strong></td>
-              <td colspan="2"><?php echo $row_i[6];?></td>
+              <td colspan="2" style="font-size: 12px"><?php echo $row_n[10];?></td>
             </tr>
 
-            <?php if ($row_i[26] == '1') { ?>           
+            <?php if ($row_n[14] == '1') { ?>           
             <tr>
               <td style="text-align: left; font-size: 12px;"><strong>ESPECIALIDAD:</strong></td>
-              <td colspan="2">
-              <?php               
-              $sql_e =" SELECT idespecialidad_medica, especialidad_medica FROM especialidad_medica WHERE idespecialidad_medica = '$row_i[7]' ";
+              <td colspan="2" style="font-size: 12px"><?php               
+              $sql_e =" SELECT idespecialidad_medica, especialidad_medica FROM especialidad_medica WHERE idespecialidad_medica = '$row_n[15]' ";
               $result_e = mysqli_query($link,$sql_e);
               $row_e = mysqli_fetch_array($result_e);
-              echo $row_e[1];?>
-              </td>            
+              echo $row_e[1];?></td>            
             </tr>
             <?php } else { } ?>
 
             <tr>
               <td style="text-align: left; font-size: 12px;"><strong>CORREO ELECTRÓNICO:</strong></td>
-              <td colspan="2"><?php echo $row_i[8];?></td>
+              <td colspan="2" style="font-size: 12px"><?php echo $row_n[12];?></td>
             </tr>
             <tr>
               <td style="text-align: left; font-size: 12px;"><strong>Nº DE CELULAR:</strong></td>
-              <td colspan="2"><?php echo $row_i[9];?></td>
+              <td colspan="2" style="font-size: 12px"><?php echo $row_n[13];?></td>
             </tr>
           </tbody>
         </table></td>
@@ -173,79 +186,89 @@ $row_n = mysqli_fetch_array($result_n);
           <tbody>
             <tr>
               <td width="276" style="font-size: 12px"><strong>TIPO DE DEPENDENCIA:</strong></td>
-              <td width="412"><?php echo $row_i[10];?></td>
+              <td width="412" style="font-size: 12px"><?php 
+                $sql_dep =" SELECT iddependencia, dependencia FROM dependencia WHERE iddependencia = '$row_i[5]' ";
+                $result_dep = mysqli_query($link,$sql_dep);
+                $row_dep = mysqli_fetch_array($result_dep);
+                echo $row_dep[1]; ?></td>
             </tr>
             <!------ Otra Entidad Publicas ---->
 
-            <?php if ($row_i[27] == '1') { ?>
+            <?php if ($row_i[5] == '1') { ?>
 
               <tr>
               <td><strong style="font-size: 12px">ENTIDAD A LA QUE PERTENECE:</strong></td>
-              <td>&nbsp;</td>
+              <td style="font-size: 12px"><?php echo $row_i[6];?></td>
             </tr>
             <tr>
               <td style="font-size: 12px"><strong>CARGO QUE EJERCE:</strong></td>
-              <td>&nbsp;</td>
+              <td style="font-size: 12px"><?php echo $row_i[7];?></td>
             </tr>
 
         <!------ Funcionario del Ministerio de Salud ---->
 
-             <?php } else { if ($row_i[27] == '2') { ?>
+             <?php } else { if ($row_i[5] == '2') { ?>
 
               <tr>
               <td><strong style="font-size: 12px">INSTANCIA:</strong></td>
-              <td>&nbsp;</td>
+              <td style="font-size: 12px"><?php               
+              $sql_r =" SELECT idministerio, ministerio FROM ministerio WHERE idministerio = '$row_i[8]' ";
+              $result_r = mysqli_query($link,$sql_r);
+              $row_r = mysqli_fetch_array($result_r);
+              echo $row_r[1];?></td>
             </tr>
             <tr>
               <td style="font-size: 12px"><strong>DIRECCION GENERAL:</strong></td>
-              <td>&nbsp;</td>
+              <td style="font-size: 12px"><?php               
+              $sql_r =" SELECT iddireccion, direccion FROM direccion WHERE iddireccion = '$row_i[9]' ";
+              $result_r = mysqli_query($link,$sql_r);
+              $row_r = mysqli_fetch_array($result_r);
+              echo $row_r[1];?></td>
             </tr>
             <tr>
               <td><strong style="font-size: 12px">UNIDAD ORGANIZACIONAL:</strong></td>
-              <td>&nbsp;</td>
+              <td style="font-size: 12px"><?php               
+              $sql_r =" SELECT idarea, area FROM area WHERE idarea = '$row_i[10]' ";
+              $result_r = mysqli_query($link,$sql_r);
+              $row_r = mysqli_fetch_array($result_r);
+              echo $row_r[1];?></td>
             </tr>
             <tr>
               <td style="font-size: 12px"><strong>CARGO:</strong></td>
-              <td>&nbsp;</td>
+              <td style="font-size: 12px"><?php echo $row_i[11];?></td>
             </tr>            
 
           <!------ Funcionario de una RED DE SALUD ---->
             
-             <?php } else { if ($row_i[27] == '3') { ?>
+             <?php } else { if ($row_i[5] == '3') { ?>
  
               <tr>
               <td><strong style="font-size: 12px">DEPARTAMENTO:</strong></td>
-              <td>
-              <?php               
-              $sql_d =" SELECT iddepartamento, departamento FROM departamento WHERE iddepartamento = '$row_i[17]' ";
+              <td style="font-size: 12px"><?php               
+              $sql_d =" SELECT iddepartamento, departamento FROM departamento WHERE iddepartamento = '$row_i[12]' ";
               $result_d = mysqli_query($link,$sql_d);
               $row_d = mysqli_fetch_array($result_d);
-              echo $row_d[1];?>  
-              </td>
+              echo $row_d[1];?></td>
             </tr>
             <tr>
               <td style="font-size: 12px"><strong>RED DE SALUD:</strong></td>
-              <td>
-              <?php               
-              $sql_r =" SELECT idred_salud, red_salud FROM red_salud WHERE idred_salud = '$row_i[18]' ";
+              <td style="font-size: 12px"><?php               
+              $sql_r =" SELECT idred_salud, red_salud FROM red_salud WHERE idred_salud = '$row_i[13]' ";
               $result_r = mysqli_query($link,$sql_r);
               $row_r = mysqli_fetch_array($result_r);
-              echo $row_r[1];?>    
-             </td>
+              echo $row_r[1];?></td>
             </tr>
             <tr>
               <td style="font-size: 12px"><strong>ESTABLECIMIENTO DE SALUD</strong></td>
-              <td>
-              <?php               
-              $sql_s =" SELECT idestablecimiento_salud, establecimiento_salud FROM establecimiento_salud WHERE idestablecimiento_salud = '$row_i[19]' ";
+              <td style="font-size: 12px"><?php               
+              $sql_s =" SELECT idestablecimiento_salud, establecimiento_salud FROM establecimiento_salud WHERE idestablecimiento_salud = '$row_i[14]' ";
               $result_s = mysqli_query($link,$sql_s);
               $row_s = mysqli_fetch_array($result_s);
-              echo $row_s[1];?>   
-              </td>
+              echo $row_s[1];?></td>
             </tr>
             <tr>
               <td style="font-size: 12px"><strong>CARGO</strong></td>
-              <td><?php echo $row_i[20];?></td>
+              <td style="font-size: 12px"><?php echo $row_i[15];?></td>
             </tr>
               
              <?php } else { }}} ?>
@@ -264,51 +287,100 @@ $row_n = mysqli_fetch_array($result_n);
         <td>&nbsp;</td>
       </tr>
       <tr>
-        <td><strong style="font-size: 12px">III. DATOS DE EVENTO DE <span style="font-size: 12px">CAPACITACIÓN</span></strong></td>
+        <td><strong style="font-size: 12px"><span style="font-size: 12px">III. DATOS DEL EVENTO DE CAPACITACIÓN</span></strong></td>
       </tr>
       <tr>
         <td><table width="700" border="1" cellspacing="0">
           <tbody>
             <tr>
               <td width="188"><strong style="font-size: 12px">NIVEL:</strong></td>
-              <td colspan="3">&nbsp;</td>
+              <td colspan="3" style="font-size: 12px"><?php echo $row_ev[0];?></td>
             </tr>
             <tr>
               <td style="font-size: 12px"><strong>CÓDIGO DEL EVENTO:</strong></td>
-              <td colspan="3">&nbsp;</td>
+              <td colspan="3" style="font-size: 12px"><?php echo $row_ev[1];?></td>
             </tr>
             <tr>
               <td style="font-size: 12px"><strong>CURSO (TEMÁTICA):</strong></td>
-              <td colspan="3">&nbsp;</td>
+              <td colspan="3" style="font-size: 12px"><?php echo $row_ev[2];?></td>
             </tr>
             <tr>
               <td style="font-size: 12px"><strong>LUGAR:</strong></td>
-              <td colspan="3">&nbsp;</td>
+              <td colspan="3" style="font-size: 12px"><?php echo $row_ev[3];?></td>
             </tr>
             <tr>
               <td style="font-size: 12px"><strong>TIPO DE CURSO:</strong></td>
-              <td width="159">&nbsp;</td>
+              <td width="159" style="font-size: 12px"><?php echo $row_ev[4];?></td>
               <td width="175" style="font-size: 12px"><strong>MODALIDAD:</strong></td>
-              <td width="160">&nbsp;</td>
+              <td width="160" style="font-size: 12px"><?php echo $row_ev[5];?></td>
             </tr>
             <tr>
               <td style="font-size: 12px"><strong>FECHA DE INICIO:</strong></td>
-              <td>&nbsp;</td>
+              <td style="font-size: 12px"><?php 
+                $fecha_i = explode('-',$row_ev[6]);
+                $f_inicio    = $fecha_i[2].'/'.$fecha_i[1].'/'.$fecha_i[0];
+                echo $f_inicio;
+                ?></td>
               <td style="font-size: 12px"><strong>FECHA DE FINALIZACIÓN:</strong></td>
-              <td>&nbsp;</td>
+              <td style="font-size: 12px"><?php 
+                $fecha_f = explode('-',$row_ev[7]);
+                $f_final = $fecha_f[2].'/'.$fecha_f[1].'/'.$fecha_f[0];
+                echo $f_final;
+                ?></td>
               </tr>
-            <tr>
+          <?php if ($row_ev[8] != '1') { ?>
+              <tr>
               <td style="font-size: 12px"><strong>MONTO TOTAL A CANCELAR:</strong></td>
-              <td colspan="3">&nbsp;</td>
+              <td colspan="3" style="font-size: 12px"><?php echo $row_ev[9];?> Bs.</td>
               </tr>
+          <?php }  else { ?>
+          <?php } ?>
             <tr>
               <td colspan="2" style="font-size: 12px; text-align: center;"><strong>FECHAS:</strong></td>
               <td colspan="2" style="font-size: 12px; text-align: center;"><strong>HORARIOS:</strong></td>
               </tr>
+
+ 
             <tr>
-              <td colspan="2">&nbsp;</td>
-              <td colspan="2">&nbsp;</td>
+              <td colspan="2" align="center" style="font-size: 12px"><?php
+          $sqlf =" SELECT horario.inicio, horario.fin FROM horario, aula";
+          $sqlf.=" WHERE horario.idaula=aula.idaula AND horario.idevento='$row_i[1]' ";
+          $resultf = mysqli_query($link,$sqlf);
+          if ($rowf = mysqli_fetch_array($resultf)){
+          mysqli_field_seek($resultf,0);
+          while ($fieldf = mysqli_fetch_field($resultf)){
+          } do {
+          ?>
+
+          <?php 
+          $fecha_del = explode('-',$rowf[0]);
+          $f_del    = $fecha_del[2].'/'.$fecha_del[1].'/'.$fecha_del[0];
+          echo $f_del; 
+          ?> - <?php 
+          $fecha_al = explode('-',$rowf[1]);
+          $f_al    = $fecha_al[2].'/'.$fecha_al[1].'/'.$fecha_al[0];
+          echo $f_al; 
+          ?>   </br>
+          <?php }
+            while ($rowf = mysqli_fetch_array($resultf));
+          } else {
+          } ?></td>
+              <td colspan="2" align="center" style="font-size: 12px"><?php
+          $sqlh =" SELECT horario.hora_i, horario.hora_f FROM horario, aula";
+          $sqlh.=" WHERE horario.idaula=aula.idaula AND horario.idevento='$row_i[1]' ";
+          $resulth = mysqli_query($link,$sqlh);
+          if ($rowh = mysqli_fetch_array($resulth)){
+          mysqli_field_seek($resulth,0);
+          while ($fieldh = mysqli_fetch_field($resulth)){
+          } do {
+          ?>
+            <?php echo $rowh[0];?> - <?php echo $rowh[1];?> </br>
+          <?php }
+            while ($rowh = mysqli_fetch_array($resulth));
+          } else {
+          } ?></td>
             </tr>
+
             </tbody>
         </table></td>
       </tr>
@@ -319,25 +391,17 @@ $row_n = mysqli_fetch_array($result_n);
         <td><table width="701" border="0">
           <tbody>
             <tr>
-              <td width="36" valign="top"><strong style="font-size: 12px; text-align: right;">Nota:</strong></td>
-              <td width="649"><p><strong><span style="font-size: 12px">El contenido de la Información a registrar en el presente formulario es de entera responsabilidad del solicitante.<br>
-              </span></strong></p></td>
-            </tr>
-            <tr>
-              <td>&nbsp;</td>
-              <td style="font-size: 10px; text-align: justify;">Yo OSWALDO JULIAN SOLIZ VILLEGAS, con CI: 6844536, declaro que la información proporcionada en el presente formulario de inscripción en su totalidad, constituye información fidedigna, la misma que tiene carácter de Declaración Jurada para fines consiguientes. A este efecto, la CGE a través del CENCAP podrá verificar la misma en el momento que lo considere necesario y en caso de encontrar irregularidades, autorizo y me sujeto de manera expresa a las acciones y sanciones que correspondan de acuerdo a normativa vigente.</td>
-            </tr>
-            <tr>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
-            </tr>
-            <tr>
-              <td>&nbsp;</td>
+              <td width="219" style="font-size: 12px">Lugar y Fecha de Preinscripción:</td>
               <?php
-          $fecha_i = explode('-',$row1[13]);
-          $fecha_form = $fecha_i[2].'-'.$fecha_i[1].'-'.$fecha_i[0];
-          ?>
-              <td><p style="font-size: 12px; text-align: center;">La Paz <?php echo $fecha_i[2];?> de <?php 
+              $fecha_i = explode('-',$row_i[20]);
+              $fecha_form = $fecha_i[2].'-'.$fecha_i[1].'-'.$fecha_i[0];
+              ?>
+              <td width="472" align="left" style="font-size: 12px">
+              <?php
+              $lugar = strtolower($row_ev[3]);
+              $lugar_cap = ucwords($lugar);
+              
+              echo $lugar_cap;?>, <?php echo $fecha_i[2];?> de <?php 
               
               switch ($fecha_i[1]) {
                 case 1:
@@ -377,26 +441,18 @@ $row_n = mysqli_fetch_array($result_n);
                   echo "Diciembre";
                   break;
             }              
-              ?> de <?php echo $fecha_i[0];?></p></td>
+              ?> de <?php echo $fecha_i[0];?></td>
             </tr>
           </tbody>
       </table></td>
       </tr>
       <tr>
-        <td>&nbsp;</td>
-      </tr>
-      <tr>
-        <td>&nbsp;</td>
-      </tr>
-      <tr>
-        <td><table width="696" border="0">
+        <td><table width="702" border="0">
           <tbody>
             <tr>
-              <td width="224" style="text-align: center">&nbsp;</td>
-              <td width="260" style="text-align: center">&nbsp;</td>
-              <td width="190" style="text-align: center"><p>&nbsp;</p>
-                <p style="font-family: Arial; font-size: 10px;">
-                  <?php
+              <td style="text-align: justify; font-size: 12px;"><strong style="font-size: 12px; text-align: right;">Nota:</strong> El contenido de la Información a registrada en el presente formulario es de entera responsabilidad del solicitante.</td>
+              <td width="195" style="text-align: center"><p>
+                <?php
 /*
  * Algoritmo para codificacion QR
  *
@@ -415,7 +471,7 @@ $row_n = mysqli_fetch_array($result_n);
     $separador='|';
     $tamano='M';
 
-    $_REQUEST['data'] = 'https://'.$_SERVER['HTTP_HOST'].'/impresion_documentos/imprime_formulario_cd.php?idformulario_cd='.$row1[0];
+    $_REQUEST['data'] = 'http://192.168.251.81:8888/safci/eventos/imprime_formulario_ins.php?idinscripcion='.$row_i[0];
     $_REQUEST['size'] = 2 ;
     $_REQUEST['level'] = $tamano ;
 
@@ -463,7 +519,7 @@ echo '<img src="'.$PNG_WEB_DIR.basename($filename).'" />';
 
 ?>
                 </p>
-                <p style="font-family: Arial; font-size: 10px;">Codigo de Seguimiento Digital </p></td>
+                <p style="font-family: Arial; font-size: 10px;">Codigo de Verificación</p></td>
             </tr>
           </tbody>
         </table></td>

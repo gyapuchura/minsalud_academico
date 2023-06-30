@@ -121,7 +121,7 @@ $row0 = mysqli_fetch_array($result0);
 
     <div class="col-sm-3">
     <h4>FECHA DE NACIMIENTO:</h4>
-    <input type="text" id="fecha1" class="form-control" name="fecha_nac" required>    
+    <input type="text" id="fecha1" class="form-control" name="fecha_nac" placeholder="DD/MM/AAAA" required>    
     </div>
     </div>
 
@@ -202,7 +202,6 @@ $row0 = mysqli_fetch_array($result0);
     </div>
 
     <div class="box-area">
-
     <div class="row">
     <div class="col-md-3"><h4>FORMACIÓN ACADÉMICA:</h4></div>
     <div class="col-md-3">

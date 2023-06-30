@@ -14,6 +14,13 @@ $idtematica_ss    =  $_SESSION['idtematica_ss'];
 $idevento_ss      =  $_SESSION['idevento_ss'];
 $codigo_evento_ss =  $_SESSION['codigo_evento_ss'];
 
+$idusuario_inscrito   =  $_POST['idusuario_inscrito'];
+$idnombre_inscrito_ss =  $_SESSION['idnombre_inscrito_ss'];
+$nombre_inscrito_ss   =  $_SESSION['nombre_inscrito_ss'];
+$paterno_inscrito_ss  =  $_SESSION['paterno_inscrito_ss'];
+$materno_inscrito_ss  =  $_SESSION['materno_inscrito_ss'];
+$ci_inscrito_ss       =  $_SESSION['ci_inscrito_ss'];
+
 //-----DATOS ENVIADOS EN EL FORMULARIO DE PREINSCRIPCION ----- //
 $nombre      = $link->real_escape_string(htmlentities($_POST['nombre']));
 $paterno     = $link->real_escape_string(htmlentities($_POST['paterno']));
