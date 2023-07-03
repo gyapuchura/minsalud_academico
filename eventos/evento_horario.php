@@ -143,12 +143,10 @@ while ($fieldh = mysqli_fetch_field($resulth)){
 </td>
 </tr>
 
-<?php
-   }
+<?php }
   while ($rowh = mysqli_fetch_array($resulth));
 } else {
-}
-?>
+} ?>
 
 </tbody>
 </table>

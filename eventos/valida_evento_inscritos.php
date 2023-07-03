@@ -13,9 +13,12 @@ $idnombre_ss      = $_SESSION['idnombre_ss'];
 $perfil_ss        = $_SESSION['perfil_ss'];
 $idplan_anual_ss  = $_SESSION['idplan_anual_ss'];
 
-$idtematica       = $_POST['idtematica'];
+$idevento       = $_POST['idevento'];
+$codigo_evento  = $_POST['codigo'];
 
-$_SESSION['idtematica_ss'] = $idtematica;
+$_SESSION['idevento_ss'] = $idevento;
+$_SESSION['codigo_evento_ss'] = $codigo_evento;
 
-header("Location:eventos_tema.php");
+header("Location:inscritos_evento.php");
+
 ?>
