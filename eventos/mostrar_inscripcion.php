@@ -15,9 +15,7 @@ $idevento_ss      = $_SESSION['idevento_ss'];
 $codigo_evento_ss = $_SESSION['codigo_evento_ss'];
 $idinscripcion_ss = $_SESSION['idinscripcion_ss'];
 
-$sql_i = " SELECT idinscripcion, idevento, idusuario, idnombre, idnombre_datos, ";
-$sql_i.= " iddependencia, entidad, cargo_entidad, idministerio, iddireccion, ";
-$sql_i.= " idarea, cargo_mds, iddepartamento, idred_salud, idestablecimiento_salud, cargo_red_salud, idestado_inscripcion, ";
+$sql_i = " SELECT idinscripcion, idevento, idusuario, idnombre, idnombre_datos, iddato_laboral, idestado_inscripcion, ";
 $sql_i.= " correlativo, codigo, fecha_preins, fecha_ins, gestion FROM inscripcion WHERE idinscripcion='$idinscripcion_ss' ";
 $result_i = mysqli_query($link,$sql_i);
 $row_i = mysqli_fetch_array($result_i);
@@ -26,9 +24,14 @@ $sql_n =" SELECT nombre.nombre, nombre.paterno, nombre.materno, nombre.ci, nombr
 $sql_n.=" nombre.idgenero, nombre_datos.idformacion_academica, nombre_datos.idprofesion, nombre_datos.idespecialidad_medica, nombre_datos.correo, ";
 $sql_n.=" nombre_datos.celular FROM nombre, nombre_datos, usuarios WHERE nombre_datos.idnombre=nombre.idnombre AND  ";
 $sql_n.=" usuarios.idnombre=nombre.idnombre AND usuarios.idusuario='$row_i[2]' ";
-
 $result_n = mysqli_query($link,$sql_n);
 $row_n = mysqli_fetch_array($result_n);
+
+$sql_l = " SELECT iddato_laboral, idusuario, idnombre, iddependencia, entidad, cargo_entidad, ";
+$sql_l.= " idministerio, iddireccion, idarea, cargo_mds, iddepartamento, idred_salud, idestablecimiento_salud, cargo_red_salud ";
+$sql_l.= " FROM dato_laboral WHERE iddato_laboral='$row_i[5]' ";
+$result_l = mysqli_query($link,$sql_l);
+$row_l = mysqli_fetch_array($result_l);
 
 ?>
 <!DOCTYPE html>
@@ -97,7 +100,7 @@ $rowus = mysqli_fetch_array($resultus);
 
 <div class="row">
   <div class="col-md-4"></div>
-  <div class="col-md-8"><h2><?php echo $row_i[18];?> </h2></div>
+  <div class="col-md-8"><h2><?php echo $row_i[8];?> </h2></div>
 </div>
 <!-- MUESTRA LA PREINSCRIPCION REALIZADA --->
 <div class="box-area">
@@ -317,7 +320,7 @@ $rowus = mysqli_fetch_array($resultus);
           while ($fieldv = mysqli_fetch_field($resultv)){
           } do {
           ?>
-          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_i[5]) echo "selected";?> ><?php echo $rowv[1];?></option>
+          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_l[3]) echo "selected";?> ><?php echo $rowv[1];?></option>
           <?php
           } while ($rowv = mysqli_fetch_array($resultv));
           } else {
@@ -328,19 +331,19 @@ $rowus = mysqli_fetch_array($resultus);
 </div>
 </div>
 
-<?php if ($row_i[5] == '1') { ?>
+<?php if ($row_l[3] == '1') { ?>
 <!------ DEPENDIENTE DE OTRA ENTIDAD ----->
 
 <div class="row">
     <div class="col-md-3"><h4>ENTIDAD A LA QUE PERTENECE:</h4></div>
-    <div class="col-md-9"><textarea class="form-control" rows="3" name="entidad" disabled ><?php echo $row_i[6];?></textarea></div>
+    <div class="col-md-9"><textarea class="form-control" rows="3" name="entidad" disabled ><?php echo $row_l[4];?></textarea></div>
 </div>
 <div class="row">
     <div class="col-md-3"><h4>CARGO EN LA ENTIDAD:</h4></div>
-    <div class="col-md-9"><textarea class="form-control" rows="2" name="cargo_entidad" disabled ><?php echo $row_i[7];?></textarea></div>
+    <div class="col-md-9"><textarea class="form-control" rows="2" name="cargo_entidad" disabled ><?php echo $row_l[5];?></textarea></div>
 </div>
 
-<?php } else { if ($row_i[5] == '2') { ?>
+<?php } else { if ($row_l[3] == '2') { ?>
 <!------ DEPENDIENTE DEL MINISTERIO DE SALUD ----->
     
 <div class="row">
@@ -357,7 +360,7 @@ $rowus = mysqli_fetch_array($resultus);
           while ($fieldv = mysqli_fetch_field($resultv)){
           } do {
           ?>
-          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_i[8]) echo "selected";?> ><?php echo $rowv[1];?></option>
+          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_l[6]) echo "selected";?> ><?php echo $rowv[1];?></option>
           <?php
           } while ($rowv = mysqli_fetch_array($resultv));
           } else {
@@ -381,7 +384,7 @@ $rowus = mysqli_fetch_array($resultus);
           while ($fieldv = mysqli_fetch_field($resultv)){
           } do {
           ?>
-          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_i[9]) echo "selected";?> ><?php echo $rowv[1];?></option>
+          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_l[7]) echo "selected";?> ><?php echo $rowv[1];?></option>
           <?php
           } while ($rowv = mysqli_fetch_array($resultv));
           } else {
@@ -406,7 +409,7 @@ $rowus = mysqli_fetch_array($resultus);
           while ($fieldv = mysqli_fetch_field($resultv)){
           } do {
           ?>
-          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_i[10]) echo "selected";?> ><?php echo $rowv[1];?></option>
+          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_l[8]) echo "selected";?> ><?php echo $rowv[1];?></option>
           <?php
           } while ($rowv = mysqli_fetch_array($resultv));
           } else {
@@ -419,7 +422,7 @@ $rowus = mysqli_fetch_array($resultus);
 
     <div class="row">
     <div class="col-md-3"><h4>CARGO QUE EJERCE:</h4></div>
-    <div class="col-md-9"><textarea class="form-control" rows="2" name="cargo_mds" required disabled><?php echo $row_i[11];?></textarea></div>
+    <div class="col-md-9"><textarea class="form-control" rows="2" name="cargo_mds" required disabled><?php echo $row_l[9];?></textarea></div>
     </div>
 
 <?php } else { ?>
@@ -439,7 +442,7 @@ $rowus = mysqli_fetch_array($resultus);
           while ($fieldv = mysqli_fetch_field($resultv)){
           } do {
           ?>
-          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_i[12]) echo "selected";?> ><?php echo $rowv[1];?></option>
+          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_l[10]) echo "selected";?> ><?php echo $rowv[1];?></option>
           <?php
           } while ($rowv = mysqli_fetch_array($resultv));
           } else {
@@ -464,7 +467,7 @@ $rowus = mysqli_fetch_array($resultus);
           while ($fieldv = mysqli_fetch_field($resultv)){
           } do {
           ?>
-          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_i[13]) echo "selected";?> ><?php echo $rowv[1];?></option>
+          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_l[11]) echo "selected";?> ><?php echo $rowv[1];?></option>
           <?php
           } while ($rowv = mysqli_fetch_array($resultv));
           } else {
@@ -489,7 +492,7 @@ $rowus = mysqli_fetch_array($resultus);
           while ($fieldv = mysqli_fetch_field($resultv)){
           } do {
           ?>
-          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_i[14]) echo "selected";?> ><?php echo $rowv[1];?></option>
+          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_l[12]) echo "selected";?> ><?php echo $rowv[1];?></option>
           <?php
           } while ($rowv = mysqli_fetch_array($resultv));
           } else {
@@ -501,7 +504,7 @@ $rowus = mysqli_fetch_array($resultus);
 
     <div class="row">
     <div class="col-md-3"><h4>CARGO:</h4></div>
-    <div class="col-md-9"><textarea class="form-control" rows="2" name="cargo_red_salud" required disabled><?php echo $row_i[15];?></textarea></div>
+    <div class="col-md-9"><textarea class="form-control" rows="2" name="cargo_red_salud" required disabled><?php echo $row_l[13];?></textarea></div>
     </div>
 
 <?php } } ?>

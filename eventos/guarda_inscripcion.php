@@ -61,15 +61,15 @@ $cargo_red_salud = $link->real_escape_string(htmlentities($_POST['cargo_red_salu
 //----- Guardamos datos de usuario nuevo ------//
 
 //verificamos existencia del número de cedula de identidad.
-    $sql8 = " SELECT idnombre, paterno, materno, nombre, ci FROM nombre WHERE ci='$ci' ";
-    $result8 = mysqli_query($link,$sql8);
-      if ($row8 = mysqli_fetch_array($result8)) {
+    $sql9 = " SELECT idnombre, paterno, materno, nombre, ci FROM nombre WHERE ci='$ci' ";
+    $result9 = mysqli_query($link,$sql9);
+      if ($row9 = mysqli_fetch_array($result9)) {
          
-            $_SESSION['idnombre_inscrito_ss'] = $row8[0]; 
-            $_SESSION['nombre_inscrito_ss']   = $row8[3]; 
-            $_SESSION['paterno_inscrito_ss']  = $row8[1]; 
-            $_SESSION['materno_inscrito_ss']  = $row8[2]; 
-            $_SESSION['ci_inscrito_ss']       = $row8[4];  
+            $_SESSION['idnombre_inscrito_ss'] = $row9[0]; 
+            $_SESSION['nombre_inscrito_ss']   = $row9[3]; 
+            $_SESSION['paterno_inscrito_ss']  = $row9[1]; 
+            $_SESSION['materno_inscrito_ss']  = $row9[2]; 
+            $_SESSION['ci_inscrito_ss']       = $row9[4];  
 
             header("Location:usuario_existe.php");
       }  
@@ -82,18 +82,18 @@ $cargo_red_salud = $link->real_escape_string(htmlentities($_POST['cargo_red_salu
   
   $idnombre = mysqli_insert_id($link);
 
-  $sql1 = " INSERT INTO nombre_datos ( idnombre, idformacion_academica, idprofesion, idespecialidad_medica, correo, celular ) ";
-  $sql1.= " VALUES ( '$idnombre','$idformacion_academica','$idprofesion','$idespecialidad_medica','$correo','$celular' ) ";
-  $result1 = mysqli_query($link,$sql1);
-
-  $idnombre_datos = mysqli_insert_id($link);
-
  /* Primero Insertamos los datos en la tabla de usuarios */
   $sql7 = " INSERT INTO usuarios (idnombre, usuario, password, fecha, condicion, perfil ) ";
   $sql7.= " VALUES ('$idnombre','$ci','$ci','$fecha','ACTIVO','PARTICIPANTE')";
   $result7 = mysqli_query($link,$sql7);  
 
   $idusuario_in = mysqli_insert_id($link);
+
+  $sql1 = " INSERT INTO nombre_datos (idnombre, idusuario, idformacion_academica, idprofesion, idespecialidad_medica, correo, celular ) ";
+  $sql1.= " VALUES ('$idnombre','$idusuario_in','$idformacion_academica','$idprofesion','$idespecialidad_medica','$correo','$celular' ) ";
+  $result1 = mysqli_query($link,$sql1);
+
+  $idnombre_datos = mysqli_insert_id($link);
 
 //----- Obtenemos el codigo y correlativo de inscripcion ------//
 
@@ -110,14 +110,18 @@ $codigo="INS/MDSYD-".$correlativo."/".$gestion;
 if ($iddependencia == '1') {
 //------ DEPENDE DE OTRA ENTIDAD -------------//
 
-    $sql8 = " INSERT INTO inscripcion (idevento, idusuario, idnombre, idnombre_datos, ";
-    $sql8.= " iddependencia, entidad, cargo_entidad, ";
-    $sql8.= " idministerio, iddireccion, idarea, cargo_mds, iddepartamento, idred_salud, idestablecimiento_salud, ";
-    $sql8.= " cargo_red_salud, idestado_inscripcion, correlativo, codigo, fecha_preins, fecha_ins, gestion )";
-    $sql8.= " VALUES ('$idevento_ss','$idusuario_in','$idnombre','$idnombre_datos', ";
-    $sql8.= " '$iddependencia','$entidad','$cargo_entidad', ";
-    $sql8.= " '0','0','0','','0','0','0', ";
-    $sql8.= " '','1','$correlativo','$codigo','$fecha','$fecha','$gestion')";
+    $sql2 = " INSERT INTO dato_laboral (idnombre, idusuario, iddependencia, entidad, cargo_entidad, ";
+    $sql2.= " idministerio, iddireccion, idarea, cargo_mds, iddepartamento, idred_salud, idestablecimiento_salud, cargo_red_salud ) ";
+    $sql2.= " VALUES ('$idnombre','$idusuario_in','$iddependencia','$entidad','$cargo_entidad',";
+    $sql2.= " '0','0','0','','0','0','0','') ";
+    $result2 = mysqli_query($link,$sql2);
+
+    $iddato_laboral = mysqli_insert_id($link);
+
+    $sql8 = " INSERT INTO inscripcion (idevento, idusuario, idnombre, idnombre_datos, iddato_laboral,";
+    $sql8.= " idestado_inscripcion, correlativo, codigo, fecha_preins, fecha_ins, gestion )";
+    $sql8.= " VALUES ('$idevento_ss','$idusuario_in','$idnombre','$idnombre_datos','$iddato_laboral', ";
+    $sql8.= " '1','$correlativo','$codigo','$fecha','$fecha','$gestion')";
     $result8 = mysqli_query($link,$sql8);  
 
     $idinscripcion = mysqli_insert_id($link);
@@ -130,14 +134,18 @@ if ($iddependencia == '1') {
 
 //------- DEPENDE DEL MINISTERIO DE SALUD Y DEPORTES -------//
 
-        $sql8 = " INSERT INTO inscripcion (idevento, idusuario, idnombre, idnombre_datos,";
-        $sql8.= " iddependencia, entidad, cargo_entidad, ";
-        $sql8.= " idministerio, iddireccion, idarea, cargo_mds, iddepartamento, idred_salud, idestablecimiento_salud, ";
-        $sql8.= " cargo_red_salud, idestado_inscripcion, correlativo, codigo, fecha_preins, fecha_ins, gestion )";
-        $sql8.= " VALUES ('$idevento_ss','$idusuario_in','$idnombre','$idnombre_datos', ";
-        $sql8.= " '$iddependencia','','', ";
-        $sql8.= " '$idministerio','$iddireccion','$idarea','$cargo_mds','0','0','0', ";
-        $sql8.= " '','1','$correlativo','$codigo','$fecha','$fecha','$gestion')";
+        $sql2 = " INSERT INTO dato_laboral (idnombre, idusuario, iddependencia, entidad, cargo_entidad, ";
+        $sql2.= " idministerio, iddireccion, idarea, cargo_mds, iddepartamento, idred_salud, idestablecimiento_salud, cargo_red_salud ) ";
+        $sql2.= " VALUES ('$idnombre','$idusuario_in','$iddependencia','','',";
+        $sql2.= " '$idministerio','$iddireccion','$idarea','$cargo_mds','0','0','0','') ";
+        $result2 = mysqli_query($link,$sql2);
+
+        $iddato_laboral = mysqli_insert_id($link);
+
+        $sql8 = " INSERT INTO inscripcion (idevento, idusuario, idnombre, idnombre_datos, iddato_laboral, ";
+        $sql8.= " idestado_inscripcion, correlativo, codigo, fecha_preins, fecha_ins, gestion )";
+        $sql8.= " VALUES ('$idevento_ss','$idusuario_in','$idnombre','$idnombre_datos','$iddato_laboral', ";
+        $sql8.= " '1','$correlativo','$codigo','$fecha','$fecha','$gestion')";
         $result8 = mysqli_query($link,$sql8); 
 
         $idinscripcion = mysqli_insert_id($link);
@@ -150,23 +158,27 @@ if ($iddependencia == '1') {
 
 // --------- DEPENDE DE UNA RED DE SALUD ------------ //
 
-            $sql8 = " INSERT INTO inscripcion (idevento, idusuario, idnombre, idnombre_datos, ";
-            $sql8.= " iddependencia, entidad, cargo_entidad, ";
-            $sql8.= " idministerio, iddireccion, idarea, cargo_mds, iddepartamento, idred_salud, idestablecimiento_salud, ";
-            $sql8.= " cargo_red_salud, idestado_inscripcion, correlativo, codigo, fecha_preins, fecha_ins, gestion )";
-            $sql8.= " VALUES ('$idevento_ss','$idusuario_in','$idnombre','$idnombre_datos', ";
-            $sql8.= " '$iddependencia','','', ";
-            $sql8.= " '0','0','0','','$iddepartamento','$idred_salud','$idestablecimiento_salud', ";
-            $sql8.= " '$cargo_red_salud','1','$correlativo','$codigo','$fecha','$fecha','$gestion')";
-            $result8 = mysqli_query($link,$sql8);  
+        $sql2 = " INSERT INTO dato_laboral (idnombre, idusuario, iddependencia, entidad, cargo_entidad, ";
+        $sql2.= " idministerio, iddireccion, idarea, cargo_mds, iddepartamento, idred_salud, idestablecimiento_salud, cargo_red_salud ) ";
+        $sql2.= " VALUES ('$idnombre','$idusuario_in','$iddependencia','','',";
+        $sql2.= "  '0','0','0','','$iddepartamento','$idred_salud','$idestablecimiento_salud','$cargo_red_salud' ) ";
+        $result2 = mysqli_query($link,$sql2);
 
-            $idinscripcion = mysqli_insert_id($link);
-            $_SESSION['idinscripcion_ss'] = $idinscripcion; 
+        $iddato_laboral = mysqli_insert_id($link);
 
-            header("Location:mostrar_inscripcion.php");
+        $sql8 = " INSERT INTO inscripcion (idevento, idusuario, idnombre, idnombre_datos, iddato_laboral, ";
+        $sql8.= " idestado_inscripcion, correlativo, codigo, fecha_preins, fecha_ins, gestion )";
+        $sql8.= " VALUES ('$idevento_ss','$idusuario_in','$idnombre','$idnombre_datos','$iddato_laboral', ";
+        $sql8.= " '1','$correlativo','$codigo','$fecha','$fecha','$gestion')";
+        $result8 = mysqli_query($link,$sql8); 
+
+        $idinscripcion = mysqli_insert_id($link);
+        $_SESSION['idinscripcion_ss'] = $idinscripcion; 
+
+        header("Location:mostrar_inscripcion.php");
 
         } else {
-//------ en caso de existir otro tipo de dependencia laboral del interesado ------//           
+//------ En caso de existir otro tipo de dependencia laboral del interesado ------//           
             }
         }
     }

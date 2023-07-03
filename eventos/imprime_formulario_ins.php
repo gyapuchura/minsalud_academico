@@ -8,12 +8,16 @@ $idinscripcion   =  $_GET['idinscripcion'];
 
 $gestion       = date("Y");
 
-$sql_i = " SELECT idinscripcion, idevento, idusuario, idnombre, idnombre_datos, ";
-$sql_i.= " iddependencia, entidad, cargo_entidad, idministerio, iddireccion, ";
-$sql_i.= " idarea, cargo_mds, iddepartamento, idred_salud, idestablecimiento_salud, cargo_red_salud, idestado_inscripcion, ";
+$sql_i = " SELECT idinscripcion, idevento, idusuario, idnombre, idnombre_datos, iddato_laboral, idestado_inscripcion, ";
 $sql_i.= " correlativo, codigo, fecha_preins, fecha_ins, gestion FROM inscripcion WHERE idinscripcion='$idinscripcion' ";
 $result_i = mysqli_query($link,$sql_i);
 $row_i = mysqli_fetch_array($result_i);
+
+$sql_l = " SELECT iddato_laboral, idusuario, idnombre, iddependencia, entidad, cargo_entidad, ";
+$sql_l.= " idministerio, iddireccion, idarea, cargo_mds, iddepartamento, idred_salud, idestablecimiento_salud, cargo_red_salud ";
+$sql_l.= " FROM dato_laboral WHERE iddato_laboral='$row_i[5]' ";
+$result_l = mysqli_query($link,$sql_l);
+$row_l = mysqli_fetch_array($result_l);
 
 $sql_n =" SELECT nombre.nombre, nombre.paterno, nombre.materno, nombre.ci, nombre.complemento, nombre.exp, nombre.fecha_nac, nacionalidad.nacionalidad, ";
 $sql_n.=" genero.genero, formacion_academica.formacion_academica, profesion.profesion, especialidad_medica.especialidad_medica, nombre_datos.correo, ";
@@ -109,7 +113,7 @@ $row_ev = mysqli_fetch_array($result_ev);
         </table></td>
       </tr>
       <tr>
-        <td colspan="3" align="center"><strong><?php echo $row_i[18];?></strong></td>
+        <td colspan="3" align="center"><strong><?php echo $row_i[8];?></strong></td>
       </tr>
       <tr>
         <td colspan="3"><strong style="font-size: 12px">I. DATOS PERSONALES</strong></td>
@@ -187,32 +191,32 @@ $row_ev = mysqli_fetch_array($result_ev);
             <tr>
               <td width="276" style="font-size: 12px"><strong>TIPO DE DEPENDENCIA:</strong></td>
               <td width="412" style="font-size: 12px"><?php 
-                $sql_dep =" SELECT iddependencia, dependencia FROM dependencia WHERE iddependencia = '$row_i[5]' ";
+                $sql_dep =" SELECT iddependencia, dependencia FROM dependencia WHERE iddependencia = '$row_l[3]' ";
                 $result_dep = mysqli_query($link,$sql_dep);
                 $row_dep = mysqli_fetch_array($result_dep);
                 echo $row_dep[1]; ?></td>
             </tr>
             <!------ Otra Entidad Publicas ---->
 
-            <?php if ($row_i[5] == '1') { ?>
+            <?php if ($row_l[3] == '1') { ?>
 
               <tr>
               <td><strong style="font-size: 12px">ENTIDAD A LA QUE PERTENECE:</strong></td>
-              <td style="font-size: 12px"><?php echo $row_i[6];?></td>
+              <td style="font-size: 12px"><?php echo $row_l[4];?></td>
             </tr>
             <tr>
               <td style="font-size: 12px"><strong>CARGO QUE EJERCE:</strong></td>
-              <td style="font-size: 12px"><?php echo $row_i[7];?></td>
+              <td style="font-size: 12px"><?php echo $row_l[5];?></td>
             </tr>
 
         <!------ Funcionario del Ministerio de Salud ---->
 
-             <?php } else { if ($row_i[5] == '2') { ?>
+             <?php } else { if ($row_l[3] == '2') { ?>
 
               <tr>
               <td><strong style="font-size: 12px">INSTANCIA:</strong></td>
               <td style="font-size: 12px"><?php               
-              $sql_r =" SELECT idministerio, ministerio FROM ministerio WHERE idministerio = '$row_i[8]' ";
+              $sql_r =" SELECT idministerio, ministerio FROM ministerio WHERE idministerio = '$row_l[6]' ";
               $result_r = mysqli_query($link,$sql_r);
               $row_r = mysqli_fetch_array($result_r);
               echo $row_r[1];?></td>
@@ -220,7 +224,7 @@ $row_ev = mysqli_fetch_array($result_ev);
             <tr>
               <td style="font-size: 12px"><strong>DIRECCION GENERAL:</strong></td>
               <td style="font-size: 12px"><?php               
-              $sql_r =" SELECT iddireccion, direccion FROM direccion WHERE iddireccion = '$row_i[9]' ";
+              $sql_r =" SELECT iddireccion, direccion FROM direccion WHERE iddireccion = '$row_l[7]' ";
               $result_r = mysqli_query($link,$sql_r);
               $row_r = mysqli_fetch_array($result_r);
               echo $row_r[1];?></td>
@@ -228,24 +232,24 @@ $row_ev = mysqli_fetch_array($result_ev);
             <tr>
               <td><strong style="font-size: 12px">UNIDAD ORGANIZACIONAL:</strong></td>
               <td style="font-size: 12px"><?php               
-              $sql_r =" SELECT idarea, area FROM area WHERE idarea = '$row_i[10]' ";
+              $sql_r =" SELECT idarea, area FROM area WHERE idarea = '$row_l[8]' ";
               $result_r = mysqli_query($link,$sql_r);
               $row_r = mysqli_fetch_array($result_r);
               echo $row_r[1];?></td>
             </tr>
             <tr>
               <td style="font-size: 12px"><strong>CARGO:</strong></td>
-              <td style="font-size: 12px"><?php echo $row_i[11];?></td>
+              <td style="font-size: 12px"><?php echo $row_l[9];?></td>
             </tr>            
 
           <!------ Funcionario de una RED DE SALUD ---->
             
-             <?php } else { if ($row_i[5] == '3') { ?>
+             <?php } else { if ($row_l[3] == '3') { ?>
  
               <tr>
               <td><strong style="font-size: 12px">DEPARTAMENTO:</strong></td>
               <td style="font-size: 12px"><?php               
-              $sql_d =" SELECT iddepartamento, departamento FROM departamento WHERE iddepartamento = '$row_i[12]' ";
+              $sql_d =" SELECT iddepartamento, departamento FROM departamento WHERE iddepartamento = '$row_l[10]' ";
               $result_d = mysqli_query($link,$sql_d);
               $row_d = mysqli_fetch_array($result_d);
               echo $row_d[1];?></td>
@@ -253,7 +257,7 @@ $row_ev = mysqli_fetch_array($result_ev);
             <tr>
               <td style="font-size: 12px"><strong>RED DE SALUD:</strong></td>
               <td style="font-size: 12px"><?php               
-              $sql_r =" SELECT idred_salud, red_salud FROM red_salud WHERE idred_salud = '$row_i[13]' ";
+              $sql_r =" SELECT idred_salud, red_salud FROM red_salud WHERE idred_salud = '$row_l[11]' ";
               $result_r = mysqli_query($link,$sql_r);
               $row_r = mysqli_fetch_array($result_r);
               echo $row_r[1];?></td>
@@ -261,14 +265,14 @@ $row_ev = mysqli_fetch_array($result_ev);
             <tr>
               <td style="font-size: 12px"><strong>ESTABLECIMIENTO DE SALUD</strong></td>
               <td style="font-size: 12px"><?php               
-              $sql_s =" SELECT idestablecimiento_salud, establecimiento_salud FROM establecimiento_salud WHERE idestablecimiento_salud = '$row_i[14]' ";
+              $sql_s =" SELECT idestablecimiento_salud, establecimiento_salud FROM establecimiento_salud WHERE idestablecimiento_salud = '$row_l[12]' ";
               $result_s = mysqli_query($link,$sql_s);
               $row_s = mysqli_fetch_array($result_s);
               echo $row_s[1];?></td>
             </tr>
             <tr>
               <td style="font-size: 12px"><strong>CARGO</strong></td>
-              <td style="font-size: 12px"><?php echo $row_i[15];?></td>
+              <td style="font-size: 12px"><?php echo $row_l[13];?></td>
             </tr>
               
              <?php } else { }}} ?>
@@ -393,7 +397,7 @@ $row_ev = mysqli_fetch_array($result_ev);
             <tr>
               <td width="219" style="font-size: 12px">Lugar y Fecha de Preinscripción:</td>
               <?php
-              $fecha_i = explode('-',$row_i[20]);
+              $fecha_i = explode('-',$row_i[10]);
               $fecha_form = $fecha_i[2].'-'.$fecha_i[1].'-'.$fecha_i[0];
               ?>
               <td width="472" align="left" style="font-size: 12px">

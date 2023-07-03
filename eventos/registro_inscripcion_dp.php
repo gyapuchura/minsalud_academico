@@ -26,21 +26,17 @@ $row0 = mysqli_fetch_array($result0);
 
 $sql_n =" SELECT nombre.nombre, nombre.paterno, nombre.materno, nombre.ci, nombre.complemento, nombre.exp, nombre.fecha_nac, nombre.idnacionalidad, ";
 $sql_n.=" nombre.idgenero, nombre_datos.idformacion_academica, nombre_datos.idprofesion, nombre_datos.idespecialidad_medica, nombre_datos.correo, ";
-$sql_n.=" nombre_datos.celular, usuarios.idusuario, nombre_datos.idnombre_datos FROM nombre, nombre_datos, usuarios WHERE nombre_datos.idnombre=nombre.idnombre AND  ";
+$sql_n.=" nombre_datos.celular FROM nombre, nombre_datos, usuarios WHERE nombre_datos.idnombre=nombre.idnombre AND  ";
 $sql_n.=" usuarios.idnombre=nombre.idnombre AND nombre.idnombre='$idnombre_inscrito_ss' ";
 $result_n = mysqli_query($link,$sql_n);
 $row_n = mysqli_fetch_array($result_n);
 
-$idusuario_inscrito = $row_n[14];
-$idnombre_datos     = $row_n[15];
-
-$sql_l = " SELECT iddato_laboral, idusuario, idnombre, iddependencia, entidad, cargo_entidad, ";
-$sql_l.= " idministerio, iddireccion, idarea, cargo_mds, iddepartamento, idred_salud, idestablecimiento_salud, cargo_red_salud ";
-$sql_l.= " FROM dato_laboral WHERE idnombre='$idnombre_inscrito_ss' ";
-$result_l = mysqli_query($link,$sql_l);
-$row_l = mysqli_fetch_array($result_l);
-
-$iddato_laboral = $row_l[0];
+$sql_i = " SELECT idinscripcion, idevento, idusuario, idformacion_academica, idprofesion, ";
+$sql_i.= " idespecialidad_medica, correo, celular, iddependencia, entidad, cargo_entidad, idministerio, iddireccion, ";
+$sql_i.= " idarea, cargo_mds, iddepartamento, idred_salud, idestablecimiento_salud, cargo_red_salud, idestado_inscripcion, ";
+$sql_i.= " correlativo, codigo, fecha_preins, fecha_ins, gestion FROM inscripcion WHERE idinscripcion='$idinscripcion_ss' ";
+$result_i = mysqli_query($link,$sql_i);
+$row_i = mysqli_fetch_array($result_i);
 
 ?>
 <!DOCTYPE html>
@@ -99,7 +95,7 @@ $iddato_laboral = $row_l[0];
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-12">
-				<h2 class="pageTitle">PREINSCRIPCIÓN <?php echo $row_i[21];?></h2>
+				<h2 class="pageTitle">PREINSCRIPCIÓN</h2>
 			</div>
 		</div>
 	</div>
@@ -121,12 +117,7 @@ $iddato_laboral = $row_l[0];
 <!-- javascript --->
 <form name="FORM9" action="guarda_inscripcion_h.php" method="post">
 
-     <input type="hidden" name="idusuario_inscrito" value="<?php echo $idusuario_inscrito;?>">
-     <input type="hidden" name="idnombre_datos" value="<?php echo $idnombre_datos;?>">
-     <input type="hidden" name="iddato_laboral" value="<?php echo $iddato_laboral;?>">
-
-     <input type="hidden" name="idusuario_inscrito" value="<?php echo $idusuario_inscrito;?>">
-     <input type="hidden" name="idusuario_inscrito" value="<?php echo $idusuario_inscrito;?>">
+     <input type="hidden" name="idusuario_inscrito">
      
 <div class="box-area">
 
@@ -331,216 +322,31 @@ $iddato_laboral = $row_l[0];
     </div>
 
     <div class="box-area">
-<!--------- BEGIN ---- DATIS LABORALES DEL USUARIO YA REGISTRADO ----->
-
-<div class="box-area">
-
-<div class="row">
-<div class="col-md-3"><h4>DEPENDENCIA:</h4></div>
-<div class="col-md-3">
-
-        <select name="iddependencia"  id="iddependencia" class="form-control" required disabled>
-          <option selected>Seleccione</option>
-          <?php
-          $sqlv = " SELECT iddependencia, dependencia FROM dependencia ";
-          $resultv = mysqli_query($link,$sqlv);
-          if ($rowv = mysqli_fetch_array($resultv)){
-          mysqli_field_seek($resultv,0);
-          while ($fieldv = mysqli_fetch_field($resultv)){
-          } do {
-          ?>
-          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_l[3]) echo "selected";?> ><?php echo $rowv[1];?></option>
-          <?php
-          } while ($rowv = mysqli_fetch_array($resultv));
-          } else {
-          }
-          ?>
-        </select>
-
-</div>
-</div>
-
-<?php if ($row_l[3] == '1') { ?>
-<!------ DEPENDIENTE DE OTRA ENTIDAD ----->
-
-<div class="row">
-    <div class="col-md-3"><h4>ENTIDAD A LA QUE PERTENECE:</h4></div>
-    <div class="col-md-9"><textarea class="form-control" rows="3" name="entidad" disabled ><?php echo $row_l[4];?></textarea></div>
-</div>
-<div class="row">
-    <div class="col-md-3"><h4>CARGO EN LA ENTIDAD:</h4></div>
-    <div class="col-md-9"><textarea class="form-control" rows="2" name="cargo_entidad" disabled ><?php echo $row_l[5];?></textarea></div>
-</div>
-
-<?php } else { if ($row_l[3] == '2') { ?>
-<!------ DEPENDIENTE DEL MINISTERIO DE SALUD ----->
-    
-<div class="row">
-    <div class="col-md-3"><h4>DEPENDIENTE DEL:</h4></div>
-    <div class="col-md-9">
-
-      <select name="idministerio"  id="idministerio" class="form-control" required disabled>
-          <option selected>Seleccione</option>
-          <?php
-          $sqlv = " SELECT idministerio, ministerio, sigla FROM ministerio ";
-          $resultv = mysqli_query($link,$sqlv);
-          if ($rowv = mysqli_fetch_array($resultv)){
-          mysqli_field_seek($resultv,0);
-          while ($fieldv = mysqli_fetch_field($resultv)){
-          } do {
-          ?>
-          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_l[6]) echo "selected";?> ><?php echo $rowv[1];?></option>
-          <?php
-          } while ($rowv = mysqli_fetch_array($resultv));
-          } else {
-          }
-          ?>
-      </select>
-    </div>
-    </div>
 
     <div class="row">
-    <div class="col-md-3"><h4>DIRECCIÓN/PROGRAMA/</br>INSTITUCIÓN:</h4></div>
-    <div class="col-md-9">
-
-    <select name="iddireccion"  id="iddireccion" class="form-control" required disabled>
-          <option selected>Seleccione</option>
-          <?php
-          $sqlv = " SELECT iddireccion, direccion FROM direccion ";
-          $resultv = mysqli_query($link,$sqlv);
-          if ($rowv = mysqli_fetch_array($resultv)){
-          mysqli_field_seek($resultv,0);
-          while ($fieldv = mysqli_fetch_field($resultv)){
-          } do {
-          ?>
-          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_l[7]) echo "selected";?> ><?php echo $rowv[1];?></option>
-          <?php
-          } while ($rowv = mysqli_fetch_array($resultv));
-          } else {
-          }
-          ?>
-      </select>
-
+    <div class="col-md-3"><h4>DEPENDENCIA:</h4></div>
+    <div class="col-md-3">
+        <select name="iddependencia"  id="iddependencia" class="form-control" required>
+            <option value="">-SELECCIONE-</option>
+            <?php
+            $sql1 = "SELECT iddependencia, dependencia FROM dependencia ";
+            $result1 = mysqli_query($link,$sql1);
+            if ($row1 = mysqli_fetch_array($result1)){
+            mysqli_field_seek($result1,0);
+            while ($field1 = mysqli_fetch_field($result1)){
+            } do {
+            echo "<option value=". $row1[0].">". $row1[1]."</option>";
+            } while ($row1 = mysqli_fetch_array($result1));
+            } else {
+            echo "No se encontraron resultados!";
+            }
+            ?>
+        </select>   
     </div>
     </div>
 
-    <div class="row">
-    <div class="col-md-3"><h4>UNIDAD ORGANIZACIONAL:</h4></div>
-    <div class="col-md-9">
+    <div id="dependencia_mds"></div>
 
-    <select name="idarea"  id="idarea" class="form-control" required disabled>
-          <option selected>Seleccione</option>
-          <?php
-          $sqlv = " SELECT idarea, area FROM area ";
-          $resultv = mysqli_query($link,$sqlv);
-          if ($rowv = mysqli_fetch_array($resultv)){
-          mysqli_field_seek($resultv,0);
-          while ($fieldv = mysqli_fetch_field($resultv)){
-          } do {
-          ?>
-          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_l[8]) echo "selected";?> ><?php echo $rowv[1];?></option>
-          <?php
-          } while ($rowv = mysqli_fetch_array($resultv));
-          } else {
-          }
-          ?>
-      </select>
-
-    </div>
-    </div>
-
-    <div class="row">
-    <div class="col-md-3"><h4>CARGO QUE EJERCE:</h4></div>
-    <div class="col-md-9"><textarea class="form-control" rows="2" name="cargo_mds" required disabled><?php echo $row_l[9];?></textarea></div>
-    </div>
-
-<?php } else { ?>
- <!------ DEPENDIENTE DE OTRA RED DE SALUD -----> 
-  
- <div class="row">
-    <div class="col-md-3"><h4>DEPARTAMENTO:</h4></div>
-    <div class="col-md-9">
-
-      <select name="iddepartamento"  id="iddepartamento" class="form-control" required disabled>
-          <option selected>Seleccione</option>
-          <?php
-          $sqlv = " SELECT iddepartamento, departamento FROM departamento  ";
-          $resultv = mysqli_query($link,$sqlv);
-          if ($rowv = mysqli_fetch_array($resultv)){
-          mysqli_field_seek($resultv,0);
-          while ($fieldv = mysqli_fetch_field($resultv)){
-          } do {
-          ?>
-          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_l[10]) echo "selected";?> ><?php echo $rowv[1];?></option>
-          <?php
-          } while ($rowv = mysqli_fetch_array($resultv));
-          } else {
-          }
-          ?>
-      </select>
-
-    </div>
-    </div>
-
-    <div class="row">
-    <div class="col-md-3"><h4>RED DE SALUD:</h4></div>
-    <div class="col-md-9">
-
-    <select name="idred_salud"  id="idred_salud" class="form-control" required disabled>
-          <option selected>Seleccione</option>
-          <?php
-          $sqlv = " SELECT idred_salud, red_salud FROM red_salud  ";
-          $resultv = mysqli_query($link,$sqlv);
-          if ($rowv = mysqli_fetch_array($resultv)){
-          mysqli_field_seek($resultv,0);
-          while ($fieldv = mysqli_fetch_field($resultv)){
-          } do {
-          ?>
-          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_l[11]) echo "selected";?> ><?php echo $rowv[1];?></option>
-          <?php
-          } while ($rowv = mysqli_fetch_array($resultv));
-          } else {
-          }
-          ?>
-    </select>
-
-    </div>
-    </div>
-
-    <div class="row">
-    <div class="col-md-3"><h4>ESTABLECIMIENTO DE SALUD:</h4></div>
-    <div class="col-md-9">
-
-    <select name="idestablecimiento_salud"  id="idestablecimiento_salud" class="form-control" required disabled>
-          <option selected>Seleccione</option>
-          <?php
-          $sqlv = " SELECT idestablecimiento_salud, establecimiento_salud FROM establecimiento_salud  ";
-          $resultv = mysqli_query($link,$sqlv);
-          if ($rowv = mysqli_fetch_array($resultv)){
-          mysqli_field_seek($resultv,0);
-          while ($fieldv = mysqli_fetch_field($resultv)){
-          } do {
-          ?>
-          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_l[12]) echo "selected";?> ><?php echo $rowv[1];?></option>
-          <?php
-          } while ($rowv = mysqli_fetch_array($resultv));
-          } else {
-          }
-          ?>
-    </select>
-    </div>
-    </div>
-
-    <div class="row">
-    <div class="col-md-3"><h4>CARGO:</h4></div>
-    <div class="col-md-9"><textarea class="form-control" rows="2" name="cargo_red_salud" required disabled><?php echo $row_l[13];?></textarea></div>
-    </div>
-
-<?php } } ?>
-
-</div>
-
-<!--------- END ---- DATIS LABORALES DEL USUARIO YA REGISTRADO ----->
     </div>
         
     </br>
