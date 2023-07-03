@@ -3,44 +3,35 @@
 <?php
 
 date_default_timezone_set('America/La_Paz');
-$fecha_ram	 = date("Ymd");
+$fecha_ram	   = date("Ymd");
 $fecha 		   = date("Y-m-d");
 
-$idusuario_ss  = $_SESSION['idusuario_ss'];
-$idnombre_ss   = $_SESSION['idnombre_ss'];
-$perfil_ss     = $_SESSION['perfil_ss'];
+$idusuario_ss = $_SESSION['idusuario_ss'];
+$idnombre_ss  = $_SESSION['idnombre_ss'];
+$perfil_ss    = $_SESSION['perfil_ss'];
 
 $idtematica_ss    = $_SESSION['idtematica_ss'];
 $idevento_ss      = $_SESSION['idevento_ss'];
 $codigo_evento_ss = $_SESSION['codigo_evento_ss'];
+$idinscripcion_ss = $_SESSION['idinscripcion_ss'];
 
-$idnombre_inscrito_ss =  $_SESSION['idnombre_inscrito_ss'];
-$nombre_inscrito_ss   =  $_SESSION['nombre_inscrito_ss'];
-$paterno_inscrito_ss  =  $_SESSION['paterno_inscrito_ss'];
-$materno_inscrito_ss  =  $_SESSION['materno_inscrito_ss'];
-$ci_inscrito_ss       =  $_SESSION['ci_inscrito_ss'];
-
-$sql0 =" SELECT idtematica, tematica FROM tematica WHERE idtematica='$idtematica_ss' ";
-$result0 = mysqli_query($link,$sql0);
-$row0 = mysqli_fetch_array($result0);
+$sql_i = " SELECT idinscripcion, idevento, idusuario, idnombre, idnombre_datos, iddato_laboral, idestado_inscripcion, ";
+$sql_i.= " correlativo, codigo, fecha_preins, fecha_ins, gestion FROM inscripcion WHERE idinscripcion='$idinscripcion_ss' ";
+$result_i = mysqli_query($link,$sql_i);
+$row_i = mysqli_fetch_array($result_i);
 
 $sql_n =" SELECT nombre.nombre, nombre.paterno, nombre.materno, nombre.ci, nombre.complemento, nombre.exp, nombre.fecha_nac, nombre.idnacionalidad, ";
 $sql_n.=" nombre.idgenero, nombre_datos.idformacion_academica, nombre_datos.idprofesion, nombre_datos.idespecialidad_medica, nombre_datos.correo, ";
-$sql_n.=" nombre_datos.celular, usuarios.idusuario, nombre_datos.idnombre_datos FROM nombre, nombre_datos, usuarios WHERE nombre_datos.idnombre=nombre.idnombre AND  ";
-$sql_n.=" usuarios.idnombre=nombre.idnombre AND nombre.idnombre='$idnombre_inscrito_ss' ";
+$sql_n.=" nombre_datos.celular FROM nombre, nombre_datos, usuarios WHERE nombre_datos.idnombre=nombre.idnombre AND  ";
+$sql_n.=" usuarios.idnombre=nombre.idnombre AND usuarios.idusuario='$row_i[2]' ";
 $result_n = mysqli_query($link,$sql_n);
 $row_n = mysqli_fetch_array($result_n);
 
-$idusuario_inscrito = $row_n[14];
-$idnombre_datos     = $row_n[15];
-
 $sql_l = " SELECT iddato_laboral, idusuario, idnombre, iddependencia, entidad, cargo_entidad, ";
 $sql_l.= " idministerio, iddireccion, idarea, cargo_mds, iddepartamento, idred_salud, idestablecimiento_salud, cargo_red_salud ";
-$sql_l.= " FROM dato_laboral WHERE idnombre='$idnombre_inscrito_ss' ";
+$sql_l.= " FROM dato_laboral WHERE iddato_laboral='$row_i[5]' ";
 $result_l = mysqli_query($link,$sql_l);
 $row_l = mysqli_fetch_array($result_l);
-
-$iddato_laboral = $row_l[0];
 
 ?>
 <!DOCTYPE html>
@@ -61,24 +52,24 @@ $iddato_laboral = $row_l[0];
 <link rel="stylesheet" href="../css/style.css">
 
 </head>
-    <body>
-    <div id="wrapper">
-    <div class="topbar">
-    <div class="container">
-        <div class="row">
-        <div class="col-md-12">
-            <p class="pull-left hidden-xs">MINISTERIO DE SALUD Y DEPORTES</p>
-            <p class="pull-right"><i class="fa fa-user"></i>
-                <?php
-                    $sqlus = "SELECT nombre, paterno, materno FROM nombre WHERE idnombre='$idnombre_ss'";
-                    $resultus = mysqli_query($link,$sqlus);
-                    $rowus = mysqli_fetch_array($resultus);
-                ?>
-            <?php echo $rowus[0];?> <?php echo $rowus[1];?> <?php echo $rowus[2];?></p>
-        </div>
-        </div>
+<body>
+<div id="wrapper">
+<div class="topbar">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+         <p class="pull-left hidden-xs">MINISTERIO DE SALUD Y DEPORTES</p>
+         <p class="pull-right"><i class="fa fa-user"></i>
+        <?php
+$sqlus =" SELECT nombre, paterno, materno FROM nombre WHERE idnombre='$idnombre_ss'";
+$resultus = mysqli_query($link,$sqlus);
+$rowus = mysqli_fetch_array($resultus);
+?>
+        <?php echo $rowus[0];?> <?php echo $rowus[1];?> <?php echo $rowus[2];?></p>
+      </div>
     </div>
-    </div>
+  </div>
+</div>
 	<!-- start header -->
 	<header>
         <div class="navbar navbar-default navbar-static-top">
@@ -99,81 +90,69 @@ $iddato_laboral = $row_l[0];
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-12">
-				<h2 class="pageTitle">PREINSCRIPCIÓN <?php echo $row_i[21];?> </h2>
+				<h2 class="pageTitle">GESTIONAR INSCRIPCIÓN</h2>
 			</div>
 		</div>
 	</div>
 	</section>
 	<section id="content">
 	<div class="container">
-	  <div class="row">
-		<div class="tg-main-section tg-banner tg-haslayout parallax-window" data-parallax="scroll" data-bleed="100" data-speed="0.2" data-image-src="images/slider/img-03.jpg">
-          <h4 align="center"><a href="inicio_inscripcion.php">VOLVER</a></h4>
-          <h2 class="text-info" align="center"><?php echo $codigo_evento_ss;?> <?php echo $idnombre_inscrito_ss;?></h2>
-          <h2 class="text-info" align="center"><?php echo $row0[1];?></h2>
-        </div>
-      </div>
-
-    <div class="row">
-    <div class="col-md-2"><h4 class="text-info">IMPORTANTE:</h4></div>
-    <div class="col-md-10"><h4 class="text-muted">Usted ya ha registrado la siguiente informacion personal y laboral, si desea cambiar o actualizar la información deberá iniciar sesión de usuario Participante.</h4></div>
-    </div>
-
-    <div class="row">
-    <div class="col-md-4"><h3>1.- DATOS PERSONALES:</h3></div>
-    <div class="col-md-8"></div>
-    </div>
-<!-- javascript --->
-<form name="FORM9" action="guarda_inscripcion_dp.php" method="post">
-
-     <input type="hidden" name="idusuario_inscrito" value="<?php echo $idusuario_inscrito;?>">
-     <input type="hidden" name="idnombre_datos" value="<?php echo $idnombre_datos;?>">
-     <input type="hidden" name="iddato_laboral" value="<?php echo $iddato_laboral;?>">
-
-     <input type="hidden" name="idusuario_inscrito" value="<?php echo $idusuario_inscrito;?>">
-     <input type="hidden" name="idusuario_inscrito" value="<?php echo $idusuario_inscrito;?>">
-     
+    <h4 align="center"><a href="inscritos_evento.php">VOLVER</a></h4>
+<div class="row">
+  <div class="col-md-4"></div>
+  <div class="col-md-8"><h2><?php echo $row_i[8];?> </h2></div>
+</div>
+<!-- MUESTRA LA PREINSCRIPCION REALIZADA --->
 <div class="box-area">
 
-    <div class="form-group row">
+<div class="form-group row">
     <div class="col-sm-3 mb-3 mb-sm-0">
     <h4>NOMBRES:</h4>
-    <input type="text" class="form-control" name="nombre" value="<?php echo $nombre_inscrito_ss;?>" disabled/>
+    <input type="text" class="form-control" name="nombre" placeholder="Nombres" 
+    required pattern="^([A-ZÁÉÍÓÚ]{1}[a-zñáéíóú]+[\s]*)+$" 
+    title="El nombre con Mayúscula al inicio y minúsculas despues." value="<?php echo $row_n[0];?>" disabled/>
     </div>
     <div class="col-sm-3">
     <h4>PRIMER APELLIDO:</h4>
-    <input type="text" class="form-control" name="paterno" value="<?php echo $paterno_inscrito_ss;?>" disabled/>
+    <input type="text" class="form-control" name="paterno" placeholder="Paterno" 
+    required pattern="^([A-ZÁÉÍÓÚ]{1}[a-zñáéíóú]+[\s]*)+$" 
+    title="El apellido paterno con Mayúscula al inicio y minúsculas despues." value="<?php echo $row_n[1];?>" disabled />
     </div>
     <div class="col-sm-3">
     <h4>SEGUNDO APELLIDO:</h4>
-    <input type="text" class="form-control" name="materno" value="<?php echo $materno_inscrito_ss;?>" disabled/>
+    <input type="text" class="form-control" name="materno" placeholder="Materno"
+    required pattern="^([A-ZÁÉÍÓÚ]{1}[a-zñáéíóú]+[\s]*)+$" 
+    title="El apellido materno con Mayúscula al inicio y minúsculas despues." value="<?php echo $row_n[2];?>" disabled/>
     </div>
-
     <div class="col-sm-3">
     <h4>FECHA DE NACIMIENTO:</h4>
-
-    <input type="text" id="fecha1" class="form-control" name="fecha_nac" value="<?php 
-    $fecha_n        = explode('-',$row_n[6]);
-    $f_nacimiento   = $fecha_n[2].'/'.$fecha_n[1].'/'.$fecha_n[0];
-    echo $f_nacimiento;?>" disabled>  
+    <input type="text" id="fecha1" class="form-control" name="fecha_nac" value="
+    <?php 
+        $fecha_n = explode('-',$row_n[6]);
+        $fecha_nac = $fecha_n[2].'/'.$fecha_n[1].'/'.$fecha_n[0];
+        echo $fecha_nac;
+        ?>" disabled> 
     </div>
     </div>
 
     <div class="form-group row">
+
     <div class="col-sm-2 mb-3 mb-sm-0">
     <h4>CÉDULA DE ID:</h4>
-    <input type="text" class="form-control" name="nombre" value="<?php echo $row_n[3];?>" disabled/>
+    <input type="text" class="form-control" name="ci" placeholder="N° de CI"
+    required pattern="[A-Z0-9_-]{5,12}$" 
+    title="El numero de CI solo puede contener DIGITOS numéricos." value="<?php echo $row_n[3];?>" disabled >
     </div>
     <div class="col-sm-2 mb-3 mb-sm-0">
     <h4>COMPLEMENTO:</h4>
-    <input type="text" class="form-control" name="nombre" value="<?php echo $row_n[4];?>" disabled/>
+    <input type="text" class="form-control" name="complemento" placeholder="COMPLEMENTO" value="<?php echo $row_n[4];?>" disabled>
     </div>
     <div class="col-sm-2">
     <h4>EXPEDICIÓN:</h4>
-    <select name="exp"  id="exp" class="form-control" required disabled>
+          <select name="exp"  id="exp" class="form-control" required disabled>
           <option selected>Seleccione</option>
           <?php
-          $sqlv = " SELECT iddepartamento, departamento, sigla FROM departamento ";
+          $sqlv = "SELECT iddepartamento, departamento, sigla FROM departamento ";
           $resultv = mysqli_query($link,$sqlv);
           if ($rowv = mysqli_fetch_array($resultv)){
           mysqli_field_seek($resultv,0);
@@ -186,34 +165,30 @@ $iddato_laboral = $row_l[0];
           } else {
           }
           ?>
-      </select>
-
+          </select>
     </div>
     <div class="col-sm-3">
     <h4>NACIONALIDAD:</h4>
-
-
-    <select name="idnacionalidad"  id="idnacionalidad" class="form-control" required disabled>
+          <select name="idnacionalidad"  id="idnacionalidad" class="form-control" required disabled>
           <option selected>Seleccione</option>
           <?php
-          $sqlv = " SELECT idnacionalidad, nacionalidad FROM nacionalidad ";
+          $sqlv = "SELECT idnacionalidad, nacionalidad FROM nacionalidad ";
           $resultv = mysqli_query($link,$sqlv);
           if ($rowv = mysqli_fetch_array($resultv)){
           mysqli_field_seek($resultv,0);
           while ($fieldv = mysqli_fetch_field($resultv)){
           } do {
           ?>
-          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_n[8]) echo "selected";?> ><?php echo $rowv[1];?></option>
+          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_n[7]) echo "selected";?> ><?php echo $rowv[1];?></option>
           <?php
           } while ($rowv = mysqli_fetch_array($resultv));
           } else {
           }
           ?>
-      </select>
+          </select>
     </div>
     <div class="col-sm-3">
     <h4>GÉNERO:</h4>
-
     <select name="idgenero"  id="idgenero" class="form-control" required disabled>
           <option selected>Seleccione</option>
           <?php
@@ -230,27 +205,25 @@ $iddato_laboral = $row_l[0];
           } else {
           }
           ?>
-      </select>
-
+          </select>
     </div>
 </div>
 </div>
 
-    <div class="row">
+   <div class="row">
     <div class="col-md-6"><h3>2.- DATOS COMPLEMENTARIOS:</h3></div>
     <div class="col-md-6"></div>
-    </div>
+  </div>
 
-    <div class="box-area">
+  <div class="box-area">
 
-    <div class="row">
-    <div class="col-md-3"><h4>FORMACIÓN ACADÉMICA:</h4></div>
-    <div class="col-md-3">
-
-    <select name="idformacion_academica"  id="idformacion_academica" class="form-control" required disabled>
+<div class="row">
+<div class="col-md-3"><h4>FORMACIÓN ACADÉMICA:</h4></div>
+<div class="col-md-3">
+      <select name="idformacion_academica"  id="idformacion_academica" class="form-control" required disabled>
           <option selected>Seleccione</option>
           <?php
-          $sqlv = " SELECT idformacion_academica, formacion_academica FROM formacion_academica ";
+          $sqlv = "SELECT idformacion_academica, formacion_academica FROM formacion_academica ";
           $resultv = mysqli_query($link,$sqlv);
           if ($rowv = mysqli_fetch_array($resultv)){
           mysqli_field_seek($resultv,0);
@@ -264,12 +237,10 @@ $iddato_laboral = $row_l[0];
           }
           ?>
       </select>
-
-    </div>
-    <div class="col-md-3"><h4>PROFESIÓN/OCUPACIÓN:</h4></div>
-    <div class="col-md-3">
-
-    <select name="idprofesion"  id="idprofesion" class="form-control" required disabled>
+</div>
+<div class="col-md-3"><h4>PROFESIÓN/OCUPACIÓN:</h4></div>
+<div class="col-md-3">
+        <select name="idprofesion"  id="idprofesion" class="form-control" required disabled>
           <option selected>Seleccione</option>
           <?php
           $sqlv = " SELECT idprofesion, profesion FROM profesion ";
@@ -285,12 +256,10 @@ $iddato_laboral = $row_l[0];
           } else {
           }
           ?>
-      </select>
+        </select>
+</div>
+</div>
 
-    </div>
-    </div>
-
-   
 <?php if ($row_n[10] == '1') { ?>
 <!----- mostramos la especialidad si es medico ------->
   <div class="row">
@@ -321,22 +290,19 @@ $iddato_laboral = $row_l[0];
 
  <?php } ?>
 
-      <div class="row">
-      <div class="col-md-3"><h4>CORREO ELECTRÓNICO:</h4></div>
-      <div class="col-md-3"><input type="mail" class="form-control" name="correo" value="<?php echo $row_n[12];?>" disabled required></div>
-      <div class="col-md-3"><h4>TELÉFONO CELULAR/WHATSAPP:</h4></div>
-      <div class="col-md-3"><input type="text" class="form-control" name="celular" value="<?php echo $row_n[13];?>" disabled required></div>
-      </div>
+<div class="row">
+<div class="col-md-3"><h4>CORREO ELECTRÓNICO:</h4></div>
+<div class="col-md-3"><input type="mail" class="form-control" name="correo" value="<?php echo $row_n[12];?>" disabled required></div>
+<div class="col-md-3"><h4>TELÉFONO CELULAR/WHATSAPP:</h4></div>
+<div class="col-md-3"><input type="text" class="form-control" name="celular" value="<?php echo $row_n[13];?>" disabled required></div>
+</div>
+</div>
 
-    </div>
+<div class="row">
+<div class="col-md-6"><h3>3.- DATOS LABORALES:</h3></div>
+<div class="col-md-6"></div>
+</div>
 
-    <div class="row">
-    <div class="col-md-6"><h3>3.- DATOS LABORALES:</h3></div>
-    <div class="col-md-6"></div>
-    </div>
-
-    <div class="box-area">
-<!--------- BEGIN ---- DATIS LABORALES DEL USUARIO YA REGISTRADO ----->
 
 <div class="box-area">
 
@@ -544,51 +510,49 @@ $iddato_laboral = $row_l[0];
 <?php } } ?>
 
 </div>
+</br>
 
-<!--------- END ---- DATIS LABORALES DEL USUARIO YA REGISTRADO ----->
-    </div>
-        
-    </br>
+<div class="row">
+  <div class="col-md-4"></div>
+  <div class="col-md-4">
 
-    <div class="row">
-        <div class="col-md-4"><h4></h4></div>
-        <div class="col-md-8">    
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-            REGISTRAR PREINSCRIPCIÓN
-            </button>
-        </div>
-        </div>
-    </div>
 
-<!-- modal de confirmacion de envio de datos-->
-
+</div>
+<div class="col-md-4"><a href="">
+<form name="FINZLIZA" action="confirma_inscripcion.php" method="post">
+    <input type="hidden" name="idinscripcion" value="<?php echo $idinscripcion_ss;?>">
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+CONFIRMAR INSCRIPCIÓN
+</button>
+</div> 
+<!------- modal ------->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">REGISTRAR PREINSCRIPCIÓN</h5>
+      <div class="modal-header">       
+        <h5 class="modal-title" id="exampleModalLabel">CONFIRMAR INSCRIPCIÓN</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-      </div>
-      <div class="modal-body">
-        
-        Esta seguro de Registrar la Preinscripcion?
-        posteriormenete no se podran realizar cambios.
-
-      </div>
-      <div class="modal-footer">
+          </div>
+          <div class="modal-body">       
+            Esta seguro de Confirmar la  Preinscripción?
+          </div>
+          <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">CANCELAR</button>
-        <button type="submit" class="btn btn-primary pull-center">CONFIRMAR REGISTRO</button>    
+        <button type="submit" class="btn btn-primary pull-center">CONFIRMAR</button>    
       </div>
     </div>
   </div>
 </div>
 </div>
+<!------- modal ------->
+</form>
 
 </div>
-<!-- Modal -->
 
+</br>
+<!-- PIE DE PAGINA --->
 </div>
 </br>
   </section>
@@ -619,33 +583,8 @@ $iddato_laboral = $row_l[0];
 <script src="../js/datepicker-es.js"></script>
 <script>
     $("#fecha1").datepicker($.datepicker.regional[ "es" ]);
+    $("#fecha2").datepicker($.datepicker.regional[ "es" ]);
+    $("#fecha3").datepicker($.datepicker.regional[ "es" ]);
 </script>
-
-<script language="javascript">
-$(document).ready(function(){
-   $("#idprofesion").change(function () {
-           $("#idprofesion option:selected").each(function () {
-            profesion=$(this).val();
-            $.post("especialidad_medica.php", {profesion:profesion}, function(data){
-            $("#especialidad_medica").html(data);
-            });
-        });
-   })
-});
-</script>
-
-<script language="javascript">
-$(document).ready(function(){
-   $("#iddependencia").change(function () {
-           $("#iddependencia option:selected").each(function () {
-            dependencia=$(this).val();
-            $.post("dependencia_mds.php", {dependencia:dependencia}, function(data){
-            $("#dependencia_mds").html(data);
-            });
-        });
-   })
-});
-</script>
-
 </body>
 </html>

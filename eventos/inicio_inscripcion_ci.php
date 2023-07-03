@@ -74,7 +74,7 @@ $rowus = mysqli_fetch_array($resultus);?>
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-12">
-				<h2 class="pageTitle">OPCIONES DE PREINSCRIPCIÓN</h2>
+				<h2 class="pageTitle">PREINSCRIPCIÓN</h2>
 			</div>
 		</div>
 	</div>
@@ -83,7 +83,7 @@ $rowus = mysqli_fetch_array($resultus);?>
 	<div class="container">
 		<div class="row">
 		<div class="tg-main-section tg-banner tg-haslayout parallax-window" data-parallax="scroll" data-bleed="100" data-speed="0.2" data-image-src="images/slider/img-03.jpg">
-    <h2 class="text-info" align="center"><?php echo $codigo_evento_ss;?></h2>
+        <h2 class="text-info" align="center"><?php echo $codigo_evento_ss;?></h2>
         <h2 class="text-info" align="center"><?php echo $row0[1];?></h2>
   </div>
 </br>
@@ -95,12 +95,54 @@ $rowus = mysqli_fetch_array($resultus);?>
 
 <div class="box-area">
 
+<!------- INTRODUZCA SU NUMERO DE CI PARA REALIZAR SU PREINSCRIPCIÓN -------->
+
+<div class="row">
+  <div class="col-md-2"></div> 
+  <div class="col-md-10"><h4 class="text-info">INTRODUZCA SU NÚMERO DE CI PARA REALIZAR SU PREINSCRIPCIÓN</h4></div> 
+</div>
+
+<form name="FINZLIZA" action="busca_usuario_registrado.php" method="post">	
+<div class="row">
+  <div class="col-md-4"></div> 
+  <div class="col-md-4"><input type="text" class="form-control" name="ci" placeholder="N° de Cédula de Identidad" required></div>
+  <div class="col-md-4"></div>  
+</div>
+
 <div class="row">
   <div class="col-md-1"></div>
   <div class="col-md-3"><a href="oferta_eventos.php"><h4>VOLVER</h4></a></div>
-  <div class="col-md-4"><a href="registro_inscripcion.php"><h4 class="text-info">NUEVO USUARIO</h4></a></div>
-  <div class="col-md-4"><a href="inicio_inscripcion_ci.php"><h4 class="text-success">USUARIO REGISTRADO</h4></div> 
+  <div class="col-md-4"></div>
+  <div class="col-md-4">
+
+    <button type="button" class="btn-link" data-toggle="modal" data-target="#exampleModal">
+    <h4 class="text-success">CONTINUAR PREINSCRIPCIÓN</h4>
+</button>
+  </div> 
 </div>
+<!------- modal ------->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">REALIZAR PREINSCRIPCIÓN</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+          </div>
+          <div class="modal-body">       
+            Esta seguro de continuar su preinscripción?
+          </div>
+          <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">CANCELAR</button>
+        <button type="submit" class="btn btn-primary pull-center">CONTINUAR</button>    
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<!------- modal ------->
+</form>
 
 </div>
 </br>

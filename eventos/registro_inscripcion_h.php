@@ -99,7 +99,7 @@ $iddato_laboral = $row_l[0];
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-12">
-				<h2 class="pageTitle">PREINSCRIPCIÓN <?php echo $row_i[21];?></h2>
+				<h2 class="pageTitle">PREINSCRIPCIÓN <?php echo $row_i[21];?> </h2>
 			</div>
 		</div>
 	</div>
@@ -109,13 +109,13 @@ $iddato_laboral = $row_l[0];
 	  <div class="row">
 		<div class="tg-main-section tg-banner tg-haslayout parallax-window" data-parallax="scroll" data-bleed="100" data-speed="0.2" data-image-src="images/slider/img-03.jpg">
           <h4 align="center"><a href="inicio_inscripcion.php">VOLVER</a></h4>
-          <h2 class="text-info" align="center"><?php echo $codigo_evento_ss;?></h2>
+          <h2 class="text-info" align="center"><?php echo $codigo_evento_ss;?> <?php echo $idnombre_inscrito_ss;?></h2>
           <h2 class="text-info" align="center"><?php echo $row0[1];?></h2>
         </div>
       </div>
 
     <div class="row">
-    <div class="col-md-4"><h3>1.- DATOS PERSONALES:   <?php echo  $idnombre_inscrito_ss;?></h3></div>
+    <div class="col-md-4"><h3>1.- DATOS PERSONALES:</h3></div>
     <div class="col-md-8"></div>
     </div>
 <!-- javascript --->

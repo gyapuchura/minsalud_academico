@@ -44,9 +44,9 @@ while ($field = mysqli_fetch_field($result)){
 } do {	
 	?> 
 	<li class="dropdown">
-	<a href="#" data-toggle="dropdown" class="dropdown-toggle">REGISTROS SALUD<b class="caret"></b></a>
+	<a href="#" data-toggle="dropdown" class="dropdown-toggle">INSCRIPCIONES<b class="caret"></b></a>
 		<ul class="dropdown-menu">
-		<li><a href="../eventos/redes_salud.php">REDES DE SALUD</a></li>
+		<li><a href="../eventos/administrar_inscripciones.php">ADMINISTRAR INSCRIPCIONES</a></li>
 	<!--	<li><a href="#">SEGUIMIENTO DE F-3009</a></li>  -->
 		</ul>
 	</li>

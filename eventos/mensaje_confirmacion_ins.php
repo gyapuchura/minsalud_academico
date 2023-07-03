@@ -10,13 +10,28 @@ $idusuario_ss = $_SESSION['idusuario_ss'];
 $idnombre_ss  = $_SESSION['idnombre_ss'];
 $perfil_ss    = $_SESSION['perfil_ss'];
 
-$idtematica_ss    =  $_SESSION['idtematica_ss'];
-$idevento_ss      =  $_SESSION['idevento_ss'];
-$codigo_evento_ss =  $_SESSION['codigo_evento_ss'];
+$idtematica_ss    = $_SESSION['idtematica_ss'];
+$idevento_ss      = $_SESSION['idevento_ss'];
+$codigo_evento_ss = $_SESSION['codigo_evento_ss'];
+$idinscripcion_ss = $_SESSION['idinscripcion_ss'];
 
-$sql0 =" SELECT idtematica, tematica FROM tematica WHERE idtematica='$idtematica_ss' ";
-$result0 = mysqli_query($link,$sql0);
-$row0 = mysqli_fetch_array($result0);
+$sql_i = " SELECT idinscripcion, idevento, idusuario, idnombre, idnombre_datos, iddato_laboral, idestado_inscripcion, ";
+$sql_i.= " correlativo, codigo, fecha_preins, fecha_ins, gestion FROM inscripcion WHERE idinscripcion='$idinscripcion_ss' ";
+$result_i = mysqli_query($link,$sql_i);
+$row_i = mysqli_fetch_array($result_i);
+
+$sql_n =" SELECT nombre.nombre, nombre.paterno, nombre.materno, nombre.ci, nombre.complemento, nombre.exp, nombre.fecha_nac, nombre.idnacionalidad, ";
+$sql_n.=" nombre.idgenero, nombre_datos.idformacion_academica, nombre_datos.idprofesion, nombre_datos.idespecialidad_medica, nombre_datos.correo, ";
+$sql_n.=" nombre_datos.celular FROM nombre, nombre_datos, usuarios WHERE nombre_datos.idnombre=nombre.idnombre AND  ";
+$sql_n.=" usuarios.idnombre=nombre.idnombre AND usuarios.idusuario='$row_i[2]' ";
+$result_n = mysqli_query($link,$sql_n);
+$row_n = mysqli_fetch_array($result_n);
+
+$sql_l = " SELECT iddato_laboral, idusuario, idnombre, iddependencia, entidad, cargo_entidad, ";
+$sql_l.= " idministerio, iddireccion, idarea, cargo_mds, iddepartamento, idred_salud, idestablecimiento_salud, cargo_red_salud ";
+$sql_l.= " FROM dato_laboral WHERE iddato_laboral='$row_i[5]' ";
+$result_l = mysqli_query($link,$sql_l);
+$row_l = mysqli_fetch_array($result_l);
 
 ?>
 <!DOCTYPE html>
@@ -48,7 +63,8 @@ $row0 = mysqli_fetch_array($result0);
         <?php
 $sqlus =" SELECT nombre, paterno, materno FROM nombre WHERE idnombre='$idnombre_ss'";
 $resultus = mysqli_query($link,$sqlus);
-$rowus = mysqli_fetch_array($resultus);?>
+$rowus = mysqli_fetch_array($resultus);
+?>
         <?php echo $rowus[0];?> <?php echo $rowus[1];?> <?php echo $rowus[2];?></p>
       </div>
     </div>
@@ -66,7 +82,7 @@ $rowus = mysqli_fetch_array($resultus);?>
                     </button>
                   <a class="navbar-brand" href="../intranet.php"><img src="../img/logo_saes.png" alt="logo"/></a>
                 </div>
-                <?php include("../menu_planes.php");?>
+                <?php include("../menu_academico.php");?>
             </div>
         </div>
 	</header><!-- end header -->
@@ -74,39 +90,75 @@ $rowus = mysqli_fetch_array($resultus);?>
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-12">
-				<h2 class="pageTitle">OPCIONES DE PREINSCRIPCIÓN</h2>
+				<h2 class="pageTitle">INSCRIPCIÓN CONFIRMADA</h2>
 			</div>
 		</div>
 	</div>
 	</section>
 	<section id="content">
 	<div class="container">
-		<div class="row">
-		<div class="tg-main-section tg-banner tg-haslayout parallax-window" data-parallax="scroll" data-bleed="100" data-speed="0.2" data-image-src="images/slider/img-03.jpg">
-    <h2 class="text-info" align="center"><?php echo $codigo_evento_ss;?></h2>
-        <h2 class="text-info" align="center"><?php echo $row0[1];?></h2>
-  </div>
-</br>
-    </div>
+        <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-8"><h2><?php echo $row_i[8];?> </h2></div>
+        </div>
 
-<div class="container">
+        <div class="row">
+    <div class="col-md-12"><h3 class="text-success">El solicitante con los siguientes datos personales:</h3></div>
+   </div>
 
-<!-- javascript --->
-
+<!-- MUESTRA LA PREINSCRIPCION REALIZADA --->
 <div class="box-area">
 
-<div class="row">
-  <div class="col-md-1"></div>
-  <div class="col-md-3"><a href="oferta_eventos.php"><h4>VOLVER</h4></a></div>
-  <div class="col-md-4"><a href="registro_inscripcion.php"><h4 class="text-info">NUEVO USUARIO</h4></a></div>
-  <div class="col-md-4"><a href="inicio_inscripcion_ci.php"><h4 class="text-success">USUARIO REGISTRADO</h4></div> 
+<div class="form-group row">
+    <div class="col-sm-4">
+    <h4>PRIMER APELLIDO:</h4>
+    <h4 class="text-muted"><?php echo $row_n[1];?></h4>
+    </div>
+    <div class="col-sm-4">
+    <h4>SEGUNDO APELLIDO:</h4>
+    <h4 class="text-muted"><?php echo $row_n[2];?></h4>
+    </div>
+    <div class="col-sm-4">
+    <h4>NOMBRES:</h4>
+    <h4 class="text-muted"><?php echo $row_n[0];?></h4>
+    </div>
 </div>
 
+    <div class="form-group row">
+    <div class="col-sm-4">
+    <h4>CEDULA DE IDENTIDAD:</h4>
+    <h4 class="text-muted"><?php echo $row_n[3];?></h4>
+    </div>
+    <div class="col-sm-4">
+    <h4>COMPLEMENTO:</h4>
+    <h4 class="text-muted"><?php echo $row_n[4];?></h4>
+    </div>
+    <div class="col-sm-4">
+    <h4>EXPEDICIÓN:</h4>
+    <h4 class="text-muted"><?php echo $row_n[5];?></h4>
+    </div>
 </div>
+
+   <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-10"><h2 class="text-success">A SIDO CONFIRMADO COMO PARTICIPANTE!</h2></div>
+   </div>
+
+   <form name="FORM9" action="inscritos_evento.php" method="post">
+    <div class="row">
+      <div class="col-md-6"></div>
+       <div class="col-md-6"> 
+        <button type="submit" class="btn btn-primary" >
+        CONTINUAR
+        </button>
+       </div>
+      </div>
+    </div>
+    </form>
+
 </br>
 
-
-<!-- javascript --->
+<!-- PIE DE PAGINA --->
 </div>
 </br>
   </section>
