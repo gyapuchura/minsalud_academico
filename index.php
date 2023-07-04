@@ -64,10 +64,9 @@ session_destroy(); ?>
             <div class="col-sm-4">
             <h1><a class="tg-btn" data-toggle="modal" href="javascript:void(0)" onclick="openLoginModal();">INGRESAR</a></h1>
             </div>
-			<div class="col-sm-4"></div>
-            <div class="col-sm-4">
-            <h1>
-            </h1>
+			      <div class="col-sm-2"></div>
+            <div class="col-sm-6">
+            <a href="inscripciones/oferta.php"><h1>OFERTA ACADÉMICA</h1></a>
             </div>
         </div>
 </div>
