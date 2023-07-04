@@ -1,13 +1,9 @@
-<?php include("../cabf.php");?>
+<?php include("../cabf_o.php");?>
 <?php include("../inc.config.php");?>
 <?php
 date_default_timezone_set('America/La_Paz');
 $fecha_ram			= date("Ymd");
 $fecha 			    = date("Y-m-d");
-
-$idusuario_ss  =  $_SESSION['idusuario_ss'];
-$idnombre_ss   =  $_SESSION['idnombre_ss'];
-$perfil_ss     =  $_SESSION['perfil_ss'];
 
 $idtematica_ss =  $_SESSION['idtematica_ss'];
 
@@ -41,12 +37,7 @@ $row0 = mysqli_fetch_array($result0);
     <div class="row">
       <div class="col-md-12">
          <p class="pull-left hidden-xs">MINISTERIO DE SALUD Y DEPORTES</p>
-         <p class="pull-right"><i class="fa fa-user"></i>
-        <?php
-$sqlus =" SELECT nombre, paterno, materno FROM nombre WHERE idnombre='$idnombre_ss'";
-$resultus = mysqli_query($link,$sqlus);
-$rowus = mysqli_fetch_array($resultus);?>
-        <?php echo $rowus[0];?> <?php echo $rowus[1];?> <?php echo $rowus[2];?></p>
+         <a href="../index.php"><p class="pull-right hidden-xs">INGRESAR A SISTEMA</p></a>
       </div>
     </div>
   </div>
@@ -61,9 +52,9 @@ $rowus = mysqli_fetch_array($resultus);?>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                  <a class="navbar-brand" href="../intranet.php"><img src="../img/logo_saes.png" alt="logo"/></a>
+                  <a class="navbar-brand" href="../inicio.php"><img src="../img/logo_saes.png" alt="logo"/></a>
                 </div>
-                <?php include("../menu_academico.php");?>
+
             </div>
         </div>
 
@@ -84,7 +75,7 @@ $rowus = mysqli_fetch_array($resultus);?>
 	<div class="container">
 		<div class="row">
 		<div class="tg-main-section tg-banner tg-haslayout parallax-window" data-parallax="scroll" data-bleed="100" data-speed="0.2" data-image-src="images/slider/img-03.jpg">
-        <h4 align="center"><a href="oferta_eventos.php">VOLVER</a></h4>
+        <h4 align="center"><a href="oferta.php">VOLVER</a></h4>
         </br>
         <h2 class="text-info" align="center"><?php echo $row0[1];?></h2>
 		</div>
@@ -162,7 +153,7 @@ $rowus = mysqli_fetch_array($resultus);?>
                     ?>
                 </td>
                 <td>                  
-                    <form name="VALIDA" action="valida_evento_oferta.php" method="post">
+                    <form name="VALIDA" action="valida_evento_oferta_o.php" method="post">
                     <input name="codigo" type="hidden" value="<?php echo $row[1];?>">
                     <input name="idevento" type="hidden" value="<?php echo $row[0];?>">
                     <button type="submit" class="btn-link">PRE-INSCRIBIRSE</button></form>
