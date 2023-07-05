@@ -199,7 +199,15 @@ $row_ev = mysqli_fetch_array($result_ev);
             <!------ Otra Entidad Publicas ---->
 
             <?php if ($row_l[3] == '1') { ?>
-
+              <tr>
+              <td><strong style="font-size: 12px">DEPARTAMENTO:</strong></td>
+              <td style="font-size: 12px"><?php               
+              $sql_d =" SELECT iddepartamento, departamento FROM departamento WHERE iddepartamento = '$row_l[10]' ";
+              $result_d = mysqli_query($link,$sql_d);
+              $row_d = mysqli_fetch_array($result_d);
+              echo $row_d[1];?></td>
+             </tr>
+             
               <tr>
               <td><strong style="font-size: 12px">ENTIDAD A LA QUE PERTENECE:</strong></td>
               <td style="font-size: 12px"><?php echo $row_l[4];?></td>
@@ -212,6 +220,15 @@ $row_ev = mysqli_fetch_array($result_ev);
         <!------ Funcionario del Ministerio de Salud ---->
 
              <?php } else { if ($row_l[3] == '2') { ?>
+
+              <tr>
+              <td><strong style="font-size: 12px">DEPARTAMENTO:</strong></td>
+              <td style="font-size: 12px"><?php               
+              $sql_d =" SELECT iddepartamento, departamento FROM departamento WHERE iddepartamento = '$row_l[10]' ";
+              $result_d = mysqli_query($link,$sql_d);
+              $row_d = mysqli_fetch_array($result_d);
+              echo $row_d[1];?></td>
+             </tr>
 
               <tr>
               <td><strong style="font-size: 12px">INSTANCIA:</strong></td>
@@ -253,7 +270,7 @@ $row_ev = mysqli_fetch_array($result_ev);
               $result_d = mysqli_query($link,$sql_d);
               $row_d = mysqli_fetch_array($result_d);
               echo $row_d[1];?></td>
-            </tr>
+             </tr>
             <tr>
               <td style="font-size: 12px"><strong>RED DE SALUD:</strong></td>
               <td style="font-size: 12px"><?php               
@@ -475,7 +492,7 @@ $row_ev = mysqli_fetch_array($result_ev);
     $separador='|';
     $tamano='M';
 
-    $_REQUEST['data'] = 'http://192.168.251.81:8888/safci/eventos/imprime_formulario_ins.php?idinscripcion='.$row_i[0];
+    $_REQUEST['data'] = 'http://'.$_SERVER['HTTP_HOST'].'/safci/eventos/imprime_formulario_ins.php?idinscripcion='.$row_i[0];
     $_REQUEST['size'] = 2 ;
     $_REQUEST['level'] = $tamano ;
 
