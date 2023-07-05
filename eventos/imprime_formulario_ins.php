@@ -475,7 +475,7 @@ $row_ev = mysqli_fetch_array($result_ev);
     $separador='|';
     $tamano='M';
 
-    $_REQUEST['data'] = 'http://192.168.251.81:8888/safci/eventos/imprime_formulario_ins.php?idinscripcion='.$row_i[0];
+    $_REQUEST['data'] = 'http://'.$_SERVER['HTTP_HOST'].'/prueba_sistema/eventos/imprime_formulario_ins.php?idinscripcion='.$row_i[0];
     $_REQUEST['size'] = 2 ;
     $_REQUEST['level'] = $tamano ;
 

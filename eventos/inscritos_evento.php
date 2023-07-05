@@ -167,7 +167,6 @@ $rowus = mysqli_fetch_array($resultus);?>
                     <th>MATERNO</th>
                     <th>NOMBRES</th>
                     <th>VER FORMULARIO</th>
-                    <th>VER INSCRIPCIÓN</th>
                 </tr>
             </thead>
 			<tbody>
@@ -191,12 +190,6 @@ $rowus = mysqli_fetch_array($resultus);?>
                 <td>
                 <a href="imprime_formulario_ins.php?idinscripcion=<?php echo $row[0];?>" target="_blank" class="Estilo12" onClick="window.open(this.href, this.target, 'width=750,height=850,scrollbars=YES,top=50,left=200'); return false;">VER FORMULARIO</a>
                 </td>
-                <td>  
-                    <form name="VALIDA" action="" method="post">
-                    <input name="codigo" type="hidden" value="<?php echo $row[1];?>">
-                    <input name="idinscripcion" type="hidden" value="<?php echo $row[0];?>">
-                    <button type="submit" class="btn-link">VER INSCRIPCIÓN</button></form>
-                </td>
                 </tr>  
             <?php
             $numero=$numero+1;  
@@ -209,6 +202,21 @@ $rowus = mysqli_fetch_array($resultus);?>
                                 </table>
                             </div>
 
+    <div class="row">
+        <div class="col-lg-3">
+        <form name="MOODLE" action="inscritos_moodle_excel.php" method="post">
+        <input type="hidden" name="idempresa" value="<?php echo $idempresa;?>">
+        <h3><button type="submit" class="btn btn-link">GENERAR LISTA PARA MOODLE</button></h3>
+        </form>
+        </div>
+        <div class="col-lg-3"></div>
+        <div class="col-lg-3"></div>
+        <div class="col-lg-3">
+        <form name="INSCRITOS" action="inscritos_evento_excel.php" method="post">
+        <h3><button type="submit" class="btn btn-link">GENERAR LISTA EN EXCEL</button></h3>
+        </form>
+        </div>
+    </div>                            
 </div>
 </br>
   </section>

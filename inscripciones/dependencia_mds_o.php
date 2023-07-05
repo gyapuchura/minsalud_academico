@@ -5,13 +5,39 @@ $iddependencia  = $_POST['dependencia'];
 
     if ($iddependencia == '1') {
   ?>
+
+    <!----- begin departamento donde se inscribio ----->
+
+    <div class="row">
+    <div class="col-md-4"><h4>DEPARTAMENTO EN EL QUE SE INSCRIBE:</h4></div>
+    <div class="col-md-8">
+    <select name="iddepartamento"  id="iddepartamento" class="form-control" required>
+        <option value="">-SELECCIONE-</option>
+        <?php
+        $sql1 = "SELECT iddepartamento, departamento FROM departamento ";
+        $result1 = mysqli_query($link,$sql1);
+        if ($row1 = mysqli_fetch_array($result1)){
+        mysqli_field_seek($result1,0);
+        while ($field1 = mysqli_fetch_field($result1)){
+        } do {
+        echo "<option value=". $row1[0].">". $row1[1]."</option>";
+        } while ($row1 = mysqli_fetch_array($result1));
+        } else {
+        echo "No se encontraron resultados!";
+        }
+        ?>
+    </select>
+    </div>
+    </div>
+<!----- end departamento donde se inscribio ----->
+
 <div class="row">
-    <div class="col-md-3"><h4>ENTIDAD A LA QUE PERTENECE:</h4></div>
-    <div class="col-md-9"><textarea class="form-control" rows="3" name="entidad" required></textarea></div>
+    <div class="col-md-4"><h4>ENTIDAD A LA QUE PERTENECE:</h4></div>
+    <div class="col-md-8"><textarea class="form-control" rows="3" name="entidad" required></textarea></div>
 </div>
 <div class="row">
-    <div class="col-md-3"><h4>CARGO EN LA ENTIDAD:</h4></div>
-    <div class="col-md-9"><textarea class="form-control" rows="2" name="cargo_entidad" required></textarea></div>
+    <div class="col-md-4"><h4>CARGO EN LA ENTIDAD:</h4></div>
+    <div class="col-md-8"><textarea class="form-control" rows="2" name="cargo_entidad" required></textarea></div>
 </div>
 
 <?php 
@@ -19,9 +45,34 @@ $iddependencia  = $_POST['dependencia'];
     if ($iddependencia == '2') {
         ?>
  
+     <!----- begin departamento donde se inscribio ----->
+
+<div class="row">
+    <div class="col-md-4"><h4>DEPARTAMENTO EN EL QUE SE INSCRIBE:</h4></div>
+    <div class="col-md-8">
+    <select name="iddepartamento"  id="iddepartamento" class="form-control" required>
+        <option value="">-SELECCIONE-</option>
+        <?php
+        $sql1 = "SELECT iddepartamento, departamento FROM departamento ";
+        $result1 = mysqli_query($link,$sql1);
+        if ($row1 = mysqli_fetch_array($result1)){
+        mysqli_field_seek($result1,0);
+        while ($field1 = mysqli_fetch_field($result1)){
+        } do {
+        echo "<option value=". $row1[0].">". $row1[1]."</option>";
+        } while ($row1 = mysqli_fetch_array($result1));
+        } else {
+        echo "No se encontraron resultados!";
+        }
+        ?>
+    </select>
+    </div>
+    </div>
+<!----- end departamento donde se inscribio ----->
+
     <div class="row">
-    <div class="col-md-3"><h4>DEPENDIENTE DEL:</h4></div>
-    <div class="col-md-9">
+    <div class="col-md-4"><h4>DEPENDIENTE DEL:</h4></div>
+    <div class="col-md-8">
        <select name="idministerio"  id="idministerio" class="form-control">
           <option value="">ELEGIR</option>
           <?php
@@ -42,28 +93,27 @@ $iddependencia  = $_POST['dependencia'];
     </div>
 
     <div class="row">
-    <div class="col-md-3"><h4>DIRECCIÓN/PROGRAMA/</br>INSTITUCIÓN:</h4></div>
-    <div class="col-md-9">
+    <div class="col-md-4"><h4>DIRECCIÓN/PROGRAMA/</br>INSTITUCIÓN:</h4></div>
+    <div class="col-md-8">
     <select name="iddireccion" id="iddireccion" class="form-control" required></select>
     </div>
     </div>
 
     <div class="row">
-    <div class="col-md-3"><h4>UNIDAD ORGANIZACIONAL:</h4></div>
-    <div class="col-md-9">
+    <div class="col-md-4"><h4>UNIDAD ORGANIZACIONAL:</h4></div>
+    <div class="col-md-8">
     <select name="idarea" id="idarea" class="form-control" required></select>
     </div>
     </div>
 
     <div class="row">
-    <div class="col-md-3"><h4>CARGO QUE EJERCE:</h4></div>
-    <div class="col-md-9"><textarea class="form-control" rows="2" name="cargo_mds" required></textarea></div>
+    <div class="col-md-4"><h4>CARGO QUE EJERCE:</h4></div>
+    <div class="col-md-8"><textarea class="form-control" rows="2" name="cargo_mds" required></textarea></div>
     </div>
 
     <?php } else { ?>
    
-
-        <div class="row">
+    <div class="row">
     <div class="col-md-3"><h4>DEPARTAMENTO:</h4></div>
     <div class="col-md-9">
        <select name="iddepartamento"  id="iddepartamento" class="form-control">
