@@ -1,9 +1,9 @@
 <?php
 $link = mysqli_connect(
   'localhost', 
+  'adminusr',
   'root',
-  'root',
-  'safci_db'
+  'safci_testing_db'
 ) or die(mysqli_error($mysqli));
 
 ?>
