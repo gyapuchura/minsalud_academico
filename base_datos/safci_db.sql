@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:8889
--- Tiempo de generación: 22-06-2023 a las 20:45:19
+-- Tiempo de generación: 05-07-2023 a las 20:58:05
 -- Versión del servidor: 5.7.34
 -- Versión de PHP: 7.4.21
 
@@ -166,6 +166,46 @@ CREATE TABLE `cargo` (
   `cargo` text,
   `idusuario` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `dato_laboral`
+--
+
+CREATE TABLE `dato_laboral` (
+  `iddato_laboral` int(11) NOT NULL,
+  `idusuario` int(11) DEFAULT NULL,
+  `idnombre` int(11) DEFAULT NULL,
+  `iddependencia` int(11) DEFAULT NULL,
+  `entidad` text,
+  `cargo_entidad` text,
+  `idministerio` int(11) DEFAULT NULL,
+  `iddireccion` int(11) DEFAULT NULL,
+  `idarea` int(11) DEFAULT NULL,
+  `cargo_mds` text,
+  `iddepartamento` int(11) DEFAULT NULL,
+  `idred_salud` int(11) DEFAULT NULL,
+  `idestablecimiento_salud` int(11) DEFAULT NULL,
+  `cargo_red_salud` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `dato_laboral`
+--
+
+INSERT INTO `dato_laboral` (`iddato_laboral`, `idusuario`, `idnombre`, `iddependencia`, `entidad`, `cargo_entidad`, `idministerio`, `iddireccion`, `idarea`, `cargo_mds`, `iddepartamento`, `idred_salud`, `idestablecimiento_salud`, `cargo_red_salud`) VALUES
+(1, 25, 25, 1, 'Ministerio de Culturas y Turismo', 'Encargado de Activos Fijos', 0, 0, 0, '', 4, 0, 0, ''),
+(2, 26, 26, 2, '', '', 3, 24, 31, 'Encargado de Archivo Documental', 4, 0, 0, ''),
+(3, 27, 27, 3, '', '', 0, 0, 0, '', 4, 26, 1950, 'Encargada de Sistemas'),
+(4, 28, 28, 1, 'Ministerio de Salud', 'Encargada de Sistemas', 0, 0, 0, '', 4, 0, 0, ''),
+(5, 29, 29, 2, '', '', 1, 3, 6, 'Encargado de sistemas', 4, 0, 0, ''),
+(6, 30, 30, 3, '', '', 0, 0, 0, '', 4, 26, 1950, 'Auditor Interno'),
+(7, 31, 31, 3, '', '', 0, 0, 0, '', 4, 28, 1983, 'Medico Familiar'),
+(8, 32, 32, 2, '', '', 3, 24, 31, 'Administrator ', 4, 0, 0, ''),
+(9, 33, 33, 1, 'Ministerio de Justicia y Tarnasparencia Institucional', 'Encargado de Archivo Documental', 0, 0, 0, '', 4, 0, 0, ''),
+(10, 34, 34, 3, '', '', 0, 0, 0, '', 4, 26, 1949, 'Medico de Emergencias'),
+(11, 35, 35, 1, 'Ministerio de Obras P&uacute;blicas', 'Profesional de Recursos Humanos', 0, 0, 0, '', 4, 0, 0, '');
 
 -- --------------------------------------------------------
 
@@ -409,7 +449,8 @@ INSERT INTO `especialidad_medica` (`idespecialidad_medica`, `especialidad_medica
 (41, 'SALUD FAMILIAR COMUNITARIA INTERCULTURAL'),
 (42, 'TERAPIA INTENSIVA PEDIÁTRICA'),
 (43, 'TRAUMATOLOGÍA Y ORTOPEDIA'),
-(44, 'UROLOGÍA');
+(44, 'UROLOGÍA'),
+(45, 'OTRA');
 
 -- --------------------------------------------------------
 
@@ -4708,7 +4749,7 @@ CREATE TABLE `evento` (
 --
 
 INSERT INTO `evento` (`idevento`, `idobjetivo_anual`, `idmacrocurricula`, `idmicrocurricula`, `codigo`, `correlativo`, `gestion`, `fecha_inicio`, `fecha_fin`, `iddepartamento`, `idprovincia`, `idmunicipio`, `idpublicacion`, `idmodalidad`, `cupo_min`, `cupo_max`, `iddocente`, `idusuario`, `idestado_registro`) VALUES
-(1, 1, 1, 1, 'MDSYD/LP-1/2023', 1, '2023', '2023-05-29', '2023-06-18', 4, 52, 137, 1, 2, 10, 40, 2, 1, 1),
+(1, 1, 1, 3, 'MDSYD/LP-1/2023', 1, '2023', '2023-07-03', '2023-07-23', 4, 52, 137, 1, 2, 10, 40, 2, 1, 2),
 (2, 1, 1, 1, 'MDSYD/LP-2/2023', 2, '2023', '2023-05-30', '2023-05-31', 4, 52, 137, 1, 2, 10, 30, 3, 1, 1),
 (3, 1, 1, 1, 'MDSYD/LP-3/2023', 3, '2023', '2023-05-30', '2023-06-04', 4, 52, 137, 1, 2, 10, 30, 3, 1, 2),
 (4, 1, 1, 1, 'MDSYD/LP-4/2023', 4, '2023', '2023-06-05', '2023-06-14', 4, 52, 137, 1, 2, 10, 30, 2, 1, 2),
@@ -4797,8 +4838,6 @@ INSERT INTO `horario` (`idhorario`, `idevento`, `idaula`, `inicio`, `fin`, `hora
 (10, 9, 1, '2023-06-05', '2023-06-08', '19:00', '20:00'),
 (11, 12, 1, '2023-06-05', '2023-06-09', '19:00', '20:00'),
 (12, 12, 1, '2023-06-10', '2023-06-11', '19:00', '20:30'),
-(15, 1, 1, '2023-06-05', '2023-06-09', '19:00', '20:00'),
-(16, 1, 1, '2023-06-10', '2023-06-11', '19:00', '20:30'),
 (17, 7, 1, '2023-06-07', '2023-06-11', '19:00', '20:00'),
 (18, 13, 1, '2023-06-05', '2023-06-09', '19:00', '20:00'),
 (19, 13, 1, '2023-06-10', '2023-06-11', '19:00', '20:30'),
@@ -4807,7 +4846,13 @@ INSERT INTO `horario` (`idhorario`, `idevento`, `idaula`, `inicio`, `fin`, `hora
 (23, 3, 1, '2023-06-12', '2023-06-16', '19:00', '20:00'),
 (24, 3, 1, '2023-06-17', '2023-06-18', '19:00', '20:30'),
 (25, 4, 1, '2023-06-26', '2023-07-02', '19:00', '20:00'),
-(26, 4, 1, '2023-07-03', '2023-07-09', '19:00', '20:00');
+(26, 4, 1, '2023-07-03', '2023-07-09', '19:00', '20:00'),
+(27, 1, 1, '2023-07-03', '2023-07-06', '19:00', '20:00'),
+(28, 1, 1, '2023-07-07', '2023-07-09', '19:00', '21:00'),
+(29, 1, 1, '2023-07-10', '2023-07-13', '19:00', '20:00'),
+(30, 1, 1, '2023-07-14', '2023-07-16', '19:00', '21:00'),
+(31, 1, 1, '2023-07-17', '2023-07-20', '19:00', '20:00'),
+(32, 1, 1, '2023-07-21', '2023-07-23', '19:00', '21:00');
 
 -- --------------------------------------------------------
 
@@ -4819,24 +4864,9 @@ CREATE TABLE `inscripcion` (
   `idinscripcion` int(11) NOT NULL,
   `idevento` int(11) DEFAULT NULL,
   `idusuario` int(11) DEFAULT NULL,
-  `idnacionalidad` int(11) DEFAULT NULL,
-  `idgenero` int(11) DEFAULT NULL,
-  `idformacion_academica` int(11) DEFAULT NULL,
-  `idprofesion` int(11) DEFAULT NULL,
-  `idespecialidad_medica` int(11) DEFAULT NULL,
-  `correo` varchar(45) DEFAULT NULL,
-  `celular` varchar(45) DEFAULT NULL,
-  `iddependencia` int(11) DEFAULT NULL,
-  `entidad` text,
-  `cargo_entidad` text,
-  `idministerio` int(11) DEFAULT NULL,
-  `iddireccion` int(11) DEFAULT NULL,
-  `idarea` int(11) DEFAULT NULL,
-  `cargo_mds` text,
-  `iddepartamento` int(11) DEFAULT NULL,
-  `idred_salud` int(11) DEFAULT NULL,
-  `idestablecimiento_salud` int(11) DEFAULT NULL,
-  `cargo_red_salud` text,
+  `idnombre` int(11) DEFAULT NULL,
+  `idnombre_datos` int(11) DEFAULT NULL,
+  `iddato_laboral` int(11) DEFAULT NULL,
   `idestado_inscripcion` int(11) DEFAULT NULL,
   `correlativo` int(11) DEFAULT NULL,
   `codigo` varchar(45) DEFAULT NULL,
@@ -4849,11 +4879,25 @@ CREATE TABLE `inscripcion` (
 -- Volcado de datos para la tabla `inscripcion`
 --
 
-INSERT INTO `inscripcion` (`idinscripcion`, `idevento`, `idusuario`, `idnacionalidad`, `idgenero`, `idformacion_academica`, `idprofesion`, `idespecialidad_medica`, `correo`, `celular`, `iddependencia`, `entidad`, `cargo_entidad`, `idministerio`, `iddireccion`, `idarea`, `cargo_mds`, `iddepartamento`, `idred_salud`, `idestablecimiento_salud`, `cargo_red_salud`, `idestado_inscripcion`, `correlativo`, `codigo`, `fecha_preins`, `fecha_ins`, `gestion`) VALUES
-(1, 5, 7, 1, 2, 4, 8, 0, 'gabriel@gmail.com', '79109937', 1, 'ENTIDAD', 'CARGO', 0, 0, 0, '', 0, 0, 0, '', 1, 1, 'INS/MDSYD-1/2023', '2023-06-22', '2023-06-22', '2023'),
-(2, 5, 8, 1, 2, 4, 1, 1, 'gabriel_jesus@gmail.com', '79109938', 2, '', '', 3, 24, 31, 'CARGO QUE EJERCE', 0, 0, 0, '', 1, 2, 'INS/MDSYD-2/2023', '2023-06-22', '2023-06-22', '2023'),
-(3, 4, 9, 1, 2, 4, 3, 0, 'andres@gmail.com', '79109937', 1, 'MINISTERIO DE ECONOM&Iacute;A', 'RESPONSABKLE DE PRESUPUESTOS', 0, 0, 0, '', 0, 0, 0, '', 1, 3, 'INS/MDSYD-3/2023', '2023-06-22', '2023-06-22', '2023'),
-(4, 4, 10, 1, 2, 4, 3, 0, 'andres@gmail.com', '79109937', 3, '', '', 0, 0, 0, '', 1, 94, 33, 'ADMINISTRADOR ', 1, 4, 'INS/MDSYD-4/2023', '2023-06-22', '2023-06-22', '2023');
+INSERT INTO `inscripcion` (`idinscripcion`, `idevento`, `idusuario`, `idnombre`, `idnombre_datos`, `iddato_laboral`, `idestado_inscripcion`, `correlativo`, `codigo`, `fecha_preins`, `fecha_ins`, `gestion`) VALUES
+(1, 4, 25, 25, 1, 1, 1, 1, 'INS/MDSYD-1/2023', '2023-07-02', '2023-07-02', '2023'),
+(2, 4, 26, 26, 2, 2, 2, 2, 'INS/MDSYD-2/2023', '2023-07-02', '2023-07-02', '2023'),
+(3, 4, 27, 27, 3, 3, 2, 3, 'INS/MDSYD-3/2023', '2023-07-02', '2023-07-02', '2023'),
+(4, 4, 28, 28, 4, 4, 1, 4, 'INS/MDSYD-4/2023', '2023-07-02', '2023-07-02', '2023'),
+(5, 5, 27, 27, 3, 3, 1, 5, 'INS/MDSYD-5/2023', '2023-07-02', '2023-07-02', '2023'),
+(6, 4, 28, 28, 4, 4, 2, 6, 'INS/MDSYD-6/2023', '2023-07-03', '2023-07-03', '2023'),
+(7, 4, 27, 27, 3, 3, 2, 7, 'INS/MDSYD-7/2023', '2023-07-03', '2023-07-03', '2023'),
+(8, 4, 27, 27, 3, 3, 1, 8, 'INS/MDSYD-8/2023', '2023-07-03', '2023-07-03', '2023'),
+(9, 4, 29, 29, 5, 5, 1, 9, 'INS/MDSYD-9/2023', '2023-07-03', '2023-07-03', '2023'),
+(10, 4, 29, 29, 5, 5, 1, 10, 'INS/MDSYD-10/2023', '2023-07-03', '2023-07-03', '2023'),
+(11, 4, 28, 28, 4, 4, 1, 11, 'INS/MDSYD-11/2023', '2023-07-03', '2023-07-03', '2023'),
+(12, 4, 30, 30, 6, 6, 1, 12, 'INS/MDSYD-12/2023', '2023-07-03', '2023-07-03', '2023'),
+(13, 3, 31, 31, 7, 7, 1, 13, 'INS/MDSYD-13/2023', '2023-07-04', '2023-07-04', '2023'),
+(14, 4, 32, 32, 8, 8, 1, 14, 'INS/MDSYD-14/2023', '2023-07-04', '2023-07-04', '2023'),
+(15, 4, 33, 33, 9, 9, 1, 15, 'INS/MDSYD-15/2023', '2023-07-04', '2023-07-04', '2023'),
+(16, 8, 34, 34, 10, 10, 1, 16, 'INS/MDSYD-16/2023', '2023-07-04', '2023-07-04', '2023'),
+(17, 4, 35, 35, 11, 11, 1, 17, 'INS/MDSYD-17/2023', '2023-07-04', '2023-07-04', '2023'),
+(18, 4, 35, 35, 11, 11, 1, 18, 'INS/MDSYD-18/2023', '2023-07-04', '2023-07-04', '2023');
 
 -- --------------------------------------------------------
 
@@ -4936,7 +4980,24 @@ INSERT INTO `log_login` (`idlog_login`, `usuario`, `fecha`, `fecha_hora`, `ip`, 
 (59, 'lyapuchura', '2023-06-20', '2023-06-20 13:13:10', '::1', 'OPEN'),
 (60, 'lyapuchura', '2023-06-20', '2023-06-20 21:12:21', '::1', 'OPEN'),
 (61, 'lyapuchura', '2023-06-22', '2023-06-22 12:55:47', '::1', 'OPEN'),
-(62, 'lyapuchura', '2023-06-22', '2023-06-22 19:00:29', '::1', 'OPEN');
+(62, 'lyapuchura', '2023-06-22', '2023-06-22 19:00:29', '::1', 'OPEN'),
+(63, 'lyapuchura', '2023-06-23', '2023-06-23 13:39:23', '::1', 'OPEN'),
+(64, 'lyapuchura', '2023-06-23', '2023-06-23 19:36:05', '::1', 'OPEN'),
+(65, 'lyapuchura', '2023-06-26', '2023-06-26 12:46:47', '::1', 'OPEN'),
+(66, 'lyapuchura', '2023-06-26', '2023-06-26 21:50:53', '::1', 'OPEN'),
+(67, 'lyapuchura', '2023-06-27', '2023-06-27 13:01:13', '::1', 'OPEN'),
+(68, 'lyapuchura', '2023-06-28', '2023-06-28 13:14:31', '::1', 'OPEN'),
+(69, 'lyapuchura', '2023-06-29', '2023-06-29 14:11:50', '::1', 'OPEN'),
+(70, 'lyapuchura', '2023-06-30', '2023-06-30 13:05:02', '::1', 'OPEN'),
+(71, 'lyapuchura', '2023-06-30', '2023-06-30 19:25:16', '::1', 'OPEN'),
+(72, 'lyapuchura', '2023-07-01', '2023-07-01 15:19:55', '::1', 'OPEN'),
+(73, 'lyapuchura', '2023-07-03', '2023-07-03 13:15:19', '::1', 'OPEN'),
+(74, 'lyapuchura', '2023-07-03', '2023-07-03 18:48:12', '::1', 'OPEN'),
+(75, 'lyapuchura', '2023-07-04', '2023-07-04 02:44:20', '::1', 'OPEN'),
+(76, 'lyapuchura', '2023-07-04', '2023-07-04 16:26:01', '192.168.251.88', 'OPEN'),
+(77, 'lyapuchura', '2023-07-04', '2023-07-04 18:34:40', '192.168.251.88', 'OPEN'),
+(78, 'lyapuchura', '2023-07-04', '2023-07-04 19:58:41', '::1', 'OPEN'),
+(79, 'lyapuchura', '2023-07-05', '2023-07-05 13:35:26', '::1', 'OPEN');
 
 -- --------------------------------------------------------
 
@@ -5535,24 +5596,86 @@ CREATE TABLE `nombre` (
   `nombre` varchar(45) DEFAULT NULL,
   `ci` varchar(45) DEFAULT NULL,
   `complemento` varchar(45) DEFAULT NULL,
-  `exp` varchar(45) DEFAULT NULL
+  `exp` varchar(45) DEFAULT NULL,
+  `fecha_nac` date DEFAULT NULL,
+  `idnacionalidad` int(11) DEFAULT NULL,
+  `idgenero` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `nombre`
 --
 
-INSERT INTO `nombre` (`idnombre`, `paterno`, `materno`, `nombre`, `ci`, `complemento`, `exp`) VALUES
-(1, 'Yapuchura', 'Chuquimia', 'Luis Gonzalo', '5966306', NULL, 'LP'),
-(2, 'Castañon', 'Clavijo', 'Daniel', '8888888', NULL, 'LP'),
-(3, 'Gutierrez', 'Gutierrez', 'Patricia', '7777777', NULL, 'LP'),
-(4, 'Calle', 'Calle', 'Marcelo', '6666666', NULL, 'LP'),
-(5, 'Machaca', 'Machaca', 'Susana', '5555555', NULL, 'LP'),
-(6, 'Alarcon', 'Flores', 'Juan Carlos', '9999999', NULL, 'LP'),
-(7, 'Mendoza', 'Castellon', 'Gabriel', '5966305', NULL, 'LP'),
-(8, 'Gonzales', 'Castellon', 'Gabriel Jesus', '5966304', NULL, 'LP'),
-(9, 'Ortega', 'Palacios', 'Andres', '5966307', NULL, 'LP'),
-(10, 'Ledezma', 'Paz', 'Eddy', '5966308', NULL, 'LP');
+INSERT INTO `nombre` (`idnombre`, `paterno`, `materno`, `nombre`, `ci`, `complemento`, `exp`, `fecha_nac`, `idnacionalidad`, `idgenero`) VALUES
+(1, 'Yapuchura', 'Chuquimia', 'Luis Gonzalo', '5966306', NULL, 'LP', '1982-07-25', 1, 2),
+(2, 'Castañon', 'Clavijo', 'Daniel', '8888888', NULL, 'LP', '1982-07-25', 1, 2),
+(3, 'Gutierrez', 'Gutierrez', 'Patricia', '7777777', NULL, 'LP', '1982-07-25', 1, 2),
+(4, 'Calle', 'Calle', 'Marcelo', '6666666', NULL, 'LP', '1982-07-25', 1, 2),
+(5, 'Machaca', 'Machaca', 'Susana', '5555555', NULL, 'LP', '1982-07-25', 1, 2),
+(6, 'Alarcon', 'Flores', 'Juan Carlos', '9999999', NULL, 'LP', '1982-07-25', 1, 2),
+(7, 'Mendoza', 'Castellon', 'Gabriel', '5966305', NULL, 'LP', '1982-07-25', 1, 2),
+(8, 'Gonzales', 'Castellon', 'Gabriel Jesus', '5966304', NULL, 'LP', '1982-07-25', 1, 2),
+(9, 'Ortega', 'Palacios', 'Andres', '5966307', NULL, 'LP', '1982-07-25', 1, 2),
+(10, 'Ledezma', 'Paz', 'Eddy', '5966308', NULL, 'LP', '1982-07-25', 1, 2),
+(11, 'Gomez', 'Davila', 'Juan Pablo ', '5942971', NULL, 'LP', '1982-07-25', 1, 2),
+(12, 'Mamani', 'Parapo', 'Javier', '5942972', NULL, 'LP', '1982-07-25', 1, 2),
+(13, 'Acarapi', 'Suxo', 'Edwin Javier', '5942977', NULL, 'LP', '1982-07-25', 1, 2),
+(14, 'Machicado', 'Ramirez', 'Ernesto', '5942973', NULL, 'LP', '1982-07-25', 1, 2),
+(15, 'Casas', 'Choque', 'Gabriel', '5942979', NULL, 'LP', '1982-07-25', 1, 2),
+(16, 'Choquehuanca', 'Pari', 'Juan Carlos', '5942981', NULL, 'LP', '1980-06-20', 1, 2),
+(17, 'Arias', 'Valverde', 'Juan Carlos ', '4942974', '1M', 'LP', '2017-08-27', 1, 2),
+(18, 'Ramallo', 'Endara', 'Rodrigo', '4323897', '1M', 'LP', '1980-02-18', 1, 2),
+(19, 'Canaviri', 'Flores', 'Juan Marcelo', '8942971', '1M', 'LP', '1982-09-22', 1, 2),
+(20, 'Paredes', 'Flores', 'Rigoberto', '4972971', '1M', 'LP', '1972-11-12', 1, 2),
+(21, 'Casas', 'Aduviri', 'Gabriel', '6952971', '1S', 'LP', '1985-07-22', 1, 2),
+(22, 'Medina', 'Tarqui', 'Franklin', '6942975', 'SM', 'LP', '1970-08-15', 1, 2),
+(23, 'Valdivia', 'Borda', 'Mariela Carla', '4567364', '', 'TJ', '1984-09-25', 1, 1),
+(24, 'Yapuchura', 'Chuquimia', 'Jesus Marcelo', '5943971', '1S', 'LP', '1982-08-20', 1, 2),
+(25, 'Garcia', 'Martinez', 'Fernando Simon', '4952971', 'AM', 'CB', '1972-09-15', 1, 2),
+(26, 'Tarqui', 'Lopez', 'Abel', '3942973', '1S', 'LP', '1985-08-31', 1, 2),
+(27, 'Choque', 'Quispe', 'Angela', '8954971', '1A', 'LP', '1990-01-16', 1, 1),
+(28, 'Choque', 'Quispe', 'Angela', '3987654', '1A', 'LP', '1989-01-23', 1, 1),
+(29, 'Arias', 'Arenas', 'Juan Carlos', '2942971', '', 'LP', '1970-08-28', 1, 2),
+(30, 'Qui&ntilde;ajo', 'Gutierrez', 'Javier', '7942979', '1M', 'LP', '1982-08-14', 1, 2),
+(31, 'Saravia ', 'Miranda', 'Norma', '3697123', '1M', 'LP', '1986-01-06', 1, 1),
+(32, 'Alvarez', 'Quispe', 'Adela', '3842971', '1M', 'LP', '2023-11-12', 1, 1),
+(33, 'Choque', 'Quispe', 'Fidel', '6758901', '', 'LP', '1993-07-06', 1, 2),
+(34, 'Molina', 'Casanova', 'Franklin', '4576231', '1M', 'LP', '1980-02-12', 1, 2),
+(35, 'Quispe', 'Mamani', 'Sergio', '3497123', '', 'LP', '1982-07-25', 1, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `nombre_datos`
+--
+
+CREATE TABLE `nombre_datos` (
+  `idnombre_datos` int(11) NOT NULL,
+  `idnombre` int(11) DEFAULT NULL,
+  `idusuario` int(11) DEFAULT NULL,
+  `idformacion_academica` int(11) DEFAULT NULL,
+  `idprofesion` int(11) DEFAULT NULL,
+  `idespecialidad_medica` int(11) DEFAULT NULL,
+  `correo` text,
+  `celular` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `nombre_datos`
+--
+
+INSERT INTO `nombre_datos` (`idnombre_datos`, `idnombre`, `idusuario`, `idformacion_academica`, `idprofesion`, `idespecialidad_medica`, `correo`, `celular`) VALUES
+(1, 25, 25, 4, 8, 45, 'fernando@gmail.com', '78909938'),
+(2, 26, 26, 4, 7, 45, 'abel@gmail.com', '75634212'),
+(3, 27, 27, 4, 9, 45, 'angelachoque@gmail.com', '78107737'),
+(4, 28, 28, 4, 9, 45, 'angela@gmail.com', '78945321'),
+(5, 29, 29, 4, 9, 45, 'juan@gmail.com', '79109937'),
+(6, 30, 30, 4, 8, 45, 'javier@gmail.com', '67853423'),
+(7, 31, 31, 4, 1, 41, 'norma@gmail.com', '79109937'),
+(8, 32, 32, 4, 4, 45, 'adela@gmail.com', '70587007'),
+(9, 33, 33, 4, 7, 45, 'fidel@gmail.com', '79567234'),
+(10, 34, 34, 4, 1, 6, 'franklin@gmail.com', '611101797'),
+(11, 35, 35, 4, 1, 2, 'sergio@gmail.com', '79389231');
 
 -- --------------------------------------------------------
 
@@ -5989,7 +6112,7 @@ CREATE TABLE `tematica` (
 INSERT INTO `tematica` (`idtematica`, `tematica`, `descripcion`, `url`, `idusuario`) VALUES
 (1, 'NINGUNO', ' ', ' ', 1),
 (2, 'ASPECTOS GENERALES DE LA POLÍTICA SAFCI', 'El presente curso le permitirá conocer los aspectos generales de la Politica Nacional Salud Familiar Comunitaria Intercultural (SAFCI)', '../img/safci_oferta.png', 1),
-(3, 'ASPECTOS GENERALES DEL SISTEMA UNICO DE SALUD', 'El presente curso le permitirá conocer los aspectos generales del Sistema Único de Salud (SUS)', '../img/sus_oferta.png', 1),
+(3, 'ASPECTOS GENERALES DEL SISTEMA ÚNICO DE SALUD', 'El presente curso le permitirá conocer los aspectos generales del Sistema Único de Salud (SUS)', '../img/sus_oferta.png', 1),
 (4, 'PROMOCIÓN DE LA SALUD', 'El presente curso le permitirá conocer los aspectos mas importantes de la Promoción de la Salud.', '../img/promocion_salud.png', 1);
 
 -- --------------------------------------------------------
@@ -6118,7 +6241,32 @@ INSERT INTO `usuarios` (`idusuario`, `idnombre`, `usuario`, `password`, `fecha`,
 (7, 7, '5966305', '5966305', '2023-06-22', 'ACTIVO', 'PARTICIPANTE'),
 (8, 8, '5966304', '5966304', '2023-06-22', 'ACTIVO', 'PARTICIPANTE'),
 (9, 9, '5966307', '5966307', '2023-06-22', 'ACTIVO', 'PARTICIPANTE'),
-(10, 10, '5966308', '5966308', '2023-06-22', 'ACTIVO', 'PARTICIPANTE');
+(10, 10, '5966308', '5966308', '2023-06-22', 'ACTIVO', 'PARTICIPANTE'),
+(11, 11, '5942971', '5942971', '2023-06-23', 'ACTIVO', 'PARTICIPANTE'),
+(12, 12, '5942972', '5942972', '2023-06-23', 'ACTIVO', 'PARTICIPANTE'),
+(13, 13, '5942977', '5942977', '2023-06-26', 'ACTIVO', 'PARTICIPANTE'),
+(14, 14, '5942973', '5942973', '2023-06-26', 'ACTIVO', 'PARTICIPANTE'),
+(15, 15, '5942979', '5942979', '2023-06-26', 'ACTIVO', 'PARTICIPANTE'),
+(16, 16, '5942981', '5942981', '2023-06-27', 'ACTIVO', 'PARTICIPANTE'),
+(17, 17, '4942974', '4942974', '2023-06-28', 'ACTIVO', 'PARTICIPANTE'),
+(18, 18, '4323897', '4323897', '2023-06-28', 'ACTIVO', 'PARTICIPANTE'),
+(19, 19, '8942971', '8942971', '2023-06-29', 'ACTIVO', 'PARTICIPANTE'),
+(20, 20, '4972971', '4972971', '2023-06-29', 'ACTIVO', 'PARTICIPANTE'),
+(21, 21, '6952971', '6952971', '2023-06-29', 'ACTIVO', 'PARTICIPANTE'),
+(22, 22, '6942975', '6942975', '2023-06-30', 'ACTIVO', 'PARTICIPANTE'),
+(23, 23, '4567364', '4567364', '2023-06-30', 'ACTIVO', 'PARTICIPANTE'),
+(24, 24, '5943971', '5943971', '2023-06-30', 'ACTIVO', 'PARTICIPANTE'),
+(25, 25, '4952971', '4952971', '2023-07-02', 'ACTIVO', 'PARTICIPANTE'),
+(26, 26, '3942973', '3942973', '2023-07-02', 'ACTIVO', 'PARTICIPANTE'),
+(27, 27, '8954971', '8954971', '2023-07-02', 'ACTIVO', 'PARTICIPANTE'),
+(28, 28, '3987654', '3987654', '2023-07-02', 'ACTIVO', 'PARTICIPANTE'),
+(29, 29, '2942971', '2942971', '2023-07-03', 'ACTIVO', 'PARTICIPANTE'),
+(30, 30, '7942979', '7942979', '2023-07-03', 'ACTIVO', 'PARTICIPANTE'),
+(31, 31, '3697123', '3697123', '2023-07-04', 'ACTIVO', 'PARTICIPANTE'),
+(32, 32, '3842971', '3842971', '2023-07-04', 'ACTIVO', 'PARTICIPANTE'),
+(33, 33, '6758901', '6758901', '2023-07-04', 'ACTIVO', 'PARTICIPANTE'),
+(34, 34, '4576231', '4576231', '2023-07-04', 'ACTIVO', 'PARTICIPANTE'),
+(35, 35, '3497123', '3497123', '2023-07-04', 'ACTIVO', 'PARTICIPANTE');
 
 --
 -- Índices para tablas volcadas
@@ -6163,6 +6311,12 @@ ALTER TABLE `aula`
 ALTER TABLE `cargo`
   ADD PRIMARY KEY (`idcargo`),
   ADD KEY `idusuario_idx` (`idusuario`);
+
+--
+-- Indices de la tabla `dato_laboral`
+--
+ALTER TABLE `dato_laboral`
+  ADD PRIMARY KEY (`iddato_laboral`);
 
 --
 -- Indices de la tabla `departamento`
@@ -6354,6 +6508,12 @@ ALTER TABLE `nombre`
   ADD PRIMARY KEY (`idnombre`);
 
 --
+-- Indices de la tabla `nombre_datos`
+--
+ALTER TABLE `nombre_datos`
+  ADD PRIMARY KEY (`idnombre_datos`);
+
+--
 -- Indices de la tabla `objetivo_anual`
 --
 ALTER TABLE `objetivo_anual`
@@ -6483,6 +6643,12 @@ ALTER TABLE `cargo`
   MODIFY `idcargo` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `dato_laboral`
+--
+ALTER TABLE `dato_laboral`
+  MODIFY `iddato_laboral` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
 -- AUTO_INCREMENT de la tabla `departamento`
 --
 ALTER TABLE `departamento`
@@ -6546,19 +6712,19 @@ ALTER TABLE `genero`
 -- AUTO_INCREMENT de la tabla `horario`
 --
 ALTER TABLE `horario`
-  MODIFY `idhorario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `idhorario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT de la tabla `inscripcion`
 --
 ALTER TABLE `inscripcion`
-  MODIFY `idinscripcion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `idinscripcion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT de la tabla `log_login`
 --
 ALTER TABLE `log_login`
-  MODIFY `idlog_login` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
+  MODIFY `idlog_login` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
 
 --
 -- AUTO_INCREMENT de la tabla `log_login_failure`
@@ -6630,7 +6796,13 @@ ALTER TABLE `nivel_establecimiento`
 -- AUTO_INCREMENT de la tabla `nombre`
 --
 ALTER TABLE `nombre`
-  MODIFY `idnombre` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `idnombre` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+
+--
+-- AUTO_INCREMENT de la tabla `nombre_datos`
+--
+ALTER TABLE `nombre_datos`
+  MODIFY `idnombre_datos` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `objetivo_anual`
@@ -6714,7 +6886,7 @@ ALTER TABLE `tipo_evento`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `idusuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `idusuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- Restricciones para tablas volcadas
