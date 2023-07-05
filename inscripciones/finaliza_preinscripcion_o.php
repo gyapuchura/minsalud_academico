@@ -90,7 +90,7 @@ $idinscripcion_ss = $_SESSION['idinscripcion_ss'];
   <div class="col-md-9">
     <h2><?php echo $codigo_evento_ss;?></h2>
     <?php
-        $sql_t =" SELECT idtematica, tematica FROM tematica WHERE idtematica='$idtematica_ss'";
+        $sql_t = " SELECT idtematica, tematica FROM tematica WHERE idtematica='$idtematica_ss'";
         $result_t = mysqli_query($link,$sql_t);
         $row_t = mysqli_fetch_array($result_t);?>  
     <h2><?php echo $row_t[1];?></h2>

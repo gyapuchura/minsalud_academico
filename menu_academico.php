@@ -19,7 +19,7 @@ while ($field = mysqli_fetch_field($result)){
 		<ul class="dropdown-menu">
 		<li><a href="../eventos/eventos.php">EVENTOS</a></li>		
 		<li><a href="../eventos/docentes.php">DOCENTES</a></li>
-		<li><a href="../eventos/oferta_eventos.php">OFERTA ACADÉMICA</a></li>
+<!--	<li><a href="../eventos/oferta_eventos.php">OFERTA ACADÉMICA</a></li> --->
 		<li><a href="../eventos/administrar_eventos.php">ADMINISTRAR EVENTOS</a></li>
 		</ul>
 	</li>

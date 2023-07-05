@@ -323,6 +323,29 @@ $row_l = mysqli_fetch_array($result_l);
 <?php if ($row_l[3] == '1') { ?>
 <!------ DEPENDIENTE DE OTRA ENTIDAD ----->
 
+  <div class="row">
+    <div class="col-md-3"><h4>DEPARTAMENTO:</h4></div>
+    <div class="col-md-9">
+      <select name="iddepartamento"  id="iddepartamento" class="form-control" required disabled>
+          <option selected>Seleccione</option>
+          <?php
+          $sqlv = " SELECT iddepartamento, departamento FROM departamento  ";
+          $resultv = mysqli_query($link,$sqlv);
+          if ($rowv = mysqli_fetch_array($resultv)){
+          mysqli_field_seek($resultv,0);
+          while ($fieldv = mysqli_fetch_field($resultv)){
+          } do {
+          ?>
+          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_l[10]) echo "selected";?> ><?php echo $rowv[1];?></option>
+          <?php
+          } while ($rowv = mysqli_fetch_array($resultv));
+          } else {
+          }
+          ?>
+      </select>
+    </div>
+  </div>
+
 <div class="row">
     <div class="col-md-3"><h4>ENTIDAD A LA QUE PERTENECE:</h4></div>
     <div class="col-md-9"><textarea class="form-control" rows="3" name="entidad" disabled ><?php echo $row_l[4];?></textarea></div>
@@ -334,7 +357,31 @@ $row_l = mysqli_fetch_array($result_l);
 
 <?php } else { if ($row_l[3] == '2') { ?>
 <!------ DEPENDIENTE DEL MINISTERIO DE SALUD ----->
-    
+ 
+<div class="row">
+    <div class="col-md-3"><h4>DEPARTAMENTO:</h4></div>
+    <div class="col-md-9">
+      <select name="iddepartamento"  id="iddepartamento" class="form-control" required disabled>
+          <option selected>Seleccione</option>
+          <?php
+          $sqlv = " SELECT iddepartamento, departamento FROM departamento  ";
+          $resultv = mysqli_query($link,$sqlv);
+          if ($rowv = mysqli_fetch_array($resultv)){
+          mysqli_field_seek($resultv,0);
+          while ($fieldv = mysqli_fetch_field($resultv)){
+          } do {
+          ?>
+          <option value="<?php echo $rowv[0];?>" <?php if ($rowv[0]==$row_l[10]) echo "selected";?> ><?php echo $rowv[1];?></option>
+          <?php
+          } while ($rowv = mysqli_fetch_array($resultv));
+          } else {
+          }
+          ?>
+      </select>
+    </div>
+    </div>
+
+
 <div class="row">
     <div class="col-md-3"><h4>DEPENDIENTE DEL:</h4></div>
     <div class="col-md-9">
@@ -420,7 +467,6 @@ $row_l = mysqli_fetch_array($result_l);
  <div class="row">
     <div class="col-md-3"><h4>DEPARTAMENTO:</h4></div>
     <div class="col-md-9">
-
       <select name="iddepartamento"  id="iddepartamento" class="form-control" required disabled>
           <option selected>Seleccione</option>
           <?php
@@ -438,7 +484,6 @@ $row_l = mysqli_fetch_array($result_l);
           }
           ?>
       </select>
-
     </div>
     </div>
 
