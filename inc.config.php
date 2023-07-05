@@ -1,12 +1,9 @@
 <?php
 $link = mysqli_connect(
-  'localhost',
-<<<<<<< HEAD
-=======
+  'localhost', 
   'root',
   'root',
   'safci_db'
->>>>>>> feature_gonzalombp
 ) or die(mysqli_error($mysqli));
 
 ?>
