@@ -155,6 +155,7 @@ $rowus = mysqli_fetch_array($resultus);?>
                 ?>
                 <?php echo $rowd[0];?> <?php echo $rowd[1];?> <?php echo $rowd[2];?>    
                 </td>
+                
                 <td>     
                 <?php  if ($row[6] == '1') { ?>
                     <form name="VALIDA" action="valida_evento.php" method="post">
