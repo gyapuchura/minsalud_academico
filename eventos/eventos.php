@@ -162,7 +162,7 @@ $rowus = mysqli_fetch_array($resultus);?>
                     <input name="idevento" type="hidden" value="<?php echo $row[0];?>">
                     <button type="submit" class="btn-link">VER/MODIFICAR</button></form>
                 <?php } else { ?>
-                       CONSOLIDADO
+                        CONSOLIDADO
                     <?php  } ?>  
                 </td>
                 </tr>  
